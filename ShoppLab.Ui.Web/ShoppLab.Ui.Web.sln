@@ -38,8 +38,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{AB5EEA77-C12D-4A0E-8F4D-3F605F87AD8C}"
 	ProjectSection(SolutionItems) = preProject
 		..\Modelo de Dados\Model.png = ..\Modelo de Dados\Model.png
-		..\Modelo de Dados\Model_Register.png = ..\Modelo de Dados\Model_Register.png
-		..\Modelo de Dados\Model_Sales.png = ..\Modelo de Dados\Model_Sales.png
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Git", "Git", "{32D80BD9-1FDA-47F6-9B57-59ADE30F066D}"

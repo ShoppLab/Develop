@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace ShoppLab.Ui.Web.Controllers
+namespace Angle.Controllers
 {
     public class HomeController : Controller
     {
