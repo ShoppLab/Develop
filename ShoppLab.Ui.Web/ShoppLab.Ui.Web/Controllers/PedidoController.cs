@@ -1,15 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using ShoppLab.Ui.Web.ViewModel;
 using System.Web.Mvc;
 
 namespace ShoppLab.Ui.Web.Controllers
 {
     public class PedidoController : Controller
     {
-
+        [HttpGet]
         public ActionResult Cadastrar()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Cadastrar(ClienteViewModel cliente)
         {
             return View();
         }
