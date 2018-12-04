@@ -4,17 +4,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ShoppLab.Ui.Web.ViewModel
 {
-    public class ClienteViewModel
+    public class PedidoViewModel
     {
-        [Description("Identificação do cliente")]
+        [Required(ErrorMessage = "xxxx")]
         [Display(Name = "Id")]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "xxxx")]
         [Description("Nome do cliente")]
         [Display(Name = "Nome")]
         public string Nome { get; set; }
 
-        [Description("Data de registro do cliente")]
+        [Required(ErrorMessage = "xxxxx")]
         [Display(Name = "Data de registro")]
         public DateTime DataRegistro { get; set; }
 
@@ -25,5 +26,6 @@ namespace ShoppLab.Ui.Web.ViewModel
         [Description("Telefone do cliente")]
         [Display(Name = "Telefone")]
         public string Telefone { get; set; }
+
     }
 }

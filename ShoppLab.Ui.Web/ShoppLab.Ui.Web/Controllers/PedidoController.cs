@@ -12,8 +12,13 @@ namespace ShoppLab.Ui.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Cadastrar(ClienteViewModel cliente)
+        public ActionResult Cadastrar(PedidoViewModel pedido)
         {
+            if (ModelState.IsValid)
+            {
+               
+            }
+
             return View();
         }
 

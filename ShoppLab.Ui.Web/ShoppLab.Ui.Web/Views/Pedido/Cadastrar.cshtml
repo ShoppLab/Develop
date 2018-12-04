@@ -5,7 +5,7 @@
     ViewBag.Title = "Pedido - cadastrar";
 }
 
-@model ClienteViewModel
+@model PedidoViewModel
 
 <div class="content-heading">
     <div>
@@ -13,7 +13,8 @@
         <small>Pedido - cadastrar: Inclusão ou alteração de pedidos de venda</small>
     </div>
 </div>
-<form>
+
+<form id="form-pedido" method="post">
 
     <div class="card card-default">
         <div class="card-header">Dados do cliente</div>
@@ -22,18 +23,20 @@
             <div class="form-row">
 
                 <div class="col-lg-5 mb-3">
-                    @Html.LabelFor(x => x.Nome)
-                    <input class="form-control" id="" type="text" placeholder="" required="" />
+                    @Html.Label("Nome")
+                    @Html.TextBoxFor(x => x.Nome, new { @class = "form-control" })
+
                 </div>
 
                 <div class="col-lg-3 mb-3">
-                    @Html.LabelFor(x => x.Email)
+                    @Html.Label("E-mail")
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">@@</span>
                         </div>
-                        <input class="form-control" type="text" aria-label="" />
+                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
                     </div>
+                    @Html.ValidationMessageFor(x => x.Email)
                 </div>
 
                 <div class="col-lg-2 mb-3">
@@ -242,7 +245,7 @@
 
                 <div class="col-lg-2 mb-3">
                     <div class="input-group mb-3 mt-sm-3">
-                        <button class="btn btn-primary mb-2">Adicionar</button>
+                        <button  type="submit"  class="btn btn-primary mb-2">Adicionar</button>
                     </div>
                 </div>
 
@@ -250,7 +253,7 @@
 
 
         </div>
-        </div>
+    </div>
 </form>
 
 <div class="card card-default">
@@ -433,21 +436,23 @@
 </div>
 
 
-
-
 @section Styles {
     <link rel="stylesheet" href="~/vendor/datatables.net-bs4/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="~/vendor/datatables.net-keytable-bs/css/keyTable.bootstrap.css">
     <link rel="stylesheet" href="~/vendor/datatables.net-responsive-bs/css/responsive.bootstrap.css">
     <link href="@Styles.Url("~/Vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.css")" rel="stylesheet" />
 
-
 }
+
 @section Scripts {
 
     <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.maskmoney.min.js")"></script>
     <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.mask.min.js")"></script>
     <script src="@Scripts.Url("~/Scripts/shopplab/shopplab.util.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/jquery.validate.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+
+
 
     <script src="@Scripts.Url("~/Vendor/datatables.net/js/jquery.dataTables.js")"></script>
     <script src="@Scripts.Url("~/Vendor/datatables.net-bs4/js/dataTables.bootstrap4.js")"></script>

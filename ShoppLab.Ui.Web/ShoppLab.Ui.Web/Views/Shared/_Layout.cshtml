@@ -51,7 +51,7 @@
         </footer>
     </div>
     @if (IsSectionDefined("BodyArea"))
-        {@RenderSection("BodyArea", required: false)}
+    {@RenderSection("BodyArea", required: false)}
     <!-- =============== VENDOR SCRIPTS ===============-->
     <script src="@Scripts.Url("~/Vendor/modernizr/modernizr.custom.js")"></script>
     <script src="@Scripts.Url("~/Vendor/jquery/dist/jquery.js")"></script>
@@ -62,6 +62,8 @@
     <script src="@Scripts.Url("~/Vendor/animo/animo.js")"></script>
     <script src="@Scripts.Url("~/Vendor/screenfull/dist/screenfull.js")"></script>
     <script src="@Scripts.Url("~/Vendor/jquery-localize/dist/jquery.localize.js")"></script>
+
+
     <!-- =============== PAGE VENDOR SCRIPTS ===============-->
     @RenderSection("scripts", required: false)
     <!-- =============== APP SCRIPTS ===============-->
