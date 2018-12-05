@@ -1,4 +1,6 @@
-﻿using ShoppLab.Ui.Web.ViewModel;
+﻿using ShoppLab.Domain.Entities;
+using ShoppLab.Ui.Web.ViewModel;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace ShoppLab.Ui.Web.Controllers
@@ -12,11 +14,11 @@ namespace ShoppLab.Ui.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Cadastrar(PedidoViewModel pedido)
+        public ActionResult Cadastrar(PedidoViewModel pedido, List<Pedido> pedidos, List<DetalhePedido> detalhePedidos)
         {
             if (ModelState.IsValid)
             {
-               
+
             }
 
             return View();
