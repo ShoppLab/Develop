@@ -1,4 +1,4 @@
-﻿function formatFields() {
+﻿function formatarCampos() {
 
     $('.format-date').mask("99/99/9999");
     $('.format-date').css("text-align", 'right');
