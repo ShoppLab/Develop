@@ -1,5 +1,4 @@
-﻿using ShoppLab.Domain.Entities;
-using ShoppLab.Ui.Web.ViewModel;
+﻿using ShoppLab.Ui.Web.ViewModel;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -10,18 +9,17 @@ namespace ShoppLab.Ui.Web.Controllers
         [HttpGet]
         public ActionResult Cadastrar()
         {
-            return View();
+            return View(new PedidoViewModel { Nome = "Roberto Carlos Queiroz Oliveira", Email = "rcqoliveira@icloud.com", DataRegistro = "09/12/2018", Telefone = "11964440102" });
         }
-
+        
         [HttpPost]
-        public ActionResult Cadastrar(PedidoViewModel pedido, List<Pedido> pedidos, List<DetalhePedido> detalhePedidos)
+        public JsonResult Cadastrar(PedidoViewModel model, List<DetalhePedidoViewModel> detalhePedidos)
         {
             if (ModelState.IsValid)
             {
 
             }
-
-            return View();
+            return Json("", JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Consultar()

@@ -14,250 +14,200 @@
     </div>
 </div>
 
-@*<form id="form-pedido" method="post">
+<form id="form-pedido" method="post">
 
-        <div class="card card-default">
-            <div class="card-header">Dados do cliente</div>
-            <div class="card-body">
+    <div class="card card-default">
+        <div class="card-header">Dados do cliente</div>
+        <div class="card-body">
 
-                <div class="form-row">
+            <div class="form-row">
 
-                    <div class="col-lg-5 mb-3">
-                        @Html.Label("Nome")
-                        @Html.TextBoxFor(x => x.Nome, new { @class = "form-control" })
+                <div class="col-lg-5 mb-3">
+                    @Html.Label("Nome")
+                    @Html.TextBoxFor(x => x.Nome, new { @class = "form-control" })
 
-                    </div>
+                </div>
 
-                    <div class="col-lg-3 mb-3">
-                        @Html.Label("E-mail")
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">@@</span>
-                            </div>
-                            @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+                <div class="col-lg-3 mb-3">
+                    @Html.Label("E-mail")
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">@@</span>
                         </div>
-                        @Html.ValidationMessageFor(x => x.Email)
+                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
                     </div>
+                    @Html.ValidationMessageFor(x => x.Email)
+                </div>
 
-                    <div class="col-lg-2 mb-3">
-                        @Html.LabelFor(x => x.DataRegistro)
-                        <div class="input-group mb-3">
-                            <div class="input-group date" id="datetimepicker1">
-                                <input class="form-control format-date" type="text" />
-                                <span class="input-group-append input-group-addon">
-                                    <span class="input-group-text fas fa-calendar-alt"></span>
-                                </span>
-                            </div>
+                <div class="col-lg-2 mb-3">
+                    @Html.Label("Data")
+                    <div class="input-group mb-3">
+                        <di class="input-group date" id="datetimepicker1">
+                            @Html.TextBoxFor(x => x.DataRegistro, new { @class = "form-control format-date" })
+                            <span class="input-group-append input-group-addon">
+                                <span class="input-group-text fas fa-calendar-alt"></span>
+                            </span>
+                        </di>
 
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    @Html.Label("Telefone")
+                    @Html.TextBoxFor(x => x.Telefone, new { @class = "form-control format-phone" })
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-default">
+        <div class="card-header">Itens pedido</div>
+        <div class="card-body">
+            <div class="form-row">
+
+                <div class="col-lg-8 mb-3">
+                    <label>Produto</label>
+                    <input id="input-produto" class="form-control" type="text" />
+                </div>
+
+                <div class="col-lg-1 mb-3">
+                    <label>Quantidade</label>
+                    <input id="input-quantidade" class="form-control format-money" type="text" />
+                </div>
+
+                <div class="col-lg-1 mb-3">
+                    <label>Unidade</label>
+                    <input id="input-unidade" class="form-control"  type="text" />
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>Marca</label>
+                    <input id="input-marca" class="form-control" type="text" />
+                </div>
+
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="col-lg-2 mb-3">
+                    <label>Valor unitário mínimo</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input id="input-valorUnitarioMinimo" class="form-control format-money" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>Preço compra</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input id="input-precoCompra" class="form-control format-money" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>Despesa compra</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input id="input-despesaCompra" class="form-control format-money" type="text" aria-label="" />
+                    </div>
+                </div>
+
+
+                <div class="col-lg-2 mb-3">
+                    <label>Comissão Broker</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input id="input-comissaoBroker" class="form-control format-money" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>ICMS saída</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <input id="input-icmsSaida" class="form-control format-integer" maxlength="2" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>IPI venda ou frete</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <input id="input-ipiVendaFrete" class="form-control format-integer" maxlength="2" type="text" aria-label="" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-row">
+
+
+                <div class="col-lg-2 mb-3">
+                    <label>ICMS entrada</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <input id="input-percentualImsEntrada" class="form-control format-integer" maxlength="2" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>IPI compra</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <input id="input-percentualIpiCompra" class="form-control format-integer" maxlength="2" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>Pagto compra em dias</label>
+                    <div class="input-group mb-3">
+                        <input id="input-pagtoCompraDias" class="form-control format-integer" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>Pagto venda em dias</label>
+                    <div class="input-group mb-3">
+                        <input id="input-pagtoVendaDias" class="form-control format-integer" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mb-3">
+                    <label>Prazo de entrega em dias</label>
+                    <div class="input-group mb-3">
+                        <input id="input-prazoEntregaDias" class="form-control format-integer" type="text" aria-label="" />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" onclick="adicionarItem()">Adicionar</button>
                         </div>
                     </div>
-
-                    <div class="col-lg-2 mb-3">
-                        @Html.LabelFor(x => x.Telefone)
-                        <input class="form-control format-phone" id="" type="text" placeholder="" />
-                    </div>
-
                 </div>
             </div>
         </div>
 
-        <div class="card card-default">
-            <div class="card-header">Itens pedido</div>
-            <div class="card-body">
-                <div class="form-row">
-
-                    <div class="col-lg-8 mb-3">
-                        <label for="">Produto</label>
-                        <input class="form-control" id="" type="text" placeholder="" required="" />
-                    </div>
-
-                    <div class="col-lg-1 mb-3">
-                        <label for="validation02">Quantidade</label>
-                        <input class="form-control format-money" id="" type="text" placeholder="" required="" />
-                    </div>
-
-                    <div class="col-lg-1 mb-3">
-                        <label for="">Unidade</label>
-                        <input class="form-control" id="" type="text" placeholder="" required="" />
-                    </div>
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">Marca</label>
-                        <input class="form-control" id="" type="text" placeholder="" required="" />
-                    </div>
-
-                </div>
-
-                <div class="form-row">
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">Valor unitário mínimo</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                            <input class="form-control format-money" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">Valor unitário</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                            <input class="form-control format-money" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">Valor total</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                            <input class="form-control format-money" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">ICMS saída</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                            <input class="form-control format-money" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">IPI venda ou frete</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                            <input class="form-control format-money" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">ICMS</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">%</span>
-                            </div>
-                            <input class="form-control format-money" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="form-row">
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">Preço compra</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                            <input class="form-control format-money" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">Despesa compra</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                            <input class="form-control format-money" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">Comissão Broker</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">$</span>
-                            </div>
-                            <input class="form-control format-money" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">ICMS entrada</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">%</span>
-                            </div>
-                            <input class="form-control format-money" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">IPI compra</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">%</span>
-                            </div>
-                            <input class="form-control format-money" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">Pagto compra em dias</label>
-                        <div class="input-group mb-3">
-                            <input class="form-control format-integer" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="form-row">
-
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">Pagto venda em dias</label>
-                        <div class="input-group mb-3">
-                            <input class="form-control format-integer" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">Prazo de entrega em dias</label>
-                        <div class="input-group mb-3">
-                            <input class="form-control format-integer" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 mb-3">
-                        <label for="">Preço de venda unitário</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text format-money">$</span>
-                            </div>
-                            <input class="form-control format-money" type="text" aria-label="" />
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 mb-3">
-                        <div class="input-group mb-3 mt-sm-3">
-                            <button id="bt-adicionar" class="btn btn-primary mb-2">Adicionar</button>
-                        </div>
-                    </div>
-
-                </div>
-
-
-            </div>
-        </div>
-    </form>*@
+    </div>
+</form>
 
 <div class="card card-default">
-    <div class="card-header">Produtos do pedido</div>
+    <div class="card-header">Produtos</div>
 
     <div class="card-body">
 
@@ -266,24 +216,25 @@
             <table table class="stripe row-border order-column" id="table-detalhe-pedido" style="width:100%">
                 <thead>
                     <tr>
-                        <th width="400px">Produto</th>
                         <th>Qtde</th>
                         <th>Un</th>
+                        <th>Produto</th>
                         <th>Marca</th>
-                        <th>Unit. mínimo</th>
-                        <th>Total</th>
-                        <th>Ipi Venda/Frete</th>
-                        <th>Ipi compra</th>
+                        <th>Valor unitário min</th>
+                        <th>Valor unitário</th>
+                        <th>Valor total</th>
                         <th>Icms</th>
-                        <th>Icms Saída</th>
-                        <th>Icms Entrada </th>
-                        <th>Preço Compra</th>
-                        <th>Dias Compra</th>
-                        <th>Comissão Broker</th>
-                        <th>Pgto dias compra</th>
-                        <th>Pgto dias venda</th>
                         <th>Prazo dias entrega</th>
-                        <th>Preço Unitário</th>
+                        <th>Preço Compra</th>
+                        <th>Icms Entrada </th>
+                        <th>Ipi compra</th>
+                        <th>Despesas compra</th>
+                        <th>Condições pagto compra</th>
+                        <th>Condições pagto venda</th>
+                        <th>Icms saída</th>
+                        <th>Ipi venda/frete</th>
+                        <th>Comissão broker</th>
+                        <th>Preço venda unitário</th>
                     </tr>
                 </thead>
             </table>
@@ -291,53 +242,62 @@
         </div>
 
     </div>
+</div>
 
 
-    @section Styles {
-        <link rel="stylesheet" href="~/vendor/datatables.net-bs4/css/dataTables.bootstrap4.css">
-        <link rel="stylesheet" href="~/vendor/datatables.net-keytable-bs/css/keyTable.bootstrap.css">
-        <link rel="stylesheet" href="~/vendor/datatables.net-responsive-bs/css/responsive.bootstrap.css">
-        <link href="@Styles.Url("~/Vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.css")" rel="stylesheet" />
+@section Styles {
+    <link rel="stylesheet" href="~/vendor/datatables.net-bs4/css/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="~/vendor/datatables.net-keytable-bs/css/keyTable.bootstrap.css">
+    <link rel="stylesheet" href="~/vendor/datatables.net-responsive-bs/css/responsive.bootstrap.css">
+    @*<link rel="stylesheet" href="~/Content/css/animate.css">*@
 
-    }
+    <link href="@Styles.Url("~/Vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.css")" rel="stylesheet" />
 
-    @section Scripts {
+}
 
-        <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.maskmoney.min.js")"></script>
-        <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.mask.min.js")"></script>
-        <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.dataTables.min.js")"></script>
+@section Scripts {
 
-        <script src="@Scripts.Url("~/Scripts/jquery.validate.min.js")"></script>
-        <script src="@Scripts.Url("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
-        <script src="@Scripts.Url("~/Scripts/shopplab/shopplab.util.js")"></script>
-        <script src="@Scripts.Url("~/Scripts/shopplab/controllers/shopplab.pedido.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.maskmoney.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.mask.min.js")"></script>
 
-
-        <script src="@Scripts.Url("~/Vendor/datatables.net/js/jquery.dataTables.js")"></script>
-        <script src="@Scripts.Url("~/Vendor/datatables.net-bs4/js/dataTables.bootstrap4.js")"></script>
-        <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/dataTables.buttons.js")"></script>
-        <script src="@Scripts.Url("~/Vendor/datatables.net-buttons-bs/js/buttons.bootstrap.js")"></script>
-        <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.colVis.js")"></script>
-        <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.flash.js")"></script>
-        <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.html5.js")"></script>
-        <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.print.js")"></script>
-        <script src="@Scripts.Url("~/Vendor/datatables.net-keytable/js/dataTables.keyTable.js")"></script>
-        <script src="@Scripts.Url("~/Vendor/datatables.net-responsive/js/dataTables.responsive.js")"></script>
-        <script src="@Scripts.Url("~/Vendor/datatables.net-responsive-bs/js/responsive.bootstrap.js")"></script>
-        <script src="@Scripts.Url("~/Vendor/jszip/dist/jszip.js")"></script>
-        <script src="@Scripts.Url("~/Vendor/pdfmake/build/pdfmake.js")"></script>
-        <script src="@Scripts.Url("~/Vendor/pdfmake/build/vfs_fonts.js")"></script>
-        <script src="@Scripts.Url("~/Vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/jquery.validate.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/shopplab.util.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/controllers/shopplab.pedido.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/jquery.datatables.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/jquery.serializeObject.js")"></script>
 
 
-        <script type="text/javascript">
 
-            $(function () {
-                formatarCampos();
-                adicionarItem();
-            });
 
-        </script>
-    }
+    <script src="@Scripts.Url("~/Vendor/datatables.net/js/jquery.dataTables.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-bs4/js/dataTables.bootstrap4.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/dataTables.buttons.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons-bs/js/buttons.bootstrap.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.colVis.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.flash.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.html5.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.print.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-keytable/js/dataTables.keyTable.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-responsive/js/dataTables.responsive.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-responsive-bs/js/responsive.bootstrap.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/jszip/dist/jszip.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/pdfmake/build/pdfmake.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/pdfmake/build/vfs_fonts.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/bootstrap-notify/dist/js/bootstrap-notify.min.js")"></script>
+
+
+    <script type="text/javascript">
+
+        $(function () {
+            formatarGridPedido();
+            carregarItem();
+            formatarCampos();
+
+        });
+
+    </script>
+}
 
 

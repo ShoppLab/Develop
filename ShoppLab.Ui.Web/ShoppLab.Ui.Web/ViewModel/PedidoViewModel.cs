@@ -6,9 +6,9 @@ namespace ShoppLab.Ui.Web.ViewModel
 {
     public class PedidoViewModel
     {
-        [Required(ErrorMessage = "xxxx")]
-        [Display(Name = "Id")]
-        public int Id { get; set; }
+        //[Required(ErrorMessage = "xxxx")]
+        //[Display(Name = "Id")]
+        //public int Id { get; set; }
 
         [Required(ErrorMessage = "xxxx")]
         [Description("Nome do cliente")]
@@ -17,7 +17,7 @@ namespace ShoppLab.Ui.Web.ViewModel
 
         [Required(ErrorMessage = "xxxxx")]
         [Display(Name = "Data de registro")]
-        public DateTime DataRegistro { get; set; }
+        public string DataRegistro { get; set; }
 
         [Description("Email do cliente")]
         [Display(Name = "E-mail")]
