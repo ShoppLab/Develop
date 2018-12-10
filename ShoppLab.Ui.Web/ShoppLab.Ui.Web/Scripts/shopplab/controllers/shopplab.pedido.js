@@ -1,5 +1,4 @@
 ﻿
-
 var id = 0,
     descricaoProduto,
     marca,
@@ -27,18 +26,18 @@ var id = 0,
     valorCustoTTFrete = 0,
     valorCustoFixo = 0,
     valorCoefFrete = 0,
-    valorMkp = 1,
+    valorMkp = 0,
     valorPrecoVendaCif = 0,
     valorFreteDda = 0,
-    soma = 0,
+    valorAdFinan = 4 / 30,
+    valorSoma = 0,
 
     valorPis = 0.65,
     valorCofins = 3,
     valorContaSocial = 1.08,
     valorIrpj = 1.32,
     valorComissaoVendedor = 1,
-    valorFinanceiroProRata = 0
-
+    valorFinanceiroProRata = 0,
 
     pedido,
     tableName = "#table-detalhe-pedido",
@@ -88,7 +87,6 @@ function formatarGridPedido() {
         columnDefs: [
             { width: '20%' }
         ],
-
     });
 }
 
@@ -98,42 +96,49 @@ function adicionarItem() {
         detalhePedido = [];
     }
 
+    percentualIcms = 0;
+    percentualIcmsEntrada = 0;
+    percentualIcmsSaida = 0;
+    percentualIPI = 0;
+    percentualIPICompra = 0;
+    percentualIPIVenda = 0;
+
+    valorPrecoCompra = $('#input-precoCompra').val();
+    percentualIcmsEntrada = $('#input-percentualImsEntrada').val();
+    percentualIPICompra = $('#input-percentualIpiCompra').val();
+    valorDespesasCompra = $('#input-despesaCompra').val();
     quantidadeProduto = $('#input-quantidade').val();
     unidade = $('#input-unidade').val();
     descricaoProduto = $('#input-produto').val();
     marca = $('#input-marca').val();
     valorUnitarioMinimo = $('#input-valorUnitarioMinimo').val();
-    valorPrecoVendaUnitario = (parseFloat(valorCusto) / parseFloat(valorMkp)) + parseFloat(valorPrecoVendaCif);
-    valorUnitario = valorPrecoVendaUnitario;
-    valorTotal = parseFloat(valorUnitario) * parseFloat(quantidadeProduto);
     percentualIcmsSaida = $('#input-icmsSaida').val();
-    percentualIcms = parseFloat(percentualIcmsSaida);
     numeroDiasPrazoEntrega = $('#input-prazoEntregaDias').val();
-    valorPrecoCompra = $('#input-precoCompra').val();
-    percentualIcmsEntrada = $('#input-percentualImsEntrada').val();
-    percentualIPICompra = $('#input-percentualIpiCompra').val();
-    valorDespesasCompra = $('#input-despesaCompra').val();
     numeroDiasCondicoesPagamentoCompra = $('#input-pagtoCompraDias').val();
     numeroDiasCondicoesPagamentoVenda = $('#input-pagtoVendaDias').val();
     percentualIPIVenda = $('#input-ipiVendaFrete').val();
     valorComissaoBroker = $('#input-comissaoBroker').val();
 
-    valorCusto = (ValorPrecoCompra * (percentualIcmsEntrada / 100)) + (valorPrecoCompra * (percentualIPICompra / 100)) + valorDespesasCompra;
-    valorCustoTT = valorCusto * quantidadeProduto;
+    limparVariaveis();
+
+    valorCusto = parseFloat(valorPrecoCompra) - (parseFloat(valorPrecoCompra) * (parseFloat(percentualIcmsEntrada) / 100)) + (parseFloat(valorPrecoCompra) * (parseInt(percentualIPICompra) / 100)) + parseFloat(valorDespesasCompra);
+    valorCustoTT = parseFloat(valorCusto) * parseFloat(quantidadeProduto);
+    valorMkp = (-parseFloat(valorSoma) - 100) / 100;
 
     if (valorPrecoCompra == 0) {
         valorCustoTTFrete = 0;
         valorCoefFrete = 0;
         valorFreteDda = 0;
         valorPrecoVendaCif = 0;
-        valorFinanceiroProRata 0;
+        valorFinanceiroProRata = 0;
+        valorPrecoVendaCif = 0;
+
     } else {
-        valorCustoTTFrete = (valorCusto * quantidadeProduto) + valorCustoTT
+        valorCustoTTFrete = (parseFloat(valorCusto) * parseFloat(quantidadeProduto)) + parseFloat(valorCustoTT)
         valorFreteDda = 10;
-        valorPrecoVendaCif = (valorCusto * valorFreteDda) * valorCoefFrete;
+        valorPrecoVendaCif = (parseFloat(valorCusto) * parseFloat(valorFreteDda)) * parseFloat(valorCustoTT);
 
-
-        switch (parseInt(paserpercentualIcmsSaida)) {
+        switch (parseInt(percentualIcmsSaida)) {
 
             case 18:
                 valorCoefFrete = 1.43;
@@ -148,7 +153,22 @@ function adicionarItem() {
                 valorCoefFrete = 1.14;
                 break
         }
+
+        var proRata = (-parseFloat(numeroDiasCondicoesPagamentoCompra) - 7 - parseFloat(numeroDiasCondicoesPagamentoVenda)) * parseFloat(valorAdFinan);
+
+        if (proRata < 0) {
+            valorFinanceiroProRata = 0;
+        } else {
+            valorFinanceiroProRata = proRata;
+        }
+
     }
+
+    valorPrecoVendaUnitario = (parseFloat(valorCusto) / parseFloat(valorMkp)) + parseFloat(valorPrecoVendaCif);
+    valorUnitario = valorPrecoVendaUnitario;
+    valorTotal = parseFloat(valorUnitario) * parseFloat(quantidadeProduto);
+    percentualIcms = parseFloat(percentualIcmsSaida);
+
 
     detalhePedido.push({
         "QuantidadeProduto": quantidadeProduto,
@@ -170,8 +190,6 @@ function adicionarItem() {
         "PercentualIPIVenda": percentualIPIVenda,
         "ValorComissaoBroker": valorComissaoBroker,
         "ValorPrecoVendaUnitario": valorPrecoVendaUnitario,
-
-
     });
 
     var table = $(tableName).DataTable();
@@ -195,9 +213,7 @@ function adicionarItem() {
         percentualIcmsSaida,
         percentualIPIVenda,
         valorComissaoBroker,
-        valorPrecoVendaUnitario.toString()
-
-
+        valorPrecoVendaUnitario
     ]).draw('true');
 
     //Limpar campos
@@ -207,28 +223,90 @@ function adicionarItem() {
     $('.format-money').val(0);
     $('.format-integer').val(0);
     $('#input-produto').focus();
+
+    console.log(valorCusto);
+    console.log(valorCustoTT);
+    console.log(valorCustoTTFrete);
+    console.log(valorCustoFixo);
+    console.log(valorCoefFrete);
+    console.log(valorMkp);
+    console.log(valorPrecoVendaCif);
+    console.log(valorFreteDda);
+    console.log(valorAdFinan);
+    console.log(valorSoma);
+
 }
 
 function validarPedido() {
 
 }
 
+function limparVariaveis () {
+
+    if (valorPrecoCompra == "") {
+        valorPrecoCompra = 0;
+    }
+
+    if (percentualIcmsEntrada == "") {
+        percentualIcmsEntrada = 0;
+    }
+
+    if (percentualIPICompra == "") {
+        percentualIPICompra = 0;
+    }
+
+    if (valorDespesasCompra == "") {
+        valorDespesasCompra = 0;
+    }
+
+    if (quantidadeProduto == "") {
+        quantidadeProduto = 0;
+    }
+
+    if (valorUnitarioMinimo == "") {
+        valorUnitarioMinimo = 0;
+    }
+
+    if (percentualIcmsSaida == "") {
+        percentualIcmsSaida = 0;
+    }
+
+    if (numeroDiasPrazoEntrega == "") {
+        numeroDiasPrazoEntrega = 0;
+    }
+
+    if (numeroDiasCondicoesPagamentoCompra == "") {
+        numeroDiasCondicoesPagamentoCompra = 0;
+    }
+
+    if (numeroDiasCondicoesPagamentoVenda == "") {
+        numeroDiasCondicoesPagamentoVenda = 0;
+    }
+
+    if (percentualIPIVenda == "") {
+        percentualIPIVenda = 0;
+    }
+
+    if (valorComissaoBroker == "") {
+        valorComissaoBroker = 0;
+    }
+}
 
 function carregarItem() {
-    $('#input-quantidade').val(1000);
+    $('#input-quantidade').val(100);
     $('#input-unidade').val('PCA');
     $('#input-produto').val('Controle para smart TV');
     $('#input-marca').val('Samsung');
-    $('#input-valorUnitarioMinimo').val(3000);
-    $('#input-icmsSaida').val(12);
-    $('#input-prazoEntregaDias').val(30);
-    $('#input-precoCompra').val(2200);
+    $('#input-valorUnitarioMinimo').val(13012300);
+    $('#input-icmsSaida').val(18);
+    $('#input-prazoEntregaDias').val(10);
+    $('#input-precoCompra').val(9999999);
     $('#input-percentualImsEntrada').val(18);
-    $('#input-percentualIpiCompra').val(12);
-    $('#input-despesaCompra').val(200);
-    $('#input-pagtoCompraDias').val(30);
-    $('#input-pagtoVendaDias').val(60);
-    $('#input-percentualImsSaida').val(12);
-    $('#input-ipiVendaFrete').val(12);
+    $('#input-percentualIpiCompra').val(0);
+    $('#input-despesaCompra').val(0);
+    $('#input-pagtoCompraDias').val(18);
+    $('#input-pagtoVendaDias').val(28);
+    $('#input-percentualImsSaida').val(18);
+    $('#input-ipiVendaFrete').val(0);
     $('#input-comissaoBroker').val(50);
 }
