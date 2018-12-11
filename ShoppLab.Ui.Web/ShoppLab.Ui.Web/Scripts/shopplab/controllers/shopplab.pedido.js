@@ -37,7 +37,10 @@ var id = 0,
     valorContaSocial = 1.08,
     valorIrpj = 1.32,
     valorComissaoVendedor = 1,
-    valorFinanceiroProRata = 0,
+    valorAdicFinanceiroProRata = 0,
+    valorLucroBruto = 0,
+    valorCustoFixo = 10,
+    valorProtecaoLucro = 0,
 
     pedido,
     tableName = "#table-detalhe-pedido",
@@ -118,8 +121,13 @@ function adicionarItem() {
     numeroDiasCondicoesPagamentoVenda = $('#input-pagtoVendaDias').val();
     percentualIPIVenda = $('#input-ipiVendaFrete').val();
     valorComissaoBroker = $('#input-comissaoBroker').val();
+    percentualIcms = parseFloat(percentualIcmsSaida);
+    valorLucroBruto = valorComissaoBroker;
+
 
     limparVariaveis();
+
+
 
     valorCusto = parseFloat(valorPrecoCompra) - (parseFloat(valorPrecoCompra) * (parseFloat(percentualIcmsEntrada) / 100)) + (parseFloat(valorPrecoCompra) * (parseInt(percentualIPICompra) / 100)) + parseFloat(valorDespesasCompra);
     valorCustoTT = parseFloat(valorCusto) * parseFloat(quantidadeProduto);
@@ -129,14 +137,12 @@ function adicionarItem() {
         valorCustoTTFrete = 0;
         valorCoefFrete = 0;
         valorFreteDda = 0;
-        valorPrecoVendaCif = 0;
-        valorFinanceiroProRata = 0;
+        valorAdicFinanceiroProRata = 0;
         valorPrecoVendaCif = 0;
 
     } else {
         valorCustoTTFrete = (parseFloat(valorCusto) * parseFloat(quantidadeProduto)) + parseFloat(valorCustoTT)
-        valorFreteDda = 10;
-        valorPrecoVendaCif = (parseFloat(valorCusto) * parseFloat(valorFreteDda)) * parseFloat(valorCustoTT);
+        valorFreteDda = 0;
 
         switch (parseInt(percentualIcmsSaida)) {
 
@@ -154,20 +160,23 @@ function adicionarItem() {
                 break
         }
 
-        var proRata = (-parseFloat(numeroDiasCondicoesPagamentoCompra) - 7 - parseFloat(numeroDiasCondicoesPagamentoVenda)) * parseFloat(valorAdFinan);
+        valorPrecoVendaCif = (parseFloat(valorCusto) * parseFloat(valorFreteDda)) * parseFloat(valorCoefFrete);
+        var proRata = (-(parseFloat(numeroDiasCondicoesPagamentoCompra) - 7 - parseFloat(numeroDiasCondicoesPagamentoVenda))) * parseFloat(valorAdFinan);
 
         if (proRata < 0) {
-            valorFinanceiroProRata = 0;
+            valorAdicFinanceiroProRata = 0;
         } else {
-            valorFinanceiroProRata = proRata;
+            valorAdicFinanceiroProRata = proRata;
         }
-
     }
+    valorsoma = parseInt(percentualIcmsSaida) + parseInt(percentualIPIVenda) + parseFloat(valorPis) + parseFloat(valorCofins)
+        + parseFloat(valorContaSocial) + parseFloat(valorIrpj) + parseFloat(valorComissaoVendedor)
+        + parseFloat(valorAdicFinanceiroProRata) + parseFloat(valorComissaoBroker) + parseFloat(valorLucroBruto)
+        + parseFloat(valorProtecaoLucro) + parseFloat(valorCustoFixo);
 
     valorPrecoVendaUnitario = (parseFloat(valorCusto) / parseFloat(valorMkp)) + parseFloat(valorPrecoVendaCif);
     valorUnitario = valorPrecoVendaUnitario;
     valorTotal = parseFloat(valorUnitario) * parseFloat(quantidadeProduto);
-    percentualIcms = parseFloat(percentualIcmsSaida);
 
 
     detalhePedido.push({
@@ -241,7 +250,7 @@ function validarPedido() {
 
 }
 
-function limparVariaveis () {
+function limparVariaveis() {
 
     if (valorPrecoCompra == "") {
         valorPrecoCompra = 0;
@@ -304,7 +313,7 @@ function carregarItem() {
     $('#input-percentualImsEntrada').val(18);
     $('#input-percentualIpiCompra').val(0);
     $('#input-despesaCompra').val(0);
-    $('#input-pagtoCompraDias').val(18);
+    $('#input-pagtoCompraDias').val(28);
     $('#input-pagtoVendaDias').val(28);
     $('#input-percentualImsSaida').val(18);
     $('#input-ipiVendaFrete').val(0);
