@@ -1,8 +1,13 @@
 ﻿using ShoppLab.Domain.Entities;
+using System;
+using System.Collections.Generic;
 
 namespace ShoppLab.Domain.Interfaces
 {
     public interface IPedidoService : IServiceBase<Pedido>
     {
+        void Salvar(Pedido pedido);
+
+        IEnumerable<Pedido> ObterDadosPedidos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente); 
     }
 }

@@ -29,12 +29,12 @@ namespace ShoppLab.Repository.Test
                     DataRegistro = DateTime.Now
                 };
 
-                cliente.Emails.Add(new Email { Descricao = "albertEinstein@usa.gov.com" });
-                cliente.Emails.Add(new Email { Descricao = "albertEinstein@usa.com" });
+                //cliente.Emails.Add(new Email { Descricao = "albertEinstein@usa.gov.com" });
+                //cliente.Emails.Add(new Email { Descricao = "albertEinstein@usa.com" });
 
-                cliente.Contatos.Add(new Contato { Ddd = 11, Numero = "96444-0908" });
-                cliente.Contatos.Add(new Contato { Ddd = 11, Numero = "96444-0909" });
-                cliente.Contatos.Add(new Contato { Ddd = 11, Numero = "96444-0910" });
+                //cliente.Contatos.Add(new Contato { Ddd = 11, Numero = "96444-0908" });
+                //cliente.Contatos.Add(new Contato { Ddd = 11, Numero = "96444-0909" });
+                //cliente.Contatos.Add(new Contato { Ddd = 11, Numero = "96444-0910" });
 
                 clienteRepository.Add(cliente);
                 clienteRepository.SaveChanges();

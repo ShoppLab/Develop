@@ -4,8 +4,16 @@ using System.Collections.Generic;
 
 namespace ShoppLab.Domain.Entities
 {
+
+
     public partial class Pedido
     {
+
+        public Pedido()
+        {
+            DetalhePedido = new List<DetalhePedido>();
+        }
+
         public int Id { get; set; }
 
         public int IdCliente { get; set; }
@@ -18,7 +26,7 @@ namespace ShoppLab.Domain.Entities
 
         public string Contato { get; set; }
 
-        public int DiasValidadePreco { get; set; }
+        public string DiasValidadePreco { get; set; }
 
         public virtual Cliente Cliente { get; set; }
 

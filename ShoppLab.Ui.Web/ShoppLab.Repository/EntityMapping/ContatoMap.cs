@@ -25,10 +25,6 @@ namespace ShoppLab.Repository.EntityMapping
             Property(t => t.Ddd).HasColumnName("NrDdd");
             Property(t => t.Numero).HasColumnName("NrContato");
 
-            // Relationships
-            this.HasRequired(t => t.Cliente)
-            .WithMany(t => t.Contatos)
-            .HasForeignKey(d => d.IdCliente);
 
         }
     }

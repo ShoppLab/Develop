@@ -23,6 +23,9 @@ namespace ShoppLab.Repository.EntityMapping
             Property(t => t.Id).HasColumnName("IdCliente");
             Property(t => t.Nome).HasColumnName("NmCliente");
             Property(t => t.DataRegistro).HasColumnName("DtRegistro");
+            Property(t => t.Telefone).HasColumnName("NrContato");
+            Property(t => t.Email).HasColumnName("DsEmail");
+
         }
     }
 }

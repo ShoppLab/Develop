@@ -1,1 +1,124 @@
 ﻿
+<div class="content-heading">
+    <div>
+        Consulta
+        <small>Consulta de Pedidos - Pesquisa os pedidos existentes</small>
+    </div>
+</div>
+
+<div class="card card-default">
+    <div class="card-header">
+        <div class="card-body">
+
+            <div class="form-row">
+
+                <div class="col-lg-2 mb-3">
+                    @Html.Label("Data Inicial")
+                    <div class="input-group mb-3">
+                        <div class="input-group date" id="datetimepicker1">
+                            <input type="text" id="DataInicial" class="form-control format-date" />
+                            <span class="input-group-append input-group-addon">
+                                <span class="input-group-text fas fa-calendar-alt"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    @Html.Label("Data Final")
+                    <div class="input-group mb-3">
+                        <div class="input-group date" id="datetimepicker1">
+                            <input type="text" id="DataFinal" class="form-control format-date" />
+                            <span class="input-group-append input-group-addon">
+                                <span class="input-group-text fas fa-calendar-alt"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8 mb-3">
+                    <label>Cliente</label>
+                    <div class="input-group mb-3">
+                        <input type="text" id="NomeCliente" class="form-control" />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" onclick="ObterDadosPedidos()">Consutar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card card-default">
+    <div class="card-header">Produtos</div>
+
+    <div class="card-body">
+
+        <div class="col-lg-12 mb-3">
+
+            <table id="table-pedido" class="table table-striped my-4 w-100" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Pedido</th>
+                        <th>Data</th>
+                        <th>Cliente</th>
+                        <th>Preço Venda</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+            </table>
+
+        </div>
+
+    </div>
+</div>
+
+
+@section Styles {
+
+    <link rel="stylesheet" href="~/vendor/datatables.net-bs4/css/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="~/vendor/datatables.net-keytable-bs/css/keyTable.bootstrap.css">
+    <link rel="stylesheet" href="~/vendor/datatables.net-responsive-bs/css/responsive.bootstrap.css">
+
+}
+
+
+@section Scripts {
+
+    <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.maskmoney.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.mask.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/js/shopplab.util.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/controllers/shopplab.pedido.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/js/jquery.datatables.utils.js")"></script>
+
+
+    <script src="@Scripts.Url("~/Scripts/jquery.validate.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/jquery.serializeObject.js")"></script>
+
+    <script src="@Scripts.Url("~/Vendor/datatables.net/js/jquery.dataTables.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-bs4/js/dataTables.bootstrap4.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/dataTables.buttons.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons-bs/js/buttons.bootstrap.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.colVis.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.flash.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.html5.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.print.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-keytable/js/dataTables.keyTable.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-responsive/js/dataTables.responsive.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-responsive-bs/js/responsive.bootstrap.js")"></script>
+
+    <script type="text/javascript">
+
+        var urlCadastrar = '@Url.Action("Atualizar", "Pedido")';
+
+        $(function () {
+            formatarCampos();
+            setPropertiesInitialDataTableConsulta();
+        });
+
+    </script>
+}

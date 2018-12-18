@@ -1,5 +1,5 @@
 ﻿
-@using ShoppLab.Ui.Web.ViewModel;
+@using ShoppLab.Mappers;
 
 @{
     ViewBag.Title = "Pedido - cadastrar";
@@ -25,7 +25,6 @@
                 <div class="col-lg-5 mb-3">
                     @Html.Label("Nome")
                     @Html.TextBoxFor(x => x.Nome, new { @class = "form-control" })
-
                 </div>
 
                 <div class="col-lg-3 mb-3">
@@ -48,7 +47,6 @@
                                 <span class="input-group-text fas fa-calendar-alt"></span>
                             </span>
                         </di>
-
                     </div>
                 </div>
 
@@ -59,8 +57,39 @@
 
             </div>
         </div>
+
     </div>
 
+    <div class="card card-default">
+        <div class="card-header">Dados do Pedido</div>
+        <div class="card-body">
+
+            <div class="form-row">
+
+                <div class="col-lg-2 mb-3">
+                    @Html.Label("Condições de Pagto")
+                    @Html.TextBoxFor(x => x.CondicoesPagto, new { @class = "form-control" })
+
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    @Html.Label("Validade de Preços")
+                    @Html.TextBoxFor(x => x.DiasValidadePreco, new { @class = "form-control" })
+                </div>
+
+                <div class="col-lg-8 mb-3">
+                    @Html.Label("Condições de Entrega")
+                    @Html.TextBoxFor(x => x.CondicoesEntrega, new { @class = "form-control" })
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<form id="form-itens-pedido" method="post">
     <div class="card card-default">
         <div class="card-header">Itens pedido</div>
         <div class="card-body">
@@ -78,7 +107,7 @@
 
                 <div class="col-lg-1 mb-3">
                     <label>Unidade</label>
-                    <input id="input-unidade" class="form-control"  type="text" />
+                    <input id="input-unidade" class="form-control" type="text" />
                 </div>
 
                 <div class="col-lg-2 mb-3">
@@ -200,8 +229,8 @@
                 </div>
             </div>
         </div>
-
     </div>
+
 </form>
 
 <div class="card card-default">
@@ -209,47 +238,72 @@
 
     <div class="card-body">
 
-
         <div class="col-lg-12 mb-3">
-            <table table class="stripe row-border order-column" id="table-detalhe-pedido" style="width:100%">
+
+            <table id="table-detalhe-pedido" class="table table-striped my-4 w-100" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Qtde</th>
-                        <th>Un</th>
+                        <th></th>
+                        <th>Quantidade</th>
+                        <th>Unidade</th>
                         <th>Produto</th>
                         <th>Marca</th>
-                        <th>Valor unitário min</th>
-                        <th>Valor unitário</th>
-                        <th>Valor total</th>
-                        <th>Icms</th>
-                        <th>Prazo dias entrega</th>
-                        <th>Preço Compra</th>
-                        <th>Icms Entrada </th>
-                        <th>Ipi compra</th>
-                        <th>Despesas compra</th>
-                        <th>Condições pagto compra</th>
-                        <th>Condições pagto venda</th>
-                        <th>Icms saída</th>
-                        <th>Ipi venda/frete</th>
-                        <th>Comissão broker</th>
-                        <th>Preço venda unitário</th>
+                        <th>Valor Unitário</th>
+                        <th>Unitário</th>
+                        <th>Total</th>
+                        <th>Preço Venda</th>
                     </tr>
                 </thead>
+                <tfoot>
+                    <tr>
+                        <th colspan="8" style="text-align:right">Total:</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
             </table>
-
         </div>
 
     </div>
 </div>
 
+<div class="card card-default">
+    <div class="card-header">
+        <div class="card-body">
+
+            <div class="form-row">
+
+                <div class="col-lg-2 mb-2">
+                    <button type="button" class="btn btn-primary mb-2" onclick="salvar()">Salvar</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @section Styles {
+
     <link rel="stylesheet" href="~/vendor/datatables.net-bs4/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="~/vendor/datatables.net-keytable-bs/css/keyTable.bootstrap.css">
     <link rel="stylesheet" href="~/vendor/datatables.net-responsive-bs/css/responsive.bootstrap.css">
-    @*<link rel="stylesheet" href="~/Content/css/animate.css">*@
 
-    <link href="@Styles.Url("~/Vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.css")" rel="stylesheet" />
+
+    <style>
+        td.details-control {
+            background: url('../Images/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+
+        tr.details td.details-control {
+            background: url('../Images/details_close.png') no-repeat center center;
+        }
+
+        th {
+            white-space: nowrap;
+        }
+    </style>
 
 }
 
@@ -257,16 +311,16 @@
 
     <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.maskmoney.min.js")"></script>
     <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.mask.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/external/accounting.min.js")"></script>
+
+    <script src="@Scripts.Url("~/Scripts/shopplab/js/shopplab.util.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/controllers/shopplab.pedido.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/js/jquery.datatables.utils.js")"></script>
+
 
     <script src="@Scripts.Url("~/Scripts/jquery.validate.min.js")"></script>
     <script src="@Scripts.Url("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
-    <script src="@Scripts.Url("~/Scripts/shopplab/shopplab.util.js")"></script>
-    <script src="@Scripts.Url("~/Scripts/shopplab/controllers/shopplab.pedido.js")"></script>
-    <script src="@Scripts.Url("~/Scripts/shopplab/jquery.datatables.min.js")"></script>
     <script src="@Scripts.Url("~/Scripts/jquery.serializeObject.js")"></script>
-
-
-
 
     <script src="@Scripts.Url("~/Vendor/datatables.net/js/jquery.dataTables.js")"></script>
     <script src="@Scripts.Url("~/Vendor/datatables.net-bs4/js/dataTables.bootstrap4.js")"></script>
@@ -279,21 +333,17 @@
     <script src="@Scripts.Url("~/Vendor/datatables.net-keytable/js/dataTables.keyTable.js")"></script>
     <script src="@Scripts.Url("~/Vendor/datatables.net-responsive/js/dataTables.responsive.js")"></script>
     <script src="@Scripts.Url("~/Vendor/datatables.net-responsive-bs/js/responsive.bootstrap.js")"></script>
-    <script src="@Scripts.Url("~/Vendor/jszip/dist/jszip.js")"></script>
-    <script src="@Scripts.Url("~/Vendor/pdfmake/build/pdfmake.js")"></script>
-    <script src="@Scripts.Url("~/Vendor/pdfmake/build/vfs_fonts.js")"></script>
-    <script src="@Scripts.Url("~/Vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.js")"></script>
-    <script src="@Scripts.Url("~/Vendor/bootstrap-notify/dist/js/bootstrap-notify.min.js")"></script>
-
 
     <script type="text/javascript">
 
         $(function () {
-            formatarGridPedido();
-            carregarItem();
+            //formatarGridPedido();
+            setPropertiesInitialDataTableCadastro();
             formatarCampos();
+            carregarItem();
 
         });
+
 
     </script>
 }

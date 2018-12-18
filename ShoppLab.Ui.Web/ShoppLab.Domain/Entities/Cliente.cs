@@ -7,8 +7,6 @@ namespace ShoppLab.Domain.Entities
     {
         public Cliente()
         {
-            Emails = new List<Email>();
-            Contatos = new List<Contato>();
             Pedidos = new List<Pedido>();
         }
 
@@ -18,9 +16,9 @@ namespace ShoppLab.Domain.Entities
 
         public DateTime DataRegistro { get; set; }
 
-        public virtual ICollection<Email> Emails { get; set; }
+        public string Telefone { get; set; }
 
-        public virtual ICollection<Contato> Contatos { get; set; }
+        public string Email { get; set; }
 
         public virtual ICollection<Pedido> Pedidos { get; set; }
 

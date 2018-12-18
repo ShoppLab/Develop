@@ -30,7 +30,7 @@ namespace ShoppLab.Repository.Test
                     CondicoesPagto = "30/60/90/120",
                     CondicoesEntrega = "30",
                     Contato = "LeBron James",
-                    DiasValidadePreco = 28,
+                    DiasValidadePreco = "28",
                     Cliente = new Cliente
                     {
                         Nome = "Albert Einstein",

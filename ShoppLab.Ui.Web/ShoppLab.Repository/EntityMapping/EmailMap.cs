@@ -21,10 +21,6 @@ namespace ShoppLab.Repository.EntityMapping
             Property(t => t.IdCliente).HasColumnName("IdCliente");
             Property(t => t.Descricao).HasColumnName("DsEmail");
             
-            // Relationships
-            this.HasRequired(t => t.Cliente)
-            .WithMany(t => t.Emails)
-            .HasForeignKey(d => d.IdCliente);
 
         }
     }

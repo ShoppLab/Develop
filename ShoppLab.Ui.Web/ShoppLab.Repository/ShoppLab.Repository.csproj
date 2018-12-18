@@ -86,6 +86,7 @@
     <Compile Include="EntityMapping\ContatoMap.cs" />
     <Compile Include="EntityMapping\EmailMap.cs" />
     <Compile Include="EntityMapping\ClienteMap.cs" />
+    <Compile Include="EntityMapping\UsuarioMap.cs" />
     <Compile Include="Interfaces\IContextManager.cs" />
     <Compile Include="Interfaces\IDbContext.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Repository\ContatoRepository.cs" />
     <Compile Include="Repository\ClienteRepository.cs" />
     <Compile Include="Repository\RepositoryBase.cs" />
+    <Compile Include="Repository\UsuarioRepository.cs" />
     <Compile Include="UoW\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
