@@ -8,6 +8,8 @@ namespace ShoppLab.Domain.Interfaces
 
         IEnumerable<TEntity> GetAll();
 
+        TEntity GetById(int id);
+
         void Update(TEntity obj);
 
         void Remove(TEntity obj);

@@ -10,6 +10,8 @@ namespace ShoppLab.Domain.Interfaces
 
         IEnumerable<TEntity> GetAll();
 
+        TEntity GetById(int id);
+
         void Update(TEntity obj);
 
         void Remove(TEntity obj);
@@ -17,6 +19,7 @@ namespace ShoppLab.Domain.Interfaces
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
 
         void SaveChanges();
+
 
     }
 }

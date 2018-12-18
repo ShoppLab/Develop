@@ -1,0 +1,152 @@
+
+CREATE TABLE Cliente
+( 
+	IdCliente            integer IDENTITY ( 1,1 ) ,
+	NmCliente            varchar(60)  NOT NULL ,
+	DtRegistro           datetime  NOT NULL ,
+	NrContato            varchar(20)  NOT NULL ,
+	DsEmail              varchar(60)  NOT NULL 
+)
+go
+
+
+
+ALTER TABLE Cliente
+	ADD  PRIMARY KEY  CLUSTERED (IdCliente ASC)
+go
+
+
+
+CREATE TABLE Contato
+( 
+	IdContato            integer IDENTITY ( 1,1 ) ,
+	IdCliente            integer  NOT NULL ,
+	NrDdd                integer  NULL ,
+	NrContato            varchar(10)  NOT NULL 
+)
+go
+
+
+
+ALTER TABLE Contato
+	ADD  PRIMARY KEY  CLUSTERED (IdContato ASC)
+go
+
+
+
+CREATE TABLE DetalhePedido
+( 
+	IdDetalhePedido      integer IDENTITY ( 1,1 ) ,
+	IdPedido             integer  NOT NULL ,
+	QtProduto            decimal(18,2)  NULL ,
+	VlUnitario           decimal(18,2)  NULL ,
+	VlUnitarioMinimo     decimal(18,2)  NULL ,
+	VlTotal              decimal(18,2)  NULL ,
+	NrDiasPrazoEntrega   integer  NULL ,
+	VlPrecoCompra        decimal(18,2)  NULL ,
+	TxIcms               decimal(5,2)  NULL ,
+	TxIcmsEntrada        decimal(5,2)  NULL ,
+	TxIPICompra          decimal(5,2)  NULL ,
+	VlDespesasCompra     decimal(18,2)  NULL ,
+	NrDiasCondicoesPgtoCompra integer  NULL ,
+	NrDiasCondicoesPagtoVenda integer  NULL ,
+	TxIcmsSaida          decimal(5,2)  NULL ,
+	TxIPIVenda           decimal(5,2)  NULL ,
+	VlComissaoBroker     decimal(18,2)  NULL ,
+	VlPrecoVendaUnitario decimal(18,2)  NULL ,
+	DsProduto            varchar(100)  NOT NULL ,
+	DsMarca              varchar(30)  NULL ,
+	DsUnidade            varchar(30)  NULL 
+)
+go
+
+
+
+ALTER TABLE DetalhePedido
+	ADD  PRIMARY KEY  CLUSTERED (IdDetalhePedido ASC)
+go
+
+
+
+CREATE TABLE Email
+( 
+	IdEmail              integer IDENTITY ( 1,1 ) ,
+	IdCliente            integer  NOT NULL ,
+	DsEmail              varchar(60)  NOT NULL 
+)
+go
+
+
+
+ALTER TABLE Email
+	ADD  PRIMARY KEY  CLUSTERED (IdEmail ASC)
+go
+
+
+
+CREATE TABLE Pedido
+( 
+	IdPedido             integer IDENTITY ( 1,1 ) ,
+	DtRegistro           datetime  NULL ,
+	DsCondicoesPagto     varchar(60)  NULL ,
+	NrDiasValidadePreco  varchar(60)  NULL ,
+	DsCondicoesEntrega   varchar(60)  NULL ,
+	DsContato            varchar(60)  NULL ,
+	IdCliente            integer  NULL 
+)
+go
+
+
+
+ALTER TABLE Pedido
+	ADD  PRIMARY KEY  CLUSTERED (IdPedido ASC)
+go
+
+
+
+CREATE TABLE Usuario
+( 
+	IdUsuario            integer IDENTITY ( 1,1 ) ,
+	NmUsuario            varchar(20)  NOT NULL ,
+	DsSenha              varchar(20)  NOT NULL 
+)
+go
+
+
+
+ALTER TABLE Usuario
+	ADD  PRIMARY KEY  CLUSTERED (IdUsuario ASC)
+go
+
+
+
+
+ALTER TABLE Contato
+	ADD  FOREIGN KEY (IdCliente) REFERENCES Cliente(IdCliente)
+		ON DELETE CASCADE
+go
+
+
+
+
+ALTER TABLE DetalhePedido
+	ADD  FOREIGN KEY (IdPedido) REFERENCES Pedido(IdPedido)
+		ON DELETE CASCADE
+go
+
+
+
+
+ALTER TABLE Email
+	ADD  FOREIGN KEY (IdCliente) REFERENCES Cliente(IdCliente)
+		ON DELETE CASCADE
+go
+
+
+
+
+ALTER TABLE Pedido
+	ADD  FOREIGN KEY (IdCliente) REFERENCES Cliente(IdCliente)
+go
+
+

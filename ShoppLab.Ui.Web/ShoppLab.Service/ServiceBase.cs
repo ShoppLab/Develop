@@ -23,6 +23,11 @@ namespace ShoppLab.Service
             return _repository.GetAll();
         }
 
+        public TEntity GetById(int id)
+        {
+            return _repository.GetById(id);
+        }
+
         public void Remove(TEntity obj)
         {
             _repository.Remove(obj);
@@ -37,5 +42,6 @@ namespace ShoppLab.Service
         {
             _repository.Dispose();
         }
+
     }
 }

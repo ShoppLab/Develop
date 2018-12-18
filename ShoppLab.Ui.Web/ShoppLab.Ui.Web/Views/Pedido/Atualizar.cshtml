@@ -1,0 +1,468 @@
+﻿
+@using ShoppLab.Mappers;
+
+@{
+    ViewBag.Title = "Pedido - cadastrar";
+}
+
+@model PedidoViewModel
+
+<div class="content-heading">
+    <div>
+        Pedido
+        <small>Pedido - cadastrar: Inclusão ou alteração de pedidos de venda</small>
+    </div>
+</div>
+
+<form id="form-pedido" method="post">
+
+    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.IdCliente)
+
+
+    <div class="card card-default">
+        <div class="card-header">Dados do cliente</div>
+        <div class="card-body">
+
+            <div class="form-row">
+
+                <div class="col-lg-5 mb-3">
+                    @Html.Label("Nome")
+                    @Html.TextBoxFor(x => x.Nome, new { @class = "form-control", @disabled = "disabled" })
+                </div>
+
+                <div class="col-lg-3 mb-3">
+                    @Html.Label("E-mail")
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">@@</span>
+                        </div>
+                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @disabled = "disabled" })
+                    </div>
+                    @Html.ValidationMessageFor(x => x.Email)
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    @Html.Label("Data")
+                    <div class="input-group mb-3">
+                        <di class="input-group date" id="datetimepicker1">
+                            @Html.TextBoxFor(x => x.DataRegistro, new { @class = "form-control format-date", @disabled = "disabled" })
+                            <span class="input-group-append input-group-addon">
+                                <span class="input-group-text fas fa-calendar-alt"></span>
+                            </span>
+                        </di>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    @Html.Label("Telefone")
+                    @Html.TextBoxFor(x => x.Telefone, new { @class = "form-control format-phone", @disabled = "disabled" })
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card card-default">
+        <div class="card-header">Dados do Pedido</div>
+        <div class="card-body">
+
+            <div class="form-row">
+
+                <div class="col-lg-2 mb-3">
+                    @Html.Label("Condições de Pagto")
+                    @Html.TextBoxFor(x => x.CondicoesPagto, new { @class = "form-control" })
+
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    @Html.Label("Validade de Preços")
+                    @Html.TextBoxFor(x => x.DiasValidadePreco, new { @class = "form-control" })
+                </div>
+
+                <div class="col-lg-8 mb-3">
+                    @Html.Label("Condições de Entrega")
+                    @Html.TextBoxFor(x => x.CondicoesEntrega, new { @class = "form-control" })
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-default">
+        <div class="card-header">Itens pedido</div>
+        <div class="card-body">
+            <div class="form-row">
+
+                <div class="col-lg-8 mb-3">
+                    <label>Produto</label>
+                    <input id="input-produto" class="form-control" type="text" />
+                </div>
+
+                <div class="col-lg-1 mb-3">
+                    <label>Quantidade</label>
+                    <input id="input-quantidade" class="form-control format-money" type="text" />
+                </div>
+
+                <div class="col-lg-1 mb-3">
+                    <label>Unidade</label>
+                    <input id="input-unidade" class="form-control" type="text" />
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>Marca</label>
+                    <input id="input-marca" class="form-control" type="text" />
+                </div>
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="col-lg-2 mb-3">
+                    <label>Valor unitário mínimo</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input id="input-valorUnitarioMinimo" class="form-control format-money" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>Preço compra</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input id="input-precoCompra" class="form-control format-money" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>Despesa compra</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input id="input-despesaCompra" class="form-control format-money" type="text" aria-label="" />
+                    </div>
+                </div>
+
+
+                <div class="col-lg-2 mb-3">
+                    <label>Comissão Broker</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input id="input-comissaoBroker" class="form-control format-money" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>ICMS saída</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <input id="input-icmsSaida" class="form-control format-integer" maxlength="2" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>IPI venda ou frete</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <input id="input-ipiVendaFrete" class="form-control format-integer" maxlength="2" type="text" aria-label="" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="col-lg-2 mb-3">
+                    <label>ICMS entrada</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <input id="input-percentualImsEntrada" class="form-control format-integer" maxlength="2" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>IPI compra</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <input id="input-percentualIpiCompra" class="form-control format-integer" maxlength="2" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>Pagto compra em dias</label>
+                    <div class="input-group mb-3">
+                        <input id="input-pagtoCompraDias" class="form-control format-integer" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-2 mb-3">
+                    <label>Pagto venda em dias</label>
+                    <div class="input-group mb-3">
+                        <input id="input-pagtoVendaDias" class="form-control format-integer" type="text" aria-label="" />
+                    </div>
+                </div>
+
+                <div class="col-lg-4 mb-3">
+                    <label>Prazo de entrega em dias</label>
+                    <div class="input-group mb-3">
+                        <input id="input-prazoEntregaDias" class="form-control format-integer" type="text" aria-label="" />
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" onclick="adicionarItem()">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<div class="card card-default">
+    <div class="card-header">Produtos</div>
+
+    <div class="card-body">
+
+
+        <div class="col-lg-12 mb-3">
+
+            <table id="table-detalhe-pedido" class="table table-striped my-4 w-100" style="width:100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Quantidade</th>
+                        <th>Unidade</th>
+                        <th>Produto</th>
+                        <th>Marca</th>
+                        <th>Valor Unitário</th>
+                        <th>Unitário</th>
+                        <th>Total</th>
+                        <th>Preço Venda</th>
+                    </tr>
+                </thead>
+
+            </table>
+
+        </div>
+
+    </div>
+</div>
+
+<div class="card card-default">
+    <div class="card-header">
+        <div class="card-body">
+
+            <div class="form-row">
+
+                <div class="col-lg-2 mb-2">
+                    <button type="button" class="btn btn-primary mb-2" onclick="salvar()">Salvar</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Styles {
+
+    <link rel="stylesheet" href="~/vendor/datatables.net-bs4/css/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="~/vendor/datatables.net-keytable-bs/css/keyTable.bootstrap.css">
+    <link rel="stylesheet" href="~/vendor/datatables.net-responsive-bs/css/responsive.bootstrap.css">
+
+
+    <style>
+        td.details-control {
+            background: url('../Images/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+
+        tr.details td.details-control {
+            background: url('../Images/details_close.png') no-repeat center center;
+        }
+    </style>
+
+}
+
+@section Scripts {
+
+    <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.maskmoney.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.mask.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/js/shopplab.util.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/controllers/shopplab.pedido.js")"></script>
+
+    <script src="@Scripts.Url("~/Scripts/jquery.validate.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/jquery.serializeObject.js")"></script>
+
+    <script src="@Scripts.Url("~/Vendor/datatables.net/js/jquery.dataTables.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-bs4/js/dataTables.bootstrap4.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/dataTables.buttons.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons-bs/js/buttons.bootstrap.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.colVis.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.flash.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.html5.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-buttons/js/buttons.print.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-keytable/js/dataTables.keyTable.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-responsive/js/dataTables.responsive.js")"></script>
+    <script src="@Scripts.Url("~/Vendor/datatables.net-responsive-bs/js/responsive.bootstrap.js")"></script>
+
+    <script type="text/javascript">
+
+       
+
+        $(function () {
+            //formatarGridPedido();
+            //carregarItem();
+            formatarCampos();
+
+        });
+
+        function format(d) {
+            return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+                '<tr>' +
+                '<td>Preço Compra</td>' +
+                '<td>' + d.ValorPrecoCompra + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td>Preço Venda Unitário</td>' +
+                '<td>' + d.ValorPrecoVendaUnitario + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td>Despesas Compra</td>' +
+                '<td>' + d.ValorDespesasCompra + '</td>' +
+                '</tr>' +
+                '<td>Comissão Broker</td>' +
+                '<td>' + d.ValorComissaoBroker + '</td>' +
+                '</tr>' +
+                '<td>% Percentual Icms</td>' +
+                '<td>' + d.PercentualIcms + '</td>' +
+                '</tr>' +
+                '<td>% Icms Entrada</td>' +
+                '<td>' + d.PercentualIcmsEntrada + '</td>' +
+                '</tr>' +
+                '<td>% Icms Saída</td>' +
+                '<td>' + d.PercentualIcmsSaida + '</td>' +
+                '</tr>' +
+                '<td>% Ipi Compra</td>' +
+                '<td>' + d.PercentualIPICompra + '</td>' +
+                '</tr>' +
+                '<td>% Ipi Venda</td>' +
+                '<td>' + d.PercentualIPIVenda + '</td>' +
+                '</tr>' +
+                '<td>Dias Prazo Entrega</td>' +
+                '<td>' + d.NumeroDiasPrazoEntrega + '</td>' +
+                '</tr>' +
+                '<td>Dias Condições Pagto Compra</td>' +
+                '<td>' + d.NumeroDiasCondicoesPagamentoCompra + '</td>' +
+                '</tr>' +
+                '<td>Dias Condições Pagto Venda</td>' +
+                '<td>' + d.NumeroDiasCondicoesPagamentoVenda + '</td>' +
+                '</tr>' +
+                '</table>';
+        }
+
+
+        $(document).ready(function () {
+
+            detalhePedido = [
+                {
+                    "id": "1",
+                    "QuantidadeProduto": "10",
+                    "Unidade": "pca",
+                    "DescricaoProduto": "Cadeira de madeira da amazonia",
+                    "Marca": "Moderna",
+                    "ValorUnitario": "1200,00",
+                    "ValorUnitarioMinimo": "1200,00",
+                    "ValorTotal": "12000,00",
+                    "ValorPrecoVendaUnitario": "12000,00",
+                    "ValorPrecoCompra": "1200,00",
+                    "ValorPrecoVendaUnitario": "1200,00",
+                    "ValorDespesasCompra": "56,70",
+                    "ValorComissaoBroker": "0,50",
+
+                    "PercentualIcms": "10",
+                    "PercentualIcmsEntrada": "18",
+                    "PercentualIcmsSaida": "21",
+                    "PercentualIPICompra": "12",
+                    "PercentualIPIVenda" : "18",
+                    "NumeroDiasPrazoEntrega": "28",
+                    "NumeroDiasCondicoesPagamentoCompra": "10",
+                    "NumeroDiasCondicoesPagamentoVenda": "28",
+                }]
+
+            table = $('#table-detalhe-pedido').DataTable({
+                data: detalhePedido,
+                paging: true,
+                searching: true,
+                info: false,
+                columns: [
+                    {
+                        "className": 'details-control',
+                        "orderable": false,
+                        "data": null,
+                        "defaultContent": ''
+                    },
+                    { "data": "QuantidadeProduto" },
+                    { "data": "Unidade" },
+                    { "data": "DescricaoProduto" },
+                    { "data": "Marca" },
+                    { "data": "ValorUnitarioMinimo" },
+                    { "data": "ValorUnitario" },
+                    { "data": "ValorTotal" },
+                    { "data": "ValorPrecoVendaUnitario" }
+
+                ]
+            });
+
+
+            $('#table-detalhe-pedido').on('click', 'a.editor_remove', function (e) {
+                e.preventDefault();
+
+                editor.remove($(this).closest('tr'), {
+                    title: 'Delete record',
+                    message: 'Are you sure you wish to remove this record?',
+                    buttons: 'Delete'
+                });
+            });
+
+
+            // Add event listener for opening and closing details
+            $('#table-detalhe-pedido tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+
+                if (row.child.isShown()) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else {
+                    // Open this row
+                    row.child(format(row.data())).show();
+                    tr.addClass('shown');
+                }
+            });
+        });
+
+    </script>
+}
+
+

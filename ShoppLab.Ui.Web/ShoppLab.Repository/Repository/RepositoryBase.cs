@@ -49,6 +49,11 @@ namespace ShoppLab.Repository.Repository
             return DbSet.ToList();
         }
 
+        public TEntity GetById(int id)
+        {
+            return DbSet.Find(id);
+        }
+
         public void Remove(TEntity obj)
         {
             throw new NotImplementedException();

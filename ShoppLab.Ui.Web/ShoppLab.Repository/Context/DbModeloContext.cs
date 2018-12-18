@@ -19,7 +19,8 @@ namespace ShoppLab.Repository.Context
         public DbModeloContext()
             : base(GetConnection)
         {
-
+            //Configuration.AutoDetectChangesEnabled = false;
+            //Configuration.ProxyCreationEnabled = false;
         }
 
         public DbSet<Cliente> Clientes { get; set; }
@@ -27,6 +28,8 @@ namespace ShoppLab.Repository.Context
         public DbSet<Contato> Contatos { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
         public DbSet<DetalhePedido> DetalhePedidos { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
+
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -36,6 +39,8 @@ namespace ShoppLab.Repository.Context
             modelBuilder.Configurations.Add(new ContatoMap());
             modelBuilder.Configurations.Add(new PedidoMap());
             modelBuilder.Configurations.Add(new DetalhePedidoMap());
+            modelBuilder.Configurations.Add(new UsuarioMap());
+
         }
     }
 }
