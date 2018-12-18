@@ -492,6 +492,7 @@
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
     <Content Include="Scripts\shopplab\controllers\shopplab.pedido.js" />
+    <Content Include="Scripts\shopplab\controllers\shopplab.usuario.js" />
     <Content Include="Scripts\shopplab\css\jquery.dataTables.min.css" />
     <Content Include="Scripts\shopplab\external\accounting.min.js" />
     <Content Include="Scripts\shopplab\js\jquery.datatables.min.js" />

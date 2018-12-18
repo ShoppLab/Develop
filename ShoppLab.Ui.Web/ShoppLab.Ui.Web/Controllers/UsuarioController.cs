@@ -22,7 +22,18 @@ namespace ShoppLab.Ui.Web.Controllers
 
         public JsonResult ValidadeSenha(string usuario, string senha)
         {
-            _UsuarioService.ValidadeSenha(usuario, senha);
+            var ret = _UsuarioService.ValidadeSenha(usuario, senha);
+            ret = true;
+            if (ret)
+            {
+
+            }
+            else
+            {
+
+            }
+            return Json(ret, JsonRequestBehavior.AllowGet);
+
         }
 
     }

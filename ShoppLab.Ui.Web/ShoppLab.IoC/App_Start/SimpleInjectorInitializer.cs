@@ -29,6 +29,8 @@ namespace ShoppLab.IoC.App_Start
             container.Register<IEmailRepository, EmailRepository>();
             container.Register<IPedidoRepository, PedidoRepository>();
             container.Register<IDetalhePedidoRepository, DetalhePedidoRepository>();
+            container.Register<IUsuarioRepository, UsuarioRepository>();
+
 
             #endregion
 
@@ -38,6 +40,8 @@ namespace ShoppLab.IoC.App_Start
             Container.Register<IEmailService, EmailService>();
             Container.Register<IPedidoService, PedidoService>();
             Container.Register<IDetalhePedidoService, DetalhePedidoService>();
+            Container.Register<IUsuarioService, UsuarioService>();
+
 
             #endregion
 

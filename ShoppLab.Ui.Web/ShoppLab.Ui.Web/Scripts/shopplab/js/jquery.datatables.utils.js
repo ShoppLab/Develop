@@ -1,27 +1,29 @@
-﻿var languageDataTable =
-{
-    "sEmptyTable": "Nenhum registro encontrado",
-    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-    "sInfoPostFix": "",
-    "sInfoThousands": ".",
-    "sLengthMenu": "_MENU_ resultados por página",
-    "sLoadingRecords": "Carregando...",
-    "sProcessing": "Processando...",
-    "sZeroRecords": "Nenhum registro encontrado",
-    "sSearch": "Pesquisar",
-    "oPaginate": {
-        "sNext": "Próximo",
-        "sPrevious": "Anterior",
-        "sFirst": "Primeiro",
-        "sLast": "Último"
-    },
-    "oAria": {
-        "sSortAscending": ": Ordenar colunas de forma ascendente",
-        "sSortDescending": ": Ordenar colunas de forma descendente"
+﻿var settings =
+    {
+        "sEmptyTable": "Nenhum registro encontrado",
+        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sInfoThousands": ".",
+        "sLengthMenu": "_MENU_ resultados por página",
+        "sLoadingRecords": "Carregando...",
+        "sProcessing": "Processando...",
+        "sZeroRecords": "Nenhum registro encontrado",
+        "sSearch": "Pesquisar",
+        "oPaginate": {
+            "sNext": "Próximo",
+            "sPrevious": "Anterior",
+            "sFirst": "Primeiro",
+            "sLast": "Último"
+        },
+        "oAria": {
+            "sSortAscending": ": Ordenar colunas de forma ascendente",
+            "sSortDescending": ": Ordenar colunas de forma descendente"
+        },
+        "decimal": ",",
+        "thousands": ".",
     }
-}
 
 
 function formatarLanguageDataTable() {
@@ -37,7 +39,9 @@ function inicializarDataTable() {
 
 function setPropertiesInitialDataTableConsulta() {
     var table = $('table').DataTable({
-        "language": languageDataTable,
+        "language": settings
+
+        ,
         "columnDefs": [{
             "targets": -1,
             "data": null,
@@ -53,12 +57,7 @@ function setPropertiesInitialDataTableConsulta() {
 
 function setPropertiesInitialDataTableCadastro() {
     var table = $('table').DataTable({
-        "language": {
-            //languageDataTable
-              "decimal": ",",
-            "thousands": ".",
-        },
-      
+        "language": settings,
         data: detalhePedido,
         paging: true,
         searching: true,
@@ -116,7 +115,7 @@ function setPropertiesInitialDataTableCadastro() {
             //    'R$' + pageTotal + ' ( R$' + total + ' total)'
             //);
         }
-       
+
     });
 
     $('table tbody').on('click', 'button', function () {
