@@ -299,6 +299,7 @@
     <Content Include="Content\Images\user\12.jpg" />
     <Content Include="Content\Images\user\13.jpg" />
     <Content Include="Content\mvc-override.css" />
+    <Content Include="Documentation\Git\InformationGitHub.txt" />
     <Content Include="Documentation\Script\InitialScript.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -473,6 +474,7 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="Documentation\Planilha\1_Modelo Cotação SHOPPLAB - rev12_Licitação.xlsx" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -806,7 +808,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Documentation\Git\" />
     <Folder Include="Documentation\Model\" />
     <Folder Include="Vendor\bootstrap-notify\dist\css\" />
     <Folder Include="Views\Alterar\" />
