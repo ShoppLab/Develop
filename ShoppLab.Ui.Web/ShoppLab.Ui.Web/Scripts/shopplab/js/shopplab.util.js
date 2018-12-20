@@ -18,13 +18,23 @@
 
 }
 
-
 function formatarMoedaUS(valor) {
-    return parseFloat(valor.replace(/\./g, '').replace(',', '.'));
-}
 
+    if (valor == "") {
+        return 0;
+    } else {
+        return parseFloat(valor.replace(/\./g, '').replace(',', '.'));
+    }
+}
 
 function formatarMoeda(valor) {
     return accounting.formatMoney(valor, "", 2, ".", ",");
+}
+
+function AbrirModal(title, body) {
+    
+    $("#myModalLabel").text(title);
+    $(".modal-body").text(body);
+    $('#myModal').modal('show');
 }
 

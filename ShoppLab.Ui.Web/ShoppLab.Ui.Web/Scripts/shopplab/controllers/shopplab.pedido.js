@@ -47,7 +47,9 @@ var id = 0,
     urlPedido = "/Pedido/Cadastrar",
     formName = "#form-pedido",
     formItemPedidoName = "#form-itens-pedido",
-    detalhePedido = []
+    detalhePedido = [],
+    detalhePedidoApresentacao = []
+
 
 
 function salvar() {
@@ -85,27 +87,27 @@ function validarDadosPedido() {
     //Verificar se existem item no pedido
     var table = $(tableName).DataTable();
     if (!table.data().count()) {
-        alert('Por favor, adicionar um item ao pedido');
+        AbrirModal('Por favor, adicionar um item ao pedido!');
     }
 }
 
-function formatarGridPedido() {
+//function formatarGridPedido() {
 
-    var table = $(tableName).DataTable({
-        scrollY: "600px",
-        scrollX: true,
-        scrollCollapse: true,
-        paging: false,
-        columnDefs: [
-            { width: '20%' }
-        ],
-    });
-}
+//    var table = $(tableName).DataTable({
+//        scrollY: "600px",
+//        scrollX: true,
+//        scrollCollapse: true,
+//        paging: false,
+//        columnDefs: [
+//            { width: '20%' }
+//        ],
+//    });
+//}
 
 function adicionarItem() {
 
-    if ($(formItemPedidoName).valid() == false) {
-        alert("Por favor, preencha o campo dos item do pedido");
+    if (!validarItemPedido()) {
+        AbrirModal("Atenção", "Por favor, Preencha o(s) campo(s) do item pedido!");
 
     } else {
 
@@ -120,27 +122,10 @@ function adicionarItem() {
         percentualIPICompra = 0;
         percentualIPIVenda = 0;
 
-        valorPrecoCompra = $('#input-precoCompra').val();
-        percentualIcmsEntrada = $('#input-percentualImsEntrada').val();
-        percentualIPICompra = $('#input-percentualIpiCompra').val();
-        valorDespesasCompra = $('#input-despesaCompra').val();
-        quantidadeProduto = $('#input-quantidade').val();
-        unidade = $('#input-unidade').val();
-        descricaoProduto = $('#input-produto').val();
-        marca = $('#input-marca').val();
-        valorUnitarioMinimo = $('#input-valorUnitarioMinimo').val();
-        percentualIcmsSaida = $('#input-icmsSaida').val();
-        numeroDiasPrazoEntrega = $('#input-prazoEntregaDias').val();
-        numeroDiasCondicoesPagamentoCompra = $('#input-pagtoCompraDias').val();
-        numeroDiasCondicoesPagamentoVenda = $('#input-pagtoVendaDias').val();
-        percentualIPIVenda = $('#input-ipiVendaFrete').val();
-        valorComissaoBroker = $('#input-comissaoBroker').val();
-        percentualIcms = parseFloat(percentualIcmsSaida);
-        valorLucroBruto = valorComissaoBroker;
-
+        carregarItem();
         limparVariaveis();
-        valorCusto = (parseFloat(valorPrecoCompra) - (parseFloat(valorPrecoCompra) * (parseFloat(percentualIcmsEntrada) / 100)) + (parseFloat(valorPrecoCompra) * (parseInt(percentualIPICompra) / 100)) + parseFloat(valorDespesasCompra));
-        valorCustoTT = parseFloat(valorCusto) * parseFloat(quantidadeProduto);
+        valorCusto = (valorPrecoCompra - valorPrecoCompra * (percentualIcmsEntrada / 100)) + (valorPrecoCompra * (percentualIPICompra / 100)) + valorDespesasCompra;
+        valorCustoTT = valorCusto * quantidadeProduto;
 
         if (valorPrecoCompra == 0) {
             valorCustoTTFrete = 0;
@@ -150,7 +135,7 @@ function adicionarItem() {
             valorPrecoVendaCif = 0;
 
         } else {
-            valorCustoTTFrete = (parseFloat(valorFreteDda) * parseFloat(quantidadeProduto)) + parseFloat(valorCustoTT)
+            valorCustoTTFrete = (valorFreteDda * quantidadeProduto) + valorCustoTT
             valorFreteDda = 0;
 
             switch (parseInt(percentualIcmsSaida)) {
@@ -169,8 +154,8 @@ function adicionarItem() {
                     break
             }
 
-            valorPrecoVendaCif = (parseFloat(valorCusto) * parseFloat(valorFreteDda)) * parseFloat(valorCoefFrete);
-            var proRata = (-(parseFloat(numeroDiasCondicoesPagamentoCompra) - 7 - parseFloat(numeroDiasCondicoesPagamentoVenda))) * parseFloat(valorAdFinan);
+            valorPrecoVendaCif = (valorCusto * valorFreteDda) * valorCoefFrete;
+            var proRata = (-(numeroDiasCondicoesPagamentoCompra - 7 - numeroDiasCondicoesPagamentoVenda)) * valorAdFinan;
 
             if (proRata < 0) {
                 valorAdicFinanceiroProRata = 0;
@@ -178,21 +163,19 @@ function adicionarItem() {
                 valorAdicFinanceiroProRata = proRata;
             }
         }
-        valorsoma = parseInt(percentualIcmsSaida) + parseInt(percentualIPIVenda) + parseFloat(valorPis) + parseFloat(valorCofins)
-            + parseFloat(valorContaSocial) + parseFloat(valorIrpj) + parseFloat(valorComissaoVendedor)
-            + parseFloat(valorAdicFinanceiroProRata) + formatarMoedaUS(valorComissaoBroker) + formatarMoedaUS(valorLucroBruto)
-            + parseFloat(valorCustoFixo);
+        valorsoma = percentualIcmsSaida + percentualIPIVenda + valorPis + valorCofins
+            + valorContaSocial + valorIrpj + valorComissaoVendedor + valorAdicFinanceiroProRata + valorComissaoBroker + valorLucroBruto
+            + valorCustoFixo;
 
-        valorMkp = -(parseFloat(valorsoma) - 100) / 100;
+        valorMkp = -(valorsoma - 100) / 100;
 
 
-        valorPrecoVendaUnitario = (parseFloat(valorCusto) / parseFloat(valorMkp)) + parseFloat(valorPrecoVendaCif);
+        valorPrecoVendaUnitario = (valorCusto / valorMkp) + valorPrecoVendaCif;
         valorUnitario = valorPrecoVendaUnitario;
-        valorTotal = parseFloat(valorPrecoVendaUnitario) * parseFloat(quantidadeProduto);
+        valorTotal = valorPrecoVendaUnitario * quantidadeProduto;
         valorPrecoVendaUnitario = valorPrecoVendaUnitario;
 
         detalhePedido.push({
-            "id": "1",
             "QuantidadeProduto": quantidadeProduto,
             "Unidade": unidade,
             "DescricaoProduto": descricaoProduto,
@@ -215,9 +198,33 @@ function adicionarItem() {
             "NumeroDiasCondicoesPagamentoVenda": numeroDiasCondicoesPagamentoVenda,
         });
 
+        detalhePedidoApresentacao.push({
+            "QuantidadeProduto": formatarMoeda(quantidadeProduto),
+            "Unidade": unidade,
+            "DescricaoProduto": descricaoProduto,
+            "Marca": marca,
+            "ValorUnitario": formatarMoeda(valorUnitario),
+            "ValorUnitarioMinimo": formatarMoeda(valorUnitarioMinimo),
+            "ValorTotal": formatarMoeda(valorTotal),
+            "ValorPrecoVendaUnitario": formatarMoeda(valorPrecoVendaUnitario),
+            "ValorPrecoCompra": formatarMoeda(valorPrecoCompra),
+            "ValorDespesasCompra": formatarMoeda(valorDespesasCompra),
+            "ValorComissaoBroker": formatarMoeda(valorComissaoBroker),
+
+            "PercentualIcms": percentualIcms,
+            "PercentualIcmsEntrada": percentualIcmsEntrada,
+            "PercentualIcmsSaida": percentualIcmsSaida,
+            "PercentualIPICompra": percentualIPI,
+            "PercentualIPIVenda": percentualIPIVenda,
+            "NumeroDiasPrazoEntrega": numeroDiasPrazoEntrega,
+            "NumeroDiasCondicoesPagamentoCompra": numeroDiasCondicoesPagamentoCompra,
+            "NumeroDiasCondicoesPagamentoVenda": numeroDiasCondicoesPagamentoVenda,
+        });
+
+
         var table = $(tableName).DataTable();
         table.clear();
-        table.rows.add(detalhePedido);
+        table.rows.add(detalhePedidoApresentacao);
         table.draw();
 
         //Limpar campos
@@ -302,7 +309,7 @@ function carregarItem() {
     $('#input-comissaoBroker').val(50);
 }
 
-function ObterDadosPedidos() {
+function obterDadosPedidos() {
 
     var dataInicial = $('#DataInicial').val();
     var dataFinal = $('#DataFinal').val();
@@ -326,7 +333,7 @@ function ObterDadosPedidos() {
             if (data.length != 0) {
 
                 for (var i = 0; i < data.length; i++) {
-                    table.row.add([data[i].Pedido, data[i].DataRegistro, data[i].Nome, data[i].PrecoVendaUnitario])
+                    table.row.add([data[i].Pedido, data[i].DataRegistro, data[i].Nome, formatarMoeda(formatarMoedaUS(data[i].PrecoVendaUnitario))])
                         .draw(false);
                 }
             }
@@ -378,4 +385,35 @@ function format(d) {
         '</table>';
 }
 
+
+function validarItemPedido() {
+    carregarItem();
+    limparVariaveis();
+    if (descricaoProduto == "" || quantidadeProduto == 0 || unidade == "" || marca == "" || valorUnitario == 0 || valorPrecoCompra == 0 || valorComissaoBroker == 0) {
+        return false
+    } else {
+        return true;
+    }
+}
+
+
+function carregarItem() {
+    valorPrecoCompra = formatarMoedaUS($('#input-precoCompra').val());
+    percentualIcmsEntrada = formatarMoedaUS($('#input-percentualImsEntrada').val());
+    percentualIPICompra = formatarMoedaUS($('#input-percentualIpiCompra').val());
+    valorDespesasCompra = formatarMoedaUS($('#input-despesaCompra').val());
+    quantidadeProduto = formatarMoedaUS($('#input-quantidade').val());
+    unidade = $('#input-unidade').val();
+    descricaoProduto = $('#input-produto').val();
+    marca = $('#input-marca').val();
+    valorUnitarioMinimo = formatarMoedaUS($('#input-valorUnitarioMinimo').val());
+    percentualIcmsSaida = formatarMoedaUS($('#input-icmsSaida').val());
+    numeroDiasPrazoEntrega = $('#input-prazoEntregaDias').val();
+    numeroDiasCondicoesPagamentoCompra = $('#input-pagtoCompraDias').val();
+    numeroDiasCondicoesPagamentoVenda = $('#input-pagtoVendaDias').val();
+    percentualIPIVenda = formatarMoedaUS($('#input-ipiVendaFrete').val());
+    valorComissaoBroker = formatarMoedaUS($('#input-comissaoBroker').val());
+    percentualIcms = percentualIcmsSaida;
+    valorLucroBruto = valorComissaoBroker;
+}
 

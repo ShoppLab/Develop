@@ -806,6 +806,7 @@
     <Content Include="Views\Shared\_Notification.cshtml" />
     <Content Include="Views\Pedido\Atualizar.cshtml" />
     <Content Include="Views\Usuario\Index.cshtml" />
+    <Content Include="Views\Shared\_Modal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

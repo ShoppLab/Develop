@@ -97,7 +97,8 @@ namespace ShoppLab.Ui.Web.Controllers
                 Pedido = x.Id,
                 DataRegistro = x.DataRegistro.ToString("dd/MM/yyyy"),
                 x.Cliente.Nome,
-                PrecoVendaUnitario = x.DetalhePedido.Sum(y => y.ValorPrecoVendaUnitario).ToString("###.00")
+                PrecoVendaUnitario = x.DetalhePedido.Sum(y => y.ValorPrecoVendaUnitario).ToString("###.00"),
+                x.DetalhePedido
             }).ToList();
 
             return Json(itens, JsonRequestBehavior.AllowGet);
