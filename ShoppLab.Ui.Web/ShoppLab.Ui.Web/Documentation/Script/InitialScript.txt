@@ -104,22 +104,6 @@ go
 
 
 
-CREATE TABLE Usuario
-( 
-	IdUsuario            integer IDENTITY ( 1,1 ) ,
-	NmUsuario            varchar(20)  NOT NULL ,
-	DsSenha              varchar(20)  NOT NULL 
-)
-go
-
-
-
-ALTER TABLE Usuario
-	ADD  PRIMARY KEY  CLUSTERED (IdUsuario ASC)
-go
-
-
-
 
 ALTER TABLE Contato
 	ADD  FOREIGN KEY (IdCliente) REFERENCES Cliente(IdCliente)
