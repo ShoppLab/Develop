@@ -23,7 +23,7 @@ namespace ShoppLab.Repository.Repository
             if (dataInicial == null && dataFinal != null)
                 query = Find(x => x.DataRegistro <= dataFinal);
 
-            if (nomeCliente != null)
+            if (nomeCliente != "")
                 query = Find(x => x.Cliente.Nome.Contains(nomeCliente));
 
 

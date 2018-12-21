@@ -51,7 +51,6 @@ var id = 0,
     detalhePedidoApresentacao = []
 
 
-
 function salvar() {
 
     if (validarDadosPedido())
@@ -91,19 +90,6 @@ function validarDadosPedido() {
     }
 }
 
-//function formatarGridPedido() {
-
-//    var table = $(tableName).DataTable({
-//        scrollY: "600px",
-//        scrollX: true,
-//        scrollCollapse: true,
-//        paging: false,
-//        columnDefs: [
-//            { width: '20%' }
-//        ],
-//    });
-//}
-
 function adicionarItem() {
 
     if (!validarItemPedido()) {
@@ -122,7 +108,7 @@ function adicionarItem() {
         percentualIPICompra = 0;
         percentualIPIVenda = 0;
 
-        carregarItem();
+        carregarValoresItem();
         limparVariaveis();
         valorCusto = (valorPrecoCompra - valorPrecoCompra * (percentualIcmsEntrada / 100)) + (valorPrecoCompra * (percentualIPICompra / 100)) + valorDespesasCompra;
         valorCustoTT = valorCusto * quantidadeProduto;
@@ -168,7 +154,6 @@ function adicionarItem() {
             + valorCustoFixo;
 
         valorMkp = -(valorsoma - 100) / 100;
-
 
         valorPrecoVendaUnitario = (valorCusto / valorMkp) + valorPrecoVendaCif;
         valorUnitario = valorPrecoVendaUnitario;
@@ -221,23 +206,24 @@ function adicionarItem() {
             "NumeroDiasCondicoesPagamentoVenda": numeroDiasCondicoesPagamentoVenda,
         });
 
-
         var table = $(tableName).DataTable();
         table.clear();
         table.rows.add(detalhePedidoApresentacao);
         table.draw();
 
-        //Limpar campos
-        //$('#input-unidade').val('');
-        //$('#input-produto').val('');
-        //$('#input-marca').val('');
-        //$('.format-money').val(0);
-        //$('.format-integer').val(0);
-        //$('#input-produto').focus();
-
+        limparCampos();
     }
 }
 
+function limparCampos() {
+
+    $('#input-unidade').val('');
+    $('#input-produto').val('');
+    $('#input-marca').val('');
+    $('.format-money').val(0);
+    $('.format-integer').val(0);
+    $('#input-produto').focus();
+}
 
 function limparVariaveis() {
 
@@ -288,25 +274,6 @@ function limparVariaveis() {
     if (valorComissaoBroker == "") {
         valorComissaoBroker = 0;
     }
-}
-
-function carregarItem() {
-    $('#input-quantidade').val(100);
-    $('#input-unidade').val('PCA');
-    $('#input-produto').val('Controle para smart TV');
-    $('#input-marca').val('Samsung');
-    $('#input-valorUnitarioMinimo').val(13012300);
-    $('#input-icmsSaida').val(18);
-    $('#input-prazoEntregaDias').val(10);
-    $('#input-precoCompra').val(9999999);
-    $('#input-percentualImsEntrada').val(18);
-    $('#input-percentualIpiCompra').val(0);
-    $('#input-despesaCompra').val(0);
-    $('#input-pagtoCompraDias').val(28);
-    $('#input-pagtoVendaDias').val(28);
-    $('#input-percentualImsSaida').val(18);
-    $('#input-ipiVendaFrete').val(0);
-    $('#input-comissaoBroker').val(50);
 }
 
 function obterDadosPedidos() {
@@ -385,7 +352,6 @@ function format(d) {
         '</table>';
 }
 
-
 function validarItemPedido() {
     carregarItem();
     limparVariaveis();
@@ -396,8 +362,8 @@ function validarItemPedido() {
     }
 }
 
+function carregarValoresItem() {
 
-function carregarItem() {
     valorPrecoCompra = formatarMoedaUS($('#input-precoCompra').val());
     percentualIcmsEntrada = formatarMoedaUS($('#input-percentualImsEntrada').val());
     percentualIPICompra = formatarMoedaUS($('#input-percentualIpiCompra').val());
@@ -417,3 +383,56 @@ function carregarItem() {
     valorLucroBruto = valorComissaoBroker;
 }
 
+function carregarItens() {
+
+
+    for (i = 0; i < itensPedido.length; i++) {
+
+
+        detalhePedido.push({
+            "QuantidadeProduto": itensPedido[i].QuantidadeProduto,
+            "Unidade": itensPedido[i].Unidade,
+            "DescricaoProduto": itensPedido[i].DescricaoProduto,
+            "Marca": itensPedido[i].Marca,
+            "ValorUnitario": itensPedido[i].ValorUnitario,
+            "ValorUnitarioMinimo": itensPedido[i].ValorUnitarioMinimo,
+            "ValorTotal": itensPedido[i].ValorTotal,
+            "ValorPrecoVendaUnitario": itensPedido[i].ValorPrecoVendaUnitario,
+            "ValorPrecoCompra": itensPedido[i].ValorPrecoCompra,
+            "ValorDespesasCompra": itensPedido[i].ValorDespesasCompra,
+            "ValorComissaoBroker": itensPedido[i].ValorComissaoBroker,
+
+            "PercentualIcms": itensPedido[i].PercentualIcms,
+            "PercentualIcmsEntrada": itensPedido[i].PercentualIcmsEntrada,
+            "PercentualIcmsSaida": itensPedido[i].PercentualIcmsSaida,
+            "PercentualIPICompra": itensPedido[i].PercentualIPICompra,
+            "PercentualIPIVenda": itensPedido[i].PercentualIPIVenda,
+            "NumeroDiasPrazoEntrega": itensPedido[i].NumeroDiasPrazoEntrega,
+            "NumeroDiasCondicoesPagamentoCompra": itensPedido[i].NumeroDiasCondicoesPagamentoCompra,
+            "NumeroDiasCondicoesPagamentoVenda": itensPedido[i].NumeroDiasCondicoesPagamentoVenda,
+        });
+
+        detalhePedidoApresentacao.push({
+            "QuantidadeProduto": formatarMoeda(itensPedido[i].QuantidadeProduto),
+            "Unidade": itensPedido[i].Unidade,
+            "DescricaoProduto": itensPedido[i].DescricaoProduto,
+            "Marca": itensPedido[i].Marca,
+            "ValorUnitario": formatarMoeda(itensPedido[i].ValorUnitario),
+            "ValorUnitarioMinimo": formatarMoeda(itensPedido[i].ValorUnitarioMinimo),
+            "ValorTotal": formatarMoeda(itensPedido[i].ValorTotal),
+            "ValorPrecoVendaUnitario": formatarMoeda(itensPedido[i].ValorPrecoVendaUnitario),
+            "ValorPrecoCompra": formatarMoeda(itensPedido[i].ValorPrecoCompra),
+            "ValorDespesasCompra": formatarMoeda(itensPedido[i].ValorDespesasCompra),
+            "ValorComissaoBroker": formatarMoeda(itensPedido[i].ValorComissaoBroker),
+
+            "PercentualIcms": itensPedido[i].PercentualIcms,
+            "PercentualIcmsEntrada": itensPedido[i].PercentualIcmsEntrada,
+            "PercentualIcmsSaida": itensPedido[i].PercentualIcmsSaida,
+            "PercentualIPICompra": itensPedido[i].PercentualIPICompra,
+            "PercentualIPIVenda": itensPedido[i].PercentualIPIVenda,
+            "NumeroDiasPrazoEntrega": itensPedido[i].NumeroDiasPrazoEntrega,
+            "NumeroDiasCondicoesPagamentoCompra": itensPedido[i].NumeroDiasCondicoesPagamentoCompra,
+            "NumeroDiasCondicoesPagamentoVenda": itensPedido[i].NumeroDiasCondicoesPagamentoVenda,
+        });
+    }
+}

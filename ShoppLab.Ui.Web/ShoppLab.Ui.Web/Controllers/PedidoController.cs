@@ -21,17 +21,7 @@ namespace ShoppLab.Ui.Web.Controllers
         [HttpGet]
         public ActionResult Cadastrar()
         {
-            return View(new PedidoViewModel
-            {
-                Nome = "Roberto Carlos Queiroz Oliveira",
-                Email = "rcqoliveira@icloud.com",
-                Telefone = "11964440102",
-                DataRegistro = "16/12/2019",
-                CondicoesPagto = "18 DDL",
-                DiasValidadePreco = "10 Dias",
-                CondicoesEntrega = "FOB - NOSSO DEPOSITO EM SP.",
-
-            });
+            return View();
         }
 
         [HttpPost]
@@ -54,24 +44,54 @@ namespace ShoppLab.Ui.Web.Controllers
         [HttpGet]
         public ActionResult Atualizar(int id)
         {
-            var item = _pedidoService.GetById(id);
+            var pedido = _pedidoService.GetById(id);
 
-            //var pedidoViewMode = Mapper.Map<Pedido, PedidoViewModel>(item);
+            //var pedidoViewModel = Mapper.Map<Pedido, PedidoViewModel>(item);
+            //var pedidoDetalheViewModel = Mapper.Map<IList<DetalhePedido>, IList<DetalhePedidoViewModel>>(item.DetalhePedido).ToList();
+
+            //pedidoViewModel.DetalhePedido = pedidoDetalheViewModel;
 
             var pedidoViewModel = new PedidoViewModel
             {
-                DataRegistro = item.DataRegistro.ToString("dd/MM/yyyy"),
-                CondicoesEntrega = item.CondicoesEntrega,
-                CondicoesPagto = item.CondicoesPagto,
-                Email = item.Cliente.Email,
-                Telefone = item.Cliente.Telefone,
-                DiasValidadePreco = item.DiasValidadePreco,
-                Nome = item.Cliente.Nome
+                DataRegistro = pedido.DataRegistro.ToString("dd/MM/yyyy"),
+                CondicoesEntrega = pedido.CondicoesEntrega,
+                CondicoesPagto = pedido.CondicoesPagto,
+                Email = pedido.Cliente.Email,
+                Telefone = pedido.Cliente.Telefone,
+                DiasValidadePreco = pedido.DiasValidadePreco,
+                Nome = pedido.Cliente.Nome,
             };
+
+            foreach (var item in pedido.DetalhePedido)
+            {
+                pedidoViewModel.DetalhePedido.Add(new DetalhePedidoViewModel
+                {
+                    DescricaoProduto = item.DescricaoProduto,
+                    Marca = item.Marca,
+                    Unidade = item.Unidade,
+                    QuantidadeProduto = item.QuantidadeProduto,
+                    PercentualIcms = item.PercentualIcms,
+                    PercentualIcmsEntrada = item.PercentualIcmsEntrada,
+                    PercentualIcmsSaida = item.PercentualIcmsSaida,
+                    PercentualIPICompra = item.PercentualIPICompra,
+                    PercentualIPIVenda = item.PercentualIPIVenda,
+                    ValorComissaoBroker = item.ValorComissaoBroker,
+                    ValorDespesasCompra = item.ValorDespesasCompra,
+                    ValorPrecoCompra = item.ValorPrecoCompra,
+                    ValorPrecoVendaUnitario = item.ValorPrecoVendaUnitario,
+                    ValorTotal = item.ValorTotal,
+                    ValorUnitario = item.ValorUnitario,
+                    ValorUnitarioMinimo = item.ValorUnitarioMinimo, 
+                    NumeroDiasCondicoesPagamentoCompra = item.NumeroDiasCondicoesPagamentoCompra,
+                    NumeroDiasCondicoesPagamentoVenda = item.NumeroDiasCondicoesPagamentoVenda,
+                    NumeroDiasPrazoEntrega = item.NumeroDiasPrazoEntrega
+
+                });
+            }
+            ViewBag.DetalhePedido = pedidoViewModel.DetalhePedido;
 
             return View(pedidoViewModel);
         }
-
 
         public ActionResult Consultar()
         {
@@ -97,8 +117,7 @@ namespace ShoppLab.Ui.Web.Controllers
                 Pedido = x.Id,
                 DataRegistro = x.DataRegistro.ToString("dd/MM/yyyy"),
                 x.Cliente.Nome,
-                PrecoVendaUnitario = x.DetalhePedido.Sum(y => y.ValorPrecoVendaUnitario).ToString("###.00"),
-                x.DetalhePedido
+                PrecoVendaUnitario = x.DetalhePedido.Sum(y => y.ValorPrecoVendaUnitario).ToString("###.00")
             }).ToList();
 
             return Json(itens, JsonRequestBehavior.AllowGet);

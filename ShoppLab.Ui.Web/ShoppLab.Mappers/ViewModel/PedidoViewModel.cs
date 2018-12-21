@@ -6,6 +6,10 @@ namespace ShoppLab.Mappers
 {
     public class PedidoViewModel
     {
+        public PedidoViewModel()
+        {
+            DetalhePedido = new List<DetalhePedidoViewModel>();
+        }
 
         public int Id { get; set; }
 

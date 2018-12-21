@@ -1,40 +1,30 @@
 ﻿var settings =
-    {
-        "sEmptyTable": "Nenhum registro encontrado",
-        "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
-        "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
-        "sInfoFiltered": "(Filtrados de _MAX_ registros)",
-        "sInfoPostFix": "",
-        "sInfoThousands": ".",
-        "sLengthMenu": "_MENU_ resultados por página",
-        "sLoadingRecords": "Carregando...",
-        "sProcessing": "Processando...",
-        "sZeroRecords": "Nenhum registro encontrado",
-        "sSearch": "Pesquisar",
-        "oPaginate": {
-            "sNext": "Próximo",
-            "sPrevious": "Anterior",
-            "sFirst": "Primeiro",
-            "sLast": "Último"
-        },
-        "oAria": {
-            "sSortAscending": ": Ordenar colunas de forma ascendente",
-            "sSortDescending": ": Ordenar colunas de forma descendente"
-        },
-        "decimal": ",",
-        "thousands": ".",
-    }
-
-
-function formatarLanguageDataTable() {
-    $('table').DataTable();
+{
+    "sEmptyTable": "Nenhum registro encontrado",
+    "sInfo": "Mostrando de _START_ até _END_ de _TOTAL_ registros",
+    "sInfoEmpty": "Mostrando 0 até 0 de 0 registros",
+    "sInfoFiltered": "(Filtrados de _MAX_ registros)",
+    "sInfoPostFix": "",
+    "sInfoThousands": ".",
+    "sLengthMenu": "_MENU_ resultados por página",
+    "sLoadingRecords": "Carregando...",
+    "sProcessing": "Processando...",
+    "sZeroRecords": "Nenhum registro encontrado",
+    "sSearch": "Pesquisar",
+    "oPaginate": {
+        "sNext": "Próximo",
+        "sPrevious": "Anterior",
+        "sFirst": "Primeiro",
+        "sLast": "Último"
+    },
+    "oAria": {
+        "sSortAscending": ": Ordenar colunas de forma ascendente",
+        "sSortDescending": ": Ordenar colunas de forma descendente"
+    },
+    "decimal": ",",
+    "thousands": ".",
 }
 
-function inicializarDataTable() {
-    $('table').dataTable({
-        "language": languageDataTable
-    });
-}
 
 
 function setPropertiesInitialDataTableConsulta() {
@@ -46,7 +36,11 @@ function setPropertiesInitialDataTableConsulta() {
             "targets": -1,
             "data": null,
             "defaultContent": "<button class='btn btn-primary'>Visualizar</i></button>"
-        }]
+        }],
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
     });
 
     $('table tbody').on('click', 'button', function () {
@@ -58,7 +52,7 @@ function setPropertiesInitialDataTableConsulta() {
 function setPropertiesInitialDataTableCadastro() {
     var table = $('table').DataTable({
         "language": settings,
-        data: detalhePedido,
+        data: detalhePedidoApresentacao,
         paging: true,
         searching: true,
         info: false,
@@ -84,6 +78,11 @@ function setPropertiesInitialDataTableCadastro() {
             "data": null,
             "defaultContent": "<button class='btn btn-primary'>Remover</i></button>"
         }],
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+
         "footerCallback": function (row, data, start, end, display) {
             var api = this.api(), data;
 

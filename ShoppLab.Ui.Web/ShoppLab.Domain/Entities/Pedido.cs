@@ -30,6 +30,6 @@ namespace ShoppLab.Domain.Entities
 
         public virtual Cliente Cliente { get; set; }
 
-        public virtual ICollection<DetalhePedido> DetalhePedido { get; set; }
+        public virtual IList<DetalhePedido> DetalhePedido { get; set; }
     }
 }

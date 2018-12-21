@@ -7,6 +7,11 @@
 
 @model PedidoViewModel
 
+@{
+    var detalhePedido = Html.Raw(Json.Encode(ViewBag.DetalhePedido));
+}
+
+
 <div class="content-heading">
     <div>
         Pedido
@@ -288,6 +293,7 @@
     <link rel="stylesheet" href="~/vendor/datatables.net-responsive-bs/css/responsive.bootstrap.css">
 
 
+
     <style>
         td.details-control {
             background: url('../Images/details_open.png') no-repeat center center;
@@ -307,6 +313,8 @@
     <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.mask.min.js")"></script>
     <script src="@Scripts.Url("~/Scripts/shopplab/js/shopplab.util.js")"></script>
     <script src="@Scripts.Url("~/Scripts/shopplab/controllers/shopplab.pedido.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/js/jquery.datatables.utils.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/external/accounting.min.js")"></script>
 
     <script src="@Scripts.Url("~/Scripts/jquery.validate.min.js")"></script>
     <script src="@Scripts.Url("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
@@ -326,140 +334,12 @@
 
     <script type="text/javascript">
 
-       
-
-        $(function () {
-            //formatarGridPedido();
-            //carregarItem();
-            formatarCampos();
-
-        });
-
-        function format(d) {
-            return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-                '<tr>' +
-                '<td>Preço Compra</td>' +
-                '<td>' + d.ValorPrecoCompra + '</td>' +
-                '</tr>' +
-                '<tr>' +
-                '<td>Preço Venda Unitário</td>' +
-                '<td>' + d.ValorPrecoVendaUnitario + '</td>' +
-                '</tr>' +
-                '<tr>' +
-                '<td>Despesas Compra</td>' +
-                '<td>' + d.ValorDespesasCompra + '</td>' +
-                '</tr>' +
-                '<td>Comissão Broker</td>' +
-                '<td>' + d.ValorComissaoBroker + '</td>' +
-                '</tr>' +
-                '<td>% Percentual Icms</td>' +
-                '<td>' + d.PercentualIcms + '</td>' +
-                '</tr>' +
-                '<td>% Icms Entrada</td>' +
-                '<td>' + d.PercentualIcmsEntrada + '</td>' +
-                '</tr>' +
-                '<td>% Icms Saída</td>' +
-                '<td>' + d.PercentualIcmsSaida + '</td>' +
-                '</tr>' +
-                '<td>% Ipi Compra</td>' +
-                '<td>' + d.PercentualIPICompra + '</td>' +
-                '</tr>' +
-                '<td>% Ipi Venda</td>' +
-                '<td>' + d.PercentualIPIVenda + '</td>' +
-                '</tr>' +
-                '<td>Dias Prazo Entrega</td>' +
-                '<td>' + d.NumeroDiasPrazoEntrega + '</td>' +
-                '</tr>' +
-                '<td>Dias Condições Pagto Compra</td>' +
-                '<td>' + d.NumeroDiasCondicoesPagamentoCompra + '</td>' +
-                '</tr>' +
-                '<td>Dias Condições Pagto Venda</td>' +
-                '<td>' + d.NumeroDiasCondicoesPagamentoVenda + '</td>' +
-                '</tr>' +
-                '</table>';
-        }
-
+        var itensPedido = @detalhePedido;
 
         $(document).ready(function () {
-
-            detalhePedido = [
-                {
-                    "id": "1",
-                    "QuantidadeProduto": "10",
-                    "Unidade": "pca",
-                    "DescricaoProduto": "Cadeira de madeira da amazonia",
-                    "Marca": "Moderna",
-                    "ValorUnitario": "1200,00",
-                    "ValorUnitarioMinimo": "1200,00",
-                    "ValorTotal": "12000,00",
-                    "ValorPrecoVendaUnitario": "12000,00",
-                    "ValorPrecoCompra": "1200,00",
-                    "ValorPrecoVendaUnitario": "1200,00",
-                    "ValorDespesasCompra": "56,70",
-                    "ValorComissaoBroker": "0,50",
-
-                    "PercentualIcms": "10",
-                    "PercentualIcmsEntrada": "18",
-                    "PercentualIcmsSaida": "21",
-                    "PercentualIPICompra": "12",
-                    "PercentualIPIVenda" : "18",
-                    "NumeroDiasPrazoEntrega": "28",
-                    "NumeroDiasCondicoesPagamentoCompra": "10",
-                    "NumeroDiasCondicoesPagamentoVenda": "28",
-                }]
-
-            table = $('#table-detalhe-pedido').DataTable({
-                data: detalhePedido,
-                paging: true,
-                searching: true,
-                info: false,
-                columns: [
-                    {
-                        "className": 'details-control',
-                        "orderable": false,
-                        "data": null,
-                        "defaultContent": ''
-                    },
-                    { "data": "QuantidadeProduto" },
-                    { "data": "Unidade" },
-                    { "data": "DescricaoProduto" },
-                    { "data": "Marca" },
-                    { "data": "ValorUnitarioMinimo" },
-                    { "data": "ValorUnitario" },
-                    { "data": "ValorTotal" },
-                    { "data": "ValorPrecoVendaUnitario" }
-
-                ]
-            });
-
-
-            $('#table-detalhe-pedido').on('click', 'a.editor_remove', function (e) {
-                e.preventDefault();
-
-                editor.remove($(this).closest('tr'), {
-                    title: 'Delete record',
-                    message: 'Are you sure you wish to remove this record?',
-                    buttons: 'Delete'
-                });
-            });
-
-
-            // Add event listener for opening and closing details
-            $('#table-detalhe-pedido tbody').on('click', 'td.details-control', function () {
-                var tr = $(this).closest('tr');
-                var row = table.row(tr);
-
-                if (row.child.isShown()) {
-                    // This row is already open - close it
-                    row.child.hide();
-                    tr.removeClass('shown');
-                }
-                else {
-                    // Open this row
-                    row.child(format(row.data())).show();
-                    tr.addClass('shown');
-                }
-            });
+            carregarItens();
+            setPropertiesInitialDataTableCadastro();
+            formatarCampos();
         });
 
     </script>

@@ -1,10 +1,12 @@
-﻿
+﻿@using ShoppLab.Mappers;
+
 <div class="content-heading">
     <div>
         Consulta
         <small>Consulta de Pedidos - Pesquisa os pedidos existentes</small>
     </div>
 </div>
+
 
 <div class="card card-default">
     <div class="card-header">
@@ -41,7 +43,7 @@
                     <div class="input-group mb-3">
                         <input type="text" id="NomeCliente" class="form-control" />
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" onclick="ObterDadosPedidos()">Consutar</button>
+                            <button class="btn btn-outline-secondary" type="button" onclick="obterDadosPedidos()">Consutar</button>
                         </div>
                     </div>
                 </div>
@@ -90,6 +92,8 @@
 
     <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.maskmoney.min.js")"></script>
     <script src="@Scripts.Url("~/Scripts/shopplab/external/jquery.mask.min.js")"></script>
+    <script src="@Scripts.Url("~/Scripts/shopplab/external/accounting.min.js")"></script>
+
     <script src="@Scripts.Url("~/Scripts/shopplab/js/shopplab.util.js")"></script>
     <script src="@Scripts.Url("~/Scripts/shopplab/controllers/shopplab.pedido.js")"></script>
     <script src="@Scripts.Url("~/Scripts/shopplab/js/jquery.datatables.utils.js")"></script>
@@ -114,7 +118,7 @@
     <script type="text/javascript">
 
         var urlCadastrar = '@Url.Action("Atualizar", "Pedido")';
-
+         
         $(function () {
             formatarCampos();
             setPropertiesInitialDataTableConsulta();
