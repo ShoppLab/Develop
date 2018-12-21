@@ -8,7 +8,7 @@ namespace ShoppLab.Utility.Test
         [TestMethod]
         public void Encrypted()
         {
-            var encryptedValue = "102030";
+            var encryptedValue = "123";
             var retEncryptedValue = Encrypt.Encrypted(encryptedValue);
 
             Assert.AreNotEqual(encryptedValue, retEncryptedValue);
@@ -17,7 +17,7 @@ namespace ShoppLab.Utility.Test
         [TestMethod]
         public void Decrypted()
         {
-            var encryptedValue = "102030";
+            var encryptedValue = "123";
             var retEncryptedValue = Encrypt.Encrypted(encryptedValue);
 
             var retDecryptedValue = Encrypt.Decrypt(retEncryptedValue);

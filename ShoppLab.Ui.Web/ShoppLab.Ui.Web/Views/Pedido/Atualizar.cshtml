@@ -292,8 +292,6 @@
     <link rel="stylesheet" href="~/vendor/datatables.net-keytable-bs/css/keyTable.bootstrap.css">
     <link rel="stylesheet" href="~/vendor/datatables.net-responsive-bs/css/responsive.bootstrap.css">
 
-
-
     <style>
         td.details-control {
             background: url('../Images/details_open.png') no-repeat center center;
@@ -302,6 +300,10 @@
 
         tr.details td.details-control {
             background: url('../Images/details_close.png') no-repeat center center;
+        }
+
+        th {
+            white-space: nowrap;
         }
     </style>
 
@@ -336,7 +338,7 @@
 
         var itensPedido = @detalhePedido;
 
-        $(document).ready(function () {
+        $(function () {
             carregarItens();
             setPropertiesInitialDataTableCadastro();
             formatarCampos();

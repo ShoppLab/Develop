@@ -50,46 +50,6 @@ var id = 0,
     detalhePedido = [],
     detalhePedidoApresentacao = []
 
-
-function salvar() {
-
-    if (validarDadosPedido())
-        return;
-
-    //if ($(formName).valid()) {
-
-    var data = $(formName).serializeObject();
-
-    var cliente = new Object();
-    cliente.nome = $('#Nome').val();
-    cliente.email = $('#Email').val();
-    cliente.telefone = $('#Telefone').val();
-
-    data.cliente = cliente;
-
-    $.ajax({
-        cache: false,
-        url: urlPedido,
-        type: 'POST',
-        data: JSON.stringify({ model: data, detalhePedidoViewModel: detalhePedido }),
-        contentType: 'application/json; charset=utf-8',
-        async: true,
-        success: function (data) {
-
-        }
-    });
-    //}
-}
-
-function validarDadosPedido() {
-
-    //Verificar se existem item no pedido
-    var table = $(tableName).DataTable();
-    if (!table.data().count()) {
-        AbrirModal('Por favor, adicionar um item ao pedido!');
-    }
-}
-
 function adicionarItem() {
 
     if (!validarItemPedido()) {
@@ -215,6 +175,125 @@ function adicionarItem() {
     }
 }
 
+function carregarItens() {
+
+
+    for (i = 0; i < itensPedido.length; i++) {
+
+
+        detalhePedido.push({
+            "QuantidadeProduto": itensPedido[i].QuantidadeProduto,
+            "Unidade": itensPedido[i].Unidade,
+            "DescricaoProduto": itensPedido[i].DescricaoProduto,
+            "Marca": itensPedido[i].Marca,
+            "ValorUnitario": itensPedido[i].ValorUnitario,
+            "ValorUnitarioMinimo": itensPedido[i].ValorUnitarioMinimo,
+            "ValorTotal": itensPedido[i].ValorTotal,
+            "ValorPrecoVendaUnitario": itensPedido[i].ValorPrecoVendaUnitario,
+            "ValorPrecoCompra": itensPedido[i].ValorPrecoCompra,
+            "ValorDespesasCompra": itensPedido[i].ValorDespesasCompra,
+            "ValorComissaoBroker": itensPedido[i].ValorComissaoBroker,
+
+            "PercentualIcms": itensPedido[i].PercentualIcms,
+            "PercentualIcmsEntrada": itensPedido[i].PercentualIcmsEntrada,
+            "PercentualIcmsSaida": itensPedido[i].PercentualIcmsSaida,
+            "PercentualIPICompra": itensPedido[i].PercentualIPICompra,
+            "PercentualIPIVenda": itensPedido[i].PercentualIPIVenda,
+            "NumeroDiasPrazoEntrega": itensPedido[i].NumeroDiasPrazoEntrega,
+            "NumeroDiasCondicoesPagamentoCompra": itensPedido[i].NumeroDiasCondicoesPagamentoCompra,
+            "NumeroDiasCondicoesPagamentoVenda": itensPedido[i].NumeroDiasCondicoesPagamentoVenda,
+        });
+
+        detalhePedidoApresentacao.push({
+            "QuantidadeProduto": formatarMoeda(itensPedido[i].QuantidadeProduto),
+            "Unidade": itensPedido[i].Unidade,
+            "DescricaoProduto": itensPedido[i].DescricaoProduto,
+            "Marca": itensPedido[i].Marca,
+            "ValorUnitario": formatarMoeda(itensPedido[i].ValorUnitario),
+            "ValorUnitarioMinimo": formatarMoeda(itensPedido[i].ValorUnitarioMinimo),
+            "ValorTotal": formatarMoeda(itensPedido[i].ValorTotal),
+            "ValorPrecoVendaUnitario": formatarMoeda(itensPedido[i].ValorPrecoVendaUnitario),
+            "ValorPrecoCompra": formatarMoeda(itensPedido[i].ValorPrecoCompra),
+            "ValorDespesasCompra": formatarMoeda(itensPedido[i].ValorDespesasCompra),
+            "ValorComissaoBroker": formatarMoeda(itensPedido[i].ValorComissaoBroker),
+
+            "PercentualIcms": itensPedido[i].PercentualIcms,
+            "PercentualIcmsEntrada": itensPedido[i].PercentualIcmsEntrada,
+            "PercentualIcmsSaida": itensPedido[i].PercentualIcmsSaida,
+            "PercentualIPICompra": itensPedido[i].PercentualIPICompra,
+            "PercentualIPIVenda": itensPedido[i].PercentualIPIVenda,
+            "NumeroDiasPrazoEntrega": itensPedido[i].NumeroDiasPrazoEntrega,
+            "NumeroDiasCondicoesPagamentoCompra": itensPedido[i].NumeroDiasCondicoesPagamentoCompra,
+            "NumeroDiasCondicoesPagamentoVenda": itensPedido[i].NumeroDiasCondicoesPagamentoVenda,
+        });
+    }
+}
+
+function carregarValoresItem() {
+
+    valorPrecoCompra = formatarMoedaUS($('#input-precoCompra').val());
+    percentualIcmsEntrada = formatarMoedaUS($('#input-percentualImsEntrada').val());
+    percentualIPICompra = formatarMoedaUS($('#input-percentualIpiCompra').val());
+    valorDespesasCompra = formatarMoedaUS($('#input-despesaCompra').val());
+    quantidadeProduto = formatarMoedaUS($('#input-quantidade').val());
+    unidade = $('#input-unidade').val();
+    descricaoProduto = $('#input-produto').val();
+    marca = $('#input-marca').val();
+    valorUnitarioMinimo = formatarMoedaUS($('#input-valorUnitarioMinimo').val());
+    percentualIcmsSaida = formatarMoedaUS($('#input-icmsSaida').val());
+    numeroDiasPrazoEntrega = $('#input-prazoEntregaDias').val();
+    numeroDiasCondicoesPagamentoCompra = $('#input-pagtoCompraDias').val();
+    numeroDiasCondicoesPagamentoVenda = $('#input-pagtoVendaDias').val();
+    percentualIPIVenda = formatarMoedaUS($('#input-ipiVendaFrete').val());
+    valorComissaoBroker = formatarMoedaUS($('#input-comissaoBroker').val());
+    percentualIcms = percentualIcmsSaida;
+    valorLucroBruto = valorComissaoBroker;
+}
+
+function format(d) {
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+        '<tr>' +
+        '<td>Preço Compra</td>' +
+        '<td>' + d.ValorPrecoCompra + '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>Preço Venda Unitário</td>' +
+        '<td>' + d.ValorPrecoVendaUnitario + '</td>' +
+        '</tr>' +
+        '<tr>' +
+        '<td>Despesas Compra</td>' +
+        '<td>' + d.ValorDespesasCompra + '</td>' +
+        '</tr>' +
+        '<td>Comissão Broker</td>' +
+        '<td>' + d.ValorComissaoBroker + '</td>' +
+        '</tr>' +
+        '<td>% Percentual Icms</td>' +
+        '<td>' + d.PercentualIcms + '</td>' +
+        '</tr>' +
+        '<td>% Icms Entrada</td>' +
+        '<td>' + d.PercentualIcmsEntrada + '</td>' +
+        '</tr>' +
+        '<td>% Icms Saída</td>' +
+        '<td>' + d.PercentualIcmsSaida + '</td>' +
+        '</tr>' +
+        '<td>% Ipi Compra</td>' +
+        '<td>' + d.PercentualIPICompra + '</td>' +
+        '</tr>' +
+        '<td>% Ipi Venda</td>' +
+        '<td>' + d.PercentualIPIVenda + '</td>' +
+        '</tr>' +
+        '<td>Dias Prazo Entrega</td>' +
+        '<td>' + d.NumeroDiasPrazoEntrega + '</td>' +
+        '</tr>' +
+        '<td>Dias Condições Pagto Compra</td>' +
+        '<td>' + d.NumeroDiasCondicoesPagamentoCompra + '</td>' +
+        '</tr>' +
+        '<td>Dias Condições Pagto Venda</td>' +
+        '<td>' + d.NumeroDiasCondicoesPagamentoVenda + '</td>' +
+        '</tr>' +
+        '</table>';
+}
+
 function limparCampos() {
 
     $('#input-unidade').val('');
@@ -308,48 +387,43 @@ function obterDadosPedidos() {
     });
 }
 
-function format(d) {
-    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
-        '<tr>' +
-        '<td>Preço Compra</td>' +
-        '<td>' + d.ValorPrecoCompra + '</td>' +
-        '</tr>' +
-        '<tr>' +
-        '<td>Preço Venda Unitário</td>' +
-        '<td>' + d.ValorPrecoVendaUnitario + '</td>' +
-        '</tr>' +
-        '<tr>' +
-        '<td>Despesas Compra</td>' +
-        '<td>' + d.ValorDespesasCompra + '</td>' +
-        '</tr>' +
-        '<td>Comissão Broker</td>' +
-        '<td>' + d.ValorComissaoBroker + '</td>' +
-        '</tr>' +
-        '<td>% Percentual Icms</td>' +
-        '<td>' + d.PercentualIcms + '</td>' +
-        '</tr>' +
-        '<td>% Icms Entrada</td>' +
-        '<td>' + d.PercentualIcmsEntrada + '</td>' +
-        '</tr>' +
-        '<td>% Icms Saída</td>' +
-        '<td>' + d.PercentualIcmsSaida + '</td>' +
-        '</tr>' +
-        '<td>% Ipi Compra</td>' +
-        '<td>' + d.PercentualIPICompra + '</td>' +
-        '</tr>' +
-        '<td>% Ipi Venda</td>' +
-        '<td>' + d.PercentualIPIVenda + '</td>' +
-        '</tr>' +
-        '<td>Dias Prazo Entrega</td>' +
-        '<td>' + d.NumeroDiasPrazoEntrega + '</td>' +
-        '</tr>' +
-        '<td>Dias Condições Pagto Compra</td>' +
-        '<td>' + d.NumeroDiasCondicoesPagamentoCompra + '</td>' +
-        '</tr>' +
-        '<td>Dias Condições Pagto Venda</td>' +
-        '<td>' + d.NumeroDiasCondicoesPagamentoVenda + '</td>' +
-        '</tr>' +
-        '</table>';
+function salvar() {
+
+    if (validarDadosPedido())
+        return;
+
+    //if ($(formName).valid()) {
+
+    var data = $(formName).serializeObject();
+
+    var cliente = new Object();
+    cliente.nome = $('#Nome').val();
+    cliente.email = $('#Email').val();
+    cliente.telefone = $('#Telefone').val();
+
+    data.cliente = cliente;
+
+    $.ajax({
+        cache: false,
+        url: urlPedido,
+        type: 'POST',
+        data: JSON.stringify({ model: data, detalhePedidoViewModel: detalhePedido }),
+        contentType: 'application/json; charset=utf-8',
+        async: true,
+        success: function (data) {
+
+        }
+    });
+    //}
+}
+
+function validarDadosPedido() {
+
+    //Verificar se existem item no pedido
+    var table = $(tableName).DataTable();
+    if (!table.data().count()) {
+        AbrirModal('Por favor, adicionar um item ao pedido!');
+    }
 }
 
 function validarItemPedido() {
@@ -362,77 +436,3 @@ function validarItemPedido() {
     }
 }
 
-function carregarValoresItem() {
-
-    valorPrecoCompra = formatarMoedaUS($('#input-precoCompra').val());
-    percentualIcmsEntrada = formatarMoedaUS($('#input-percentualImsEntrada').val());
-    percentualIPICompra = formatarMoedaUS($('#input-percentualIpiCompra').val());
-    valorDespesasCompra = formatarMoedaUS($('#input-despesaCompra').val());
-    quantidadeProduto = formatarMoedaUS($('#input-quantidade').val());
-    unidade = $('#input-unidade').val();
-    descricaoProduto = $('#input-produto').val();
-    marca = $('#input-marca').val();
-    valorUnitarioMinimo = formatarMoedaUS($('#input-valorUnitarioMinimo').val());
-    percentualIcmsSaida = formatarMoedaUS($('#input-icmsSaida').val());
-    numeroDiasPrazoEntrega = $('#input-prazoEntregaDias').val();
-    numeroDiasCondicoesPagamentoCompra = $('#input-pagtoCompraDias').val();
-    numeroDiasCondicoesPagamentoVenda = $('#input-pagtoVendaDias').val();
-    percentualIPIVenda = formatarMoedaUS($('#input-ipiVendaFrete').val());
-    valorComissaoBroker = formatarMoedaUS($('#input-comissaoBroker').val());
-    percentualIcms = percentualIcmsSaida;
-    valorLucroBruto = valorComissaoBroker;
-}
-
-function carregarItens() {
-
-
-    for (i = 0; i < itensPedido.length; i++) {
-
-
-        detalhePedido.push({
-            "QuantidadeProduto": itensPedido[i].QuantidadeProduto,
-            "Unidade": itensPedido[i].Unidade,
-            "DescricaoProduto": itensPedido[i].DescricaoProduto,
-            "Marca": itensPedido[i].Marca,
-            "ValorUnitario": itensPedido[i].ValorUnitario,
-            "ValorUnitarioMinimo": itensPedido[i].ValorUnitarioMinimo,
-            "ValorTotal": itensPedido[i].ValorTotal,
-            "ValorPrecoVendaUnitario": itensPedido[i].ValorPrecoVendaUnitario,
-            "ValorPrecoCompra": itensPedido[i].ValorPrecoCompra,
-            "ValorDespesasCompra": itensPedido[i].ValorDespesasCompra,
-            "ValorComissaoBroker": itensPedido[i].ValorComissaoBroker,
-
-            "PercentualIcms": itensPedido[i].PercentualIcms,
-            "PercentualIcmsEntrada": itensPedido[i].PercentualIcmsEntrada,
-            "PercentualIcmsSaida": itensPedido[i].PercentualIcmsSaida,
-            "PercentualIPICompra": itensPedido[i].PercentualIPICompra,
-            "PercentualIPIVenda": itensPedido[i].PercentualIPIVenda,
-            "NumeroDiasPrazoEntrega": itensPedido[i].NumeroDiasPrazoEntrega,
-            "NumeroDiasCondicoesPagamentoCompra": itensPedido[i].NumeroDiasCondicoesPagamentoCompra,
-            "NumeroDiasCondicoesPagamentoVenda": itensPedido[i].NumeroDiasCondicoesPagamentoVenda,
-        });
-
-        detalhePedidoApresentacao.push({
-            "QuantidadeProduto": formatarMoeda(itensPedido[i].QuantidadeProduto),
-            "Unidade": itensPedido[i].Unidade,
-            "DescricaoProduto": itensPedido[i].DescricaoProduto,
-            "Marca": itensPedido[i].Marca,
-            "ValorUnitario": formatarMoeda(itensPedido[i].ValorUnitario),
-            "ValorUnitarioMinimo": formatarMoeda(itensPedido[i].ValorUnitarioMinimo),
-            "ValorTotal": formatarMoeda(itensPedido[i].ValorTotal),
-            "ValorPrecoVendaUnitario": formatarMoeda(itensPedido[i].ValorPrecoVendaUnitario),
-            "ValorPrecoCompra": formatarMoeda(itensPedido[i].ValorPrecoCompra),
-            "ValorDespesasCompra": formatarMoeda(itensPedido[i].ValorDespesasCompra),
-            "ValorComissaoBroker": formatarMoeda(itensPedido[i].ValorComissaoBroker),
-
-            "PercentualIcms": itensPedido[i].PercentualIcms,
-            "PercentualIcmsEntrada": itensPedido[i].PercentualIcmsEntrada,
-            "PercentualIcmsSaida": itensPedido[i].PercentualIcmsSaida,
-            "PercentualIPICompra": itensPedido[i].PercentualIPICompra,
-            "PercentualIPIVenda": itensPedido[i].PercentualIPIVenda,
-            "NumeroDiasPrazoEntrega": itensPedido[i].NumeroDiasPrazoEntrega,
-            "NumeroDiasCondicoesPagamentoCompra": itensPedido[i].NumeroDiasCondicoesPagamentoCompra,
-            "NumeroDiasCondicoesPagamentoVenda": itensPedido[i].NumeroDiasCondicoesPagamentoVenda,
-        });
-    }
-}

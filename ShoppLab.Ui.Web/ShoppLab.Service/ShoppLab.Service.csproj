@@ -55,6 +55,10 @@
       <Project>{29be0ebf-5928-4402-8d9b-95f177a6efa1}</Project>
       <Name>ShoppLab.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ShoppLab.Utility\ShoppLab.Utility.csproj">
+      <Project>{0f0072bc-42fa-49b8-bf4f-451ca3b199d9}</Project>
+      <Name>ShoppLab.Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -73,6 +73,7 @@
     <Compile Include="ViewModel\ClienteViewModel.cs" />
     <Compile Include="ViewModel\DetalhePedidoViewModel.cs" />
     <Compile Include="ViewModel\PedidoViewModel.cs" />
+    <Compile Include="ViewModel\UsuarioViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

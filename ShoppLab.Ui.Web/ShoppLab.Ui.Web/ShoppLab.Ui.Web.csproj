@@ -838,6 +838,10 @@
       <Project>{37174ff9-9584-4115-b35f-a793b21c6ac8}</Project>
       <Name>ShoppLab.Mappers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ShoppLab.Utility\ShoppLab.Utility.csproj">
+      <Project>{0f0072bc-42fa-49b8-bf4f-451ca3b199d9}</Project>
+      <Name>ShoppLab.Utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -18,6 +18,13 @@ namespace ShoppLab.Repository.EntityMapping
             Property(t => t.Senha)
                 .IsRequired()
                 .HasMaxLength(20);
+
+            // Table & Column Mappings
+            ToTable("Usuario");
+            Property(t => t.Id).HasColumnName("IdUsuario");
+            Property(t => t.Nome).HasColumnName("NmUsuario");
+            Property(t => t.Senha).HasColumnName("DsSenha");
+
         }
     }
 }

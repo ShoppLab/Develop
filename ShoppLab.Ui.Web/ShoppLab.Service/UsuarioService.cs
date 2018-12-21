@@ -1,5 +1,6 @@
 ﻿using ShoppLab.Domain.Entities;
 using ShoppLab.Domain.Interfaces;
+using ShoppLab.Utility;
 using System.Linq;
 
 namespace ShoppLab.Service
@@ -16,7 +17,8 @@ namespace ShoppLab.Service
 
         public bool ValidadeSenha(string usuario, string senha)
         {
-            return _usuarioRepository.Find(x => x.Nome == usuario && x.Senha == senha).FirstOrDefault() != null;
+            var retEncryptedValue = Encrypt.Encrypted(senha);
+            return _usuarioRepository.Find(x => x.Nome == usuario && x.Senha == retEncryptedValue).FirstOrDefault() != null;
         }
     }
 }

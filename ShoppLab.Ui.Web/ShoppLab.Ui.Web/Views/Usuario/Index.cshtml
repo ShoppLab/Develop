@@ -1,20 +1,31 @@
-﻿@{
+﻿@using ShoppLab.Mappers.ViewModel
+
+@{
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
+
+@model UsuarioViewModel
+
 <div class="block-center mt-4 wd-xl">
     <!-- START card-->
     <div class="card card-flat">
         <div class="card-header text-center bg-dark">
-            <p style="color:white; font-size:large; font-weight:700 ">ShopLab</p>
+            <p style="color:white; font-size:large; font-weight:700 ">ShoppLab</p>
 
         </div>
-
-        <div class="card-body">
-            <p class="text-center py-2">Preencha os campos para continuar.</p>
-            <form class="mb-3" id="loginForm" novalidate="novalidate">
+        @using (Html.BeginForm())
+        {
+            <div class="card-body">
+                <p class="text-center py-2">Preencha os campos para continuar.</p>
                 <div class="form-group">
+
+                    @Html.ValidationSummary()
+
                     <div class="input-group with-focus">
-                        <input class="form-control border-right-0" id="usuario" type="text" placeholder="Usuário" autocomplete="off" required="required" />
+                        @*<input class="form-control border-right-0" id="usuario" type="text" placeholder="Usuário" autocomplete="off" required="required" />*@
+
+                        @Html.TextBoxFor(x => x.Nome, new { @class = "form-control border-right-0", @placeholder = "Usuário", @autocomplete = "off" })
+
                         <div class="input-group-append">
                             <span class="input-group-text text-muted bg-transparent border-left-0">
                                 <em class="fa fa-user"></em>
@@ -24,7 +35,8 @@
                 </div>
                 <div class="form-group">
                     <div class="input-group with-focus">
-                        <input class="form-control border-right-0" id="senha" type="password" placeholder="Senha" required="required" />
+                        @*<input class="form-control border-right-0" id="senha" type="password" placeholder="Senha" required="required" />*@
+                        @Html.TextBoxFor(x => x.Senha, new { @class = "form-control border-right-0", @placeholder = "Usuário", @autocomplete = "off", @type = "password" })
                         <div class="input-group-append">
                             <span class="input-group-text text-muted bg-transparent border-left-0">
                                 <em class="fa fa-lock"></em>
@@ -33,9 +45,9 @@
                     </div>
                 </div>
 
-                <button class="btn btn-block btn-primary mt-3" type="button" onclick="validarUsuario()">Entrar</button>
-            </form>
-        </div>
+                <button class="btn btn-block btn-primary mt-3" type="submit">Entrar</button>
+            </div>
+        }
     </div>
     <!-- END card-->
 
