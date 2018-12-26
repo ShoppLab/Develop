@@ -48,7 +48,11 @@ var id = 0,
     formName = "#form-pedido",
     formItemPedidoName = "#form-itens-pedido",
     detalhePedido = [],
-    detalhePedidoApresentacao = []
+    detalhePedidoApresentacao = [],
+
+    rowDataTable = null,
+    idItemPedido = 0,
+    indexRow = 0;
 
 function adicionarItem() {
 
@@ -61,12 +65,12 @@ function adicionarItem() {
             detalhePedido = [];
         }
 
-        percentualIcms = 0;
-        percentualIcmsEntrada = 0;
-        percentualIcmsSaida = 0;
-        percentualIPI = 0;
-        percentualIPICompra = 0;
-        percentualIPIVenda = 0;
+        //percentualIcms = 0;
+        //percentualIcmsEntrada = 0;
+        //percentualIcmsSaida = 0;
+        //percentualIPI = 0;
+        //percentualIPICompra = 0;
+        //percentualIPIVenda = 0;
 
         carregarValoresItem();
         limparVariaveis();
@@ -121,6 +125,7 @@ function adicionarItem() {
         valorPrecoVendaUnitario = valorPrecoVendaUnitario;
 
         detalhePedido.push({
+            "Id": id,
             "QuantidadeProduto": quantidadeProduto,
             "Unidade": unidade,
             "DescricaoProduto": descricaoProduto,
@@ -136,7 +141,7 @@ function adicionarItem() {
             "PercentualIcms": percentualIcms,
             "PercentualIcmsEntrada": percentualIcmsEntrada,
             "PercentualIcmsSaida": percentualIcmsSaida,
-            "PercentualIPICompra": percentualIPI,
+            "PercentualIPICompra": percentualIPICompra,
             "PercentualIPIVenda": percentualIPIVenda,
             "NumeroDiasPrazoEntrega": numeroDiasPrazoEntrega,
             "NumeroDiasCondicoesPagamentoCompra": numeroDiasCondicoesPagamentoCompra,
@@ -144,6 +149,7 @@ function adicionarItem() {
         });
 
         detalhePedidoApresentacao.push({
+            "Id": id,
             "QuantidadeProduto": formatarMoeda(quantidadeProduto),
             "Unidade": unidade,
             "DescricaoProduto": descricaoProduto,
@@ -159,12 +165,13 @@ function adicionarItem() {
             "PercentualIcms": percentualIcms,
             "PercentualIcmsEntrada": percentualIcmsEntrada,
             "PercentualIcmsSaida": percentualIcmsSaida,
-            "PercentualIPICompra": percentualIPI,
+            "PercentualIPICompra": percentualIPICompra,
             "PercentualIPIVenda": percentualIPIVenda,
             "NumeroDiasPrazoEntrega": numeroDiasPrazoEntrega,
             "NumeroDiasCondicoesPagamentoCompra": numeroDiasCondicoesPagamentoCompra,
             "NumeroDiasCondicoesPagamentoVenda": numeroDiasCondicoesPagamentoVenda,
         });
+
 
         var table = $(tableName).DataTable();
         table.clear();
@@ -182,6 +189,7 @@ function carregarItens() {
 
 
         detalhePedido.push({
+            "Id": itensPedido[i].Id,
             "QuantidadeProduto": itensPedido[i].QuantidadeProduto,
             "Unidade": itensPedido[i].Unidade,
             "DescricaoProduto": itensPedido[i].DescricaoProduto,
@@ -205,6 +213,7 @@ function carregarItens() {
         });
 
         detalhePedidoApresentacao.push({
+            "Id": itensPedido[i].Id,
             "QuantidadeProduto": formatarMoeda(itensPedido[i].QuantidadeProduto),
             "Unidade": itensPedido[i].Unidade,
             "DescricaoProduto": itensPedido[i].DescricaoProduto,
@@ -296,11 +305,11 @@ function format(d) {
 
 function limparCampos() {
 
+    $('.format-money').val(0);
+    $('.format-integer').val(0);
     $('#input-unidade').val('');
     $('#input-produto').val('');
     $('#input-marca').val('');
-    $('.format-money').val(0);
-    $('.format-integer').val(0);
     $('#input-produto').focus();
 }
 
@@ -362,67 +371,94 @@ function obterDadosPedidos() {
     var nomeCliente = $('#NomeCliente').val();
 
     if (dataInicial == "" && dataFinal == "" && nomeCliente == "") {
-        alert("Por favor, preencher algum dos filtros!");
-    }
+        AbrirModal("Atenção", "Por favor, preencher algum dos filtros!");
+    } else {
+        $.ajax({
+            type: "GET",
+            url: "/Pedido/ObterDadosPedidos",
 
-    $.ajax({
-        type: "GET",
-        url: "/Pedido/ObterDadosPedidos",
+            data: { dataInicial: dataInicial, dataFinal: dataFinal, nomeCliente: nomeCliente },
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                var table = $('#table-pedido').DataTable();
+                table.clear().draw(false);
 
-        data: { dataInicial: dataInicial, dataFinal: dataFinal, nomeCliente: nomeCliente },
-        contentType: 'application/json; charset=utf-8',
-        async: true,
-        success: function (data) {
-            var table = $('#table-pedido').DataTable();
-            table.clear().draw(false);
-
-            if (data.length != 0) {
-
-                for (var i = 0; i < data.length; i++) {
-                    table.row.add([data[i].Pedido, data[i].DataRegistro, data[i].Nome, formatarMoeda(formatarMoedaUS(data[i].PrecoVendaUnitario))])
-                        .draw(false);
+                if (data.length == 0) {
+                    AbrirModal("Informação", "Nenhuma registro foi encontrado para os filtros informados!");
+                } else {
+                    for (var i = 0; i < data.length; i++) {
+                        table.row.add([data[i].Pedido, data[i].DataRegistro, data[i].Nome, formatarMoeda(formatarMoedaUS(data[i].PrecoVendaUnitario))])
+                            .draw(false);
+                    }
                 }
             }
-        }
-    });
+        });
+    }
 }
 
 function salvar() {
 
-    if (validarDadosPedido())
-        return;
+    if ($(formName).valid()) {
 
-    //if ($(formName).valid()) {
+        if (validarDadosPedido())
+            return;
 
-    var data = $(formName).serializeObject();
+        var data = $(formName).serializeObject();
+        var cliente = new Object();
 
-    var cliente = new Object();
-    cliente.nome = $('#Nome').val();
-    cliente.email = $('#Email').val();
-    cliente.telefone = $('#Telefone').val();
+        cliente.nome = $('#Nome').val();
+        cliente.email = $('#Email').val();
+        cliente.DataRegistro = $('#DataRegistro').val();
+        cliente.telefone = $('#Telefone').val();
 
-    data.cliente = cliente;
+        data.cliente = cliente;
 
-    $.ajax({
-        cache: false,
-        url: urlPedido,
-        type: 'POST',
-        data: JSON.stringify({ model: data, detalhePedidoViewModel: detalhePedido }),
-        contentType: 'application/json; charset=utf-8',
-        async: true,
-        success: function (data) {
+        $.ajax({
+            cache: false,
+            url: urlPedido,
+            type: 'POST',
+            data: JSON.stringify({ model: data, detalhePedidoViewModel: detalhePedido }),
+            contentType: 'application/json; charset=utf-8',
+            async: true,
+            success: function (data) {
+                if (data == true) {
+                    $('#alert-success').css('display', 'block');
 
-        }
-    });
-    //}
+                    setTimeout(function () {
+                        $('#alert-success').css('display', 'none');
+                        if ($('#Id').val() == 0) {
+                            window.location.href = urlCadastrar;
+                        }
+                        else {
+                            window.location.href = urlConsultar;
+                        }
+                    }, 5000);
+                } else {
+                    AbrirModal("Atenção", "Ocorreu algum problema e não foi possível gravar as informações!");
+                }
+            }
+        });
+    } else {
+
+        if ($('div input.input-validation-error').length != 0) {
+            $('#alert-danger').css('display', 'block');
+
+
+            setTimeout(function () {
+                $('#alert-danger').css('display', 'none');
+            }, 5000);
+        };
+    }
 }
+
 
 function validarDadosPedido() {
 
     //Verificar se existem item no pedido
     var table = $(tableName).DataTable();
     if (!table.data().count()) {
-        AbrirModal('Por favor, adicionar um item ao pedido!');
+        AbrirModal('Atenção', 'Por favor, adicionar um item ao pedido!');
     }
 }
 
@@ -436,3 +472,100 @@ function validarItemPedido() {
     }
 }
 
+function carregarItem() {
+
+    valorPrecoCompra = formatarMoedaUS($('#input-precoCompra').val());
+    percentualIcmsEntrada = formatarMoedaUS($('#input-percentualImsEntrada').val());
+    percentualIPICompra = formatarMoedaUS($('#input-percentualIpiCompra').val());
+    valorDespesasCompra = formatarMoedaUS($('#input-despesaCompra').val());
+    quantidadeProduto = formatarMoedaUS($('#input-quantidade').val());
+    unidade = $('#input-unidade').val();
+    descricaoProduto = $('#input-produto').val();
+    marca = $('#input-marca').val();
+    valorUnitarioMinimo = formatarMoedaUS($('#input-valorUnitarioMinimo').val());
+    percentualIcmsSaida = formatarMoedaUS($('#input-icmsSaida').val());
+    numeroDiasPrazoEntrega = $('#input-prazoEntregaDias').val();
+    numeroDiasCondicoesPagamentoCompra = $('#input-pagtoCompraDias').val();
+    numeroDiasCondicoesPagamentoVenda = $('#input-pagtoVendaDias').val();
+    percentualIPIVenda = formatarMoedaUS($('#input-ipiVendaFrete').val());
+    valorComissaoBroker = formatarMoedaUS($('#input-comissaoBroker').val());
+    percentualIcms = percentualIcmsSaida;
+    valorLucroBruto = valorComissaoBroker;
+}
+
+function modalYesNo() {
+    AbrirModalYesNo("Atenção", "Deseja excluir o item?");
+}
+
+function sim() {
+
+    var rows = $('#table-detalhe-pedido').DataTable().data().count();
+    if (rows == 1) {
+        AbrirModal("Atenção", "Não será possível excluir todos os itens do pedido!");
+    } else {
+
+        if (idItemPedido == 0) {
+            rowDataTable.remove().draw();
+        } else {
+            $.ajax({
+                type: "GET",
+                url: "/Pedido/ExcluirItemPedido",
+
+                data: { id: idItemPedido },
+                contentType: 'application/json; charset=utf-8',
+                async: true,
+                success: function (data) {
+                    if (data = true) {
+                        debugger;
+                        detalhePedido.splice(indexRow, 1);
+                        detalhePedidoApresentacao.splice(indexRow, 1);
+                        rowDataTable.remove().draw();
+                        idItemPedido = 0;
+                    } else {
+                        AbrirModalYesNo("Atenção", "O item não foi excluído, favor verificar!");
+                    }
+                }
+            });
+        }
+
+    }
+}
+
+
+function addDell() {
+    $('#input-quantidade').val(200);
+    $('#input-unidade').val('PCA');
+    $('#input-produto').val('Notebook Dell Inspiron');
+    $('#input-marca').val('Samsung');
+    $('#input-valorUnitarioMinimo').val(180000);
+    $('#input-icmsSaida').val(18);
+    $('#input-prazoEntregaDias').val(10);
+    $('#input-precoCompra').val(150000);
+    $('#input-percentualImsEntrada').val(18);
+    $('#input-percentualIpiCompra').val(0);
+    $('#input-despesaCompra').val(0);
+    $('#input-pagtoCompraDias').val(28);
+    $('#input-pagtoVendaDias').val(28);
+    $('#input-percentualImsSaida').val(18);
+    $('#input-ipiVendaFrete').val(0);
+    $('#input-comissaoBroker').val(50);
+}
+
+function addMicrosoft() {
+    $('#input-quantidade').val(600);
+    $('#input-unidade').val('PCA');
+    $('#input-produto').val('Teclado Microsot Arc');
+    $('#input-marca').val('Samsung');
+    $('#input-valorUnitarioMinimo').val(450000);
+    $('#input-icmsSaida').val(18);
+    $('#input-prazoEntregaDias').val(10);
+    $('#input-precoCompra').val(350000);
+    $('#input-percentualImsEntrada').val(18);
+    $('#input-percentualIpiCompra').val(0);
+    $('#input-despesaCompra').val(0);
+    $('#input-pagtoCompraDias').val(28);
+    $('#input-pagtoVendaDias').val(28);
+    $('#input-percentualImsSaida').val(18);
+    $('#input-ipiVendaFrete').val(0);
+    $('#input-comissaoBroker').val(50);
+}

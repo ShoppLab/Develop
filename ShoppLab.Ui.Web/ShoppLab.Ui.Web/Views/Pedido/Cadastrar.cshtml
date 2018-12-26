@@ -16,6 +16,14 @@
 
 <form id="form-pedido" method="post">
 
+    <div id="alert-danger" class="alert alert-danger " role="alert" style="display: none">
+        Por favor, Preencha os campos sinalizados em vermelho.
+    </div>
+
+    <div id="alert-success" class="alert alert-success" role="alert" style="display: none">
+        As informações do pedido foram gravadas com sucesso!
+    </div>
+
     <div class="card card-default">
         <div class="card-header">Dados do cliente</div>
         <div class="card-body">
@@ -24,7 +32,7 @@
 
                 <div class="col-lg-5 mb-3">
                     @Html.Label("Nome")
-                    @Html.TextBoxFor(x => x.Nome, new { @class = "form-control" })
+                    @Html.TextBoxFor(x => x.Nome, new { @class = "form-control", @maxlength = "60" })
                 </div>
 
                 <div class="col-lg-3 mb-3">
@@ -33,7 +41,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">@@</span>
                         </div>
-                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @maxlength = "60" })
                     </div>
                     @Html.ValidationMessageFor(x => x.Email)
                 </div>
@@ -66,20 +74,20 @@
 
             <div class="form-row">
 
-                <div class="col-lg-2 mb-3">
+                <div class="col-lg-2 mb-4">
                     @Html.Label("Condições de Pagto")
-                    @Html.TextBoxFor(x => x.CondicoesPagto, new { @class = "form-control" })
+                    @Html.TextBoxFor(x => x.CondicoesPagto, new { @class = "form-control", @maxlength = "60" })
 
                 </div>
 
-                <div class="col-lg-2 mb-3">
+                <div class="col-lg-2 mb-4">
                     @Html.Label("Validade de Preços")
-                    @Html.TextBoxFor(x => x.DiasValidadePreco, new { @class = "form-control" })
+                    @Html.TextBoxFor(x => x.DiasValidadePreco, new { @class = "form-control", @maxlength = "60" })
                 </div>
 
-                <div class="col-lg-8 mb-3">
+                <div class="col-lg-8 mb-4">
                     @Html.Label("Condições de Entrega")
-                    @Html.TextBoxFor(x => x.CondicoesEntrega, new { @class = "form-control" })
+                    @Html.TextBoxFor(x => x.CondicoesEntrega, new { @class = "form-control", @maxlength = "60" })
                 </div>
 
 
@@ -97,7 +105,7 @@
 
                 <div class="col-lg-8 mb-3">
                     <label>Produto</label>
-                    <input id="input-produto" class="form-control" type="text" />
+                    <input id="input-produto" class="form-control" type="text" maxlength="100" />
                 </div>
 
                 <div class="col-lg-1 mb-3">
@@ -107,7 +115,7 @@
 
                 <div class="col-lg-1 mb-3">
                     <label>Unidade</label>
-                    <input id="input-unidade" class="form-control" type="text" />
+                    <input id="input-unidade" class="form-control" type="text" maxlength="3" />
                 </div>
 
                 <div class="col-lg-2 mb-3">
@@ -244,6 +252,7 @@
                 <thead>
                     <tr>
                         <th></th>
+                        <th>Id</th>
                         <th>Quantidade</th>
                         <th>Unidade</th>
                         <th>Produto</th>
@@ -252,6 +261,8 @@
                         <th>Unitário</th>
                         <th>Total</th>
                         <th>Preço Venda</th>
+                        <th></th>
+
                     </tr>
                 </thead>
                 <tfoot>
@@ -285,6 +296,8 @@
 @section BodyArea {
 
     @Html.Partial("_Modal")
+    @Html.Partial("_ModalYesNo")
+
 }
 
 @section Styles {
@@ -292,15 +305,18 @@
     <link rel="stylesheet" href="~/vendor/datatables.net-bs4/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="~/vendor/datatables.net-keytable-bs/css/keyTable.bootstrap.css">
     <link rel="stylesheet" href="~/vendor/datatables.net-responsive-bs/css/responsive.bootstrap.css">
+    <link rel="stylesheet" href="~/Content/shopplab.css">
+
 
     <style>
         td.details-control {
-            background: url('../Images/details_open.png') no-repeat center center;
+            background:  url('@Url.Content("~/Images/details_open.png")') no-repeat center center;
             cursor: pointer;
         }
 
         tr.details td.details-control {
-            background: url('../Images/details_close.png') no-repeat center center;
+
+            background: url('@Url.Content("~/Images/details_open.png")') no-repeat center center;
         }
 
         th {
@@ -319,7 +335,6 @@
     <script src="@Scripts.Url("~/Scripts/shopplab/js/shopplab.util.js")"></script>
     <script src="@Scripts.Url("~/Scripts/shopplab/controllers/shopplab.pedido.js")"></script>
     <script src="@Scripts.Url("~/Scripts/shopplab/js/jquery.datatables.utils.js")"></script>
-
 
     <script src="@Scripts.Url("~/Scripts/jquery.validate.min.js")"></script>
     <script src="@Scripts.Url("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
@@ -340,8 +355,8 @@
     <script type="text/javascript">
 
         $(function () {
-            setPropertiesInitialDataTableCadastro();
             formatarCampos();
+            setPropertiesInitialDataTableCadastrar();
         });
 
     </script>

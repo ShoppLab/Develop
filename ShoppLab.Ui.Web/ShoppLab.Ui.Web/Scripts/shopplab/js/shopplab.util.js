@@ -38,3 +38,9 @@ function AbrirModal(title, body) {
     $('#myModal').modal('show');
 }
 
+function AbrirModalYesNo(title, body) {
+
+    $("#myModalYesNoLabel").text(title);
+    $(".modal-body").text(body);
+    $('#myModalYesNo').modal('show');
+}

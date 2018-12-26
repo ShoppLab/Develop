@@ -77,5 +77,13 @@ namespace ShoppLab.Repository.Repository
             Context.Dispose();
             GC.SuppressFinalize(this);
         }
+
+        public void Remove(int id)
+        {
+            var obj = DbSet.Find(id);
+            var entry = Context.Entry(obj);
+            entry.State = EntityState.Deleted;
+            SaveChanges();
+        }
     }
 }

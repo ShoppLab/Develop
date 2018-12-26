@@ -12,10 +12,13 @@ namespace ShoppLab.Ui.Web.Controllers
     public class PedidoController : Controller
     {
         private readonly IPedidoService _pedidoService;
+        private readonly IDetalhePedidoService _detalhePedidoService;
 
-        public PedidoController(IPedidoService pedidoService)
+
+        public PedidoController(IPedidoService pedidoService, IDetalhePedidoService detalhePedidoService)
         {
             _pedidoService = pedidoService;
+            _detalhePedidoService = detalhePedidoService;
         }
 
         [HttpGet]
@@ -27,18 +30,32 @@ namespace ShoppLab.Ui.Web.Controllers
         [HttpPost]
         public JsonResult Cadastrar(PedidoViewModel model, List<DetalhePedidoViewModel> detalhePedidoViewModel)
         {
-            if (ModelState.IsValid)
+
+            ModelState.Remove("model.Contato");
+
+            try
             {
-                var cliente = Mapper.Map<ClienteViewModel, Cliente>(model.Cliente);
+                if (!ModelState.IsValid)
+                {
+                    return Json(false, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    var cliente = Mapper.Map<ClienteViewModel, Cliente>(model.Cliente);
 
-                var pedido = Mapper.Map<PedidoViewModel, Pedido>(model);
-                var detalhePedido = Mapper.Map<List<DetalhePedidoViewModel>, List<DetalhePedido>>(detalhePedidoViewModel);
+                    var pedido = Mapper.Map<PedidoViewModel, Pedido>(model);
+                    var detalhePedido = Mapper.Map<List<DetalhePedidoViewModel>, List<DetalhePedido>>(detalhePedidoViewModel);
 
-                pedido.DetalhePedido = detalhePedido;
-                pedido.Cliente = cliente;
-                _pedidoService.Salvar(pedido);
+                    pedido.DetalhePedido = detalhePedido;
+                    pedido.Cliente = cliente;
+                    _pedidoService.Salvar(pedido);
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
             }
-            return Json("", JsonRequestBehavior.AllowGet);
+            catch
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpGet]
@@ -53,6 +70,7 @@ namespace ShoppLab.Ui.Web.Controllers
 
             var pedidoViewModel = new PedidoViewModel
             {
+                Id = pedido.Id,
                 DataRegistro = pedido.DataRegistro.ToString("dd/MM/yyyy"),
                 CondicoesEntrega = pedido.CondicoesEntrega,
                 CondicoesPagto = pedido.CondicoesPagto,
@@ -66,6 +84,7 @@ namespace ShoppLab.Ui.Web.Controllers
             {
                 pedidoViewModel.DetalhePedido.Add(new DetalhePedidoViewModel
                 {
+                    Id = item.Id,
                     DescricaoProduto = item.DescricaoProduto,
                     Marca = item.Marca,
                     Unidade = item.Unidade,
@@ -81,7 +100,7 @@ namespace ShoppLab.Ui.Web.Controllers
                     ValorPrecoVendaUnitario = item.ValorPrecoVendaUnitario,
                     ValorTotal = item.ValorTotal,
                     ValorUnitario = item.ValorUnitario,
-                    ValorUnitarioMinimo = item.ValorUnitarioMinimo, 
+                    ValorUnitarioMinimo = item.ValorUnitarioMinimo,
                     NumeroDiasCondicoesPagamentoCompra = item.NumeroDiasCondicoesPagamentoCompra,
                     NumeroDiasCondicoesPagamentoVenda = item.NumeroDiasCondicoesPagamentoVenda,
                     NumeroDiasPrazoEntrega = item.NumeroDiasPrazoEntrega
@@ -121,6 +140,20 @@ namespace ShoppLab.Ui.Web.Controllers
             }).ToList();
 
             return Json(itens, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult ExcluirItemPedido(int id)
+        {
+            try
+            {
+                _detalhePedidoService.Remove(id);
+                return Json(true, JsonRequestBehavior.AllowGet);
+
+            }
+            catch (Exception)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

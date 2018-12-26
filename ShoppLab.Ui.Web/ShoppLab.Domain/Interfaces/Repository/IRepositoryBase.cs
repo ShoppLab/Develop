@@ -16,10 +16,11 @@ namespace ShoppLab.Domain.Interfaces
 
         void Remove(TEntity obj);
 
+        void Remove(int id);
+
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
 
         void SaveChanges();
-
 
     }
 }

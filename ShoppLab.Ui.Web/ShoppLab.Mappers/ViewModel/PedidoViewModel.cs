@@ -15,28 +15,28 @@ namespace ShoppLab.Mappers
 
         public int IdCliente { get; set; }
 
-        [Required(ErrorMessage = "xxxx")]
-        [Display(Name = "Nome")]
+        [Required(ErrorMessage = " ")]
         public string Nome { get; set; }
 
-        [Required(ErrorMessage = "xxxxx")]
-        [Display(Name = "Data de registro")]
+        [Required(ErrorMessage = " ")]
         public string DataRegistro { get; set; }
 
-        [Description("Email do cliente")]
-        [Display(Name = "E-mail")]
+        [Required(ErrorMessage = " ")]
         public string Email { get; set; }
 
-        [Description("Telefone do cliente")]
-        [Display(Name = "Telefone")]
+        [Required(ErrorMessage = " ")]
         public string Telefone { get; set; }
 
+        [Required(ErrorMessage = " ")]
         public string CondicoesPagto { get; set; }
 
+        [Required(ErrorMessage = " ")]
         public string CondicoesEntrega { get; set; }
 
+        [Required(ErrorMessage = " ")]
         public string Contato { get; set; }
 
+        [Required(ErrorMessage = " ")]
         public string DiasValidadePreco { get; set; }
 
         public ClienteViewModel Cliente { get; set; }

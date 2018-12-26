@@ -78,6 +78,11 @@
     </div>
 </div>
 
+@section BodyArea {
+
+    @Html.Partial("_Modal")
+}
+
 
 @section Styles {
 
@@ -118,7 +123,7 @@
     <script type="text/javascript">
 
         var urlCadastrar = '@Url.Action("Atualizar", "Pedido")';
-         
+
         $(function () {
             formatarCampos();
             setPropertiesInitialDataTableConsulta();

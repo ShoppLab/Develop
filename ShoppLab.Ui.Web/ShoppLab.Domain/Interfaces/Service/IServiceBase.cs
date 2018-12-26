@@ -14,6 +14,8 @@ namespace ShoppLab.Domain.Interfaces
 
         void Remove(TEntity obj);
 
+        void Remove(int id);
+
         void Dispose();
     }
 }

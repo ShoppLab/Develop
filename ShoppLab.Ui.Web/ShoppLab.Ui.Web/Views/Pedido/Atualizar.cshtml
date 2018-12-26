@@ -22,8 +22,19 @@
 <form id="form-pedido" method="post">
 
     @Html.HiddenFor(x => x.Id)
-    @Html.HiddenFor(x => x.IdCliente)
+    @Html.HiddenFor(x => x.Nome)
+    @Html.HiddenFor(x => x.Email)
+    @Html.HiddenFor(x => x.DataRegistro)
+    @Html.HiddenFor(x => x.Telefone)
 
+
+    <div id="alert-danger" class="alert alert-danger " role="alert" style="display: none">
+        Por favor, Preencha os campos sinalizados em vermelho.
+    </div>
+
+    <div id="alert-success" class="alert alert-success" role="alert" style="display: none">
+        As informações do pedido foram gravadas com sucesso!
+    </div>
 
     <div class="card card-default">
         <div class="card-header">Dados do cliente</div>
@@ -63,7 +74,6 @@
                     @Html.Label("Telefone")
                     @Html.TextBoxFor(x => x.Telefone, new { @class = "form-control format-phone", @disabled = "disabled" })
                 </div>
-
             </div>
         </div>
 
@@ -90,7 +100,6 @@
                     @Html.Label("Condições de Entrega")
                     @Html.TextBoxFor(x => x.CondicoesEntrega, new { @class = "form-control" })
                 </div>
-
 
             </div>
         </div>
@@ -251,6 +260,7 @@
                 <thead>
                     <tr>
                         <th></th>
+                        <th>Id</th>
                         <th>Quantidade</th>
                         <th>Unidade</th>
                         <th>Produto</th>
@@ -259,8 +269,15 @@
                         <th>Unitário</th>
                         <th>Total</th>
                         <th>Preço Venda</th>
+                        <th></th>
                     </tr>
                 </thead>
+                <tfoot>
+                    <tr>
+                        <th colspan="8" style="text-align:right">Total:</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
 
             </table>
 
@@ -285,28 +302,37 @@
     </div>
 </div>
 
+@section BodyArea {
+
+    @Html.Partial("_Modal")
+    @Html.Partial("_ModalYesNo")
+}
+
+
 
 @section Styles {
 
     <link rel="stylesheet" href="~/vendor/datatables.net-bs4/css/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="~/vendor/datatables.net-keytable-bs/css/keyTable.bootstrap.css">
     <link rel="stylesheet" href="~/vendor/datatables.net-responsive-bs/css/responsive.bootstrap.css">
+    <link rel="stylesheet" href="~/Content/shopplab.css">
+
 
     <style>
         td.details-control {
-            background: url('../Images/details_open.png') no-repeat center center;
+            background:  url('@Url.Content("~/Images/details_open.png")') no-repeat center center;
             cursor: pointer;
         }
 
         tr.details td.details-control {
-            background: url('../Images/details_close.png') no-repeat center center;
+
+            background: url('@Url.Content("~/Images/details_open.png")') no-repeat center center;
         }
 
         th {
             white-space: nowrap;
         }
     </style>
-
 }
 
 @section Scripts {
@@ -337,11 +363,13 @@
     <script type="text/javascript">
 
         var itensPedido = @detalhePedido;
+        var urlCadastrar = '@Url.Action("Atualizar", "Pedido")';
+        var urlConsultar = '@Url.Action("Consultar", "Pedido")';
 
         $(function () {
             carregarItens();
-            setPropertiesInitialDataTableCadastro();
             formatarCampos();
+            setPropertiesInitialDataTableAtualizar();
         });
 
     </script>

@@ -43,5 +43,9 @@ namespace ShoppLab.Service
             _repository.Dispose();
         }
 
+        public void Remove(int id)
+        {
+            _repository.Remove(id);
+        }
     }
 }

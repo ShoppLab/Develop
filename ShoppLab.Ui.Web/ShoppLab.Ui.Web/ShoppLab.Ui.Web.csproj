@@ -299,6 +299,7 @@
     <Content Include="Content\Images\user\12.jpg" />
     <Content Include="Content\Images\user\13.jpg" />
     <Content Include="Content\mvc-override.css" />
+    <Content Include="Content\shopplab.css" />
     <Content Include="Documentation\Git\InformationGitHub.txt" />
     <Content Include="Documentation\Script\InitialScript.txt" />
     <Content Include="favicon.ico" />
@@ -807,6 +808,7 @@
     <Content Include="Views\Pedido\Atualizar.cshtml" />
     <Content Include="Views\Usuario\Index.cshtml" />
     <Content Include="Views\Shared\_Modal.cshtml" />
+    <Content Include="Views\Shared\_ModalYesNo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

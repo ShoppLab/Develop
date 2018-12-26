@@ -22,7 +22,7 @@
         "sSortDescending": ": Ordenar colunas de forma descendente"
     },
     "decimal": ",",
-    "thousands": ".",
+    "thousands": "."
 }
 
 
@@ -49,7 +49,7 @@ function setPropertiesInitialDataTableConsulta() {
     });
 }
 
-function setPropertiesInitialDataTableCadastro() {
+function setPropertiesInitialDataTableAtualizar() {
     var table = $('table').DataTable({
         "language": settings,
         data: detalhePedidoApresentacao,
@@ -60,9 +60,8 @@ function setPropertiesInitialDataTableCadastro() {
             {
                 "className": 'details-control',
                 "orderable": false,
-                "data": null,
-                "defaultContent": ''
             },
+            { "data": "Id" },
             { "data": "QuantidadeProduto" },
             { "data": "Unidade" },
             { "data": "DescricaoProduto" },
@@ -70,13 +69,17 @@ function setPropertiesInitialDataTableCadastro() {
             { "data": "ValorUnitarioMinimo" },
             { "data": "ValorUnitario" },
             { "data": "ValorTotal" },
-            { "data": "ValorPrecoVendaUnitario" }
-
+            { "data": "ValorPrecoVendaUnitario" },
+            { "data": null },
         ],
         "columnDefs": [{
             "targets": -1,
             "data": null,
-            "defaultContent": "<button class='btn btn-primary'>Remover</i></button>"
+            "defaultContent": "<button class='btn btn-primary' onclick='modalYesNo()'>Remover</i></button>"
+        },
+        {
+            "targets": [1],
+            "visible": false
         }],
         dom: 'Bfrtip',
         buttons: [
@@ -87,38 +90,42 @@ function setPropertiesInitialDataTableCadastro() {
             var api = this.api(), data;
 
             // Remove the formatting to get integer data for summation
-            var intVal = function (i) {
-                return typeof i === 'string' ?
-                    i.replace(/[\$,]/g, '') * 1 :
-                    typeof i === 'number' ?
-                        i : 0;
+            var intVal = function (nStr) {
+                nStr += '';
+                x = nStr.split('.');
+                x1 = x[0];
+                x2 = x.length > 1 ? '.' + x[1] : '';
+                var rgx = /(\d+)(\d{3})/;
+                while (rgx.test(x1)) {
+                    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+                }
+                debugger;
+
+                return x1 + x2;
+
             };
             // Total over all pages
             total = api
-                .column(7)
+                .column(8)
                 .data()
                 .reduce(function (a, b) {
-                    return intVal(a) + intVal(b);
+                    return formatarMoedaUS(intVal(a)) + formatarMoedaUS(intVal(b));
                 }, 0);
 
             // Total over this page
             pageTotal = api
-                .column(7, { page: 'current' })
+                .column(8, { page: 'current' })
                 .data()
                 .reduce(function (a, b) {
-                    return intVal(a) + intVal(b);
+                    return formatarMoedaUS(intVal(a)) + formatarMoedaUS(intVal(b));
                 }, 0);
 
             // Update footer
-            //$(api.column(4).footer()).html(
-            //    'R$' + pageTotal + ' ( R$' + total + ' total)'
-            //);
+            $(api.column(5).footer()).html(
+                'R$ ' + total + ' total'
+            );
         }
 
-    });
-
-    $('table tbody').on('click', 'button', function () {
-        var data = table.row($(this).parents('tr')).data();
     });
 
     // Add event listener for opening and closing details
@@ -137,4 +144,115 @@ function setPropertiesInitialDataTableCadastro() {
             tr.addClass('shown');
         }
     });
+
+    $('table tbody').on('click', 'button', function () {
+        rowDataTable = table.row($(this).parents('tr'));
+        idItemPedido = rowDataTable.data().Id;
+    });
 }
+
+function setPropertiesInitialMinimumDataTableCadastrar() {
+    var table = $('table').DataTable({})
+}
+
+function setPropertiesInitialDataTableCadastrar() {
+    var table = $('table').DataTable({
+        "language": settings,
+        paging: true,
+        searching: true,
+        info: false,
+        columns: [
+            {
+                "className": 'details-control',
+                "orderable": false,
+            },
+            { "data": "Id" },
+            { "data": "QuantidadeProduto" },
+            { "data": "Unidade" },
+            { "data": "DescricaoProduto" },
+            { "data": "Marca" },
+            { "data": "ValorUnitarioMinimo" },
+            { "data": "ValorUnitario" },
+            { "data": "ValorTotal" },
+            { "data": "ValorPrecoVendaUnitario" },
+            { "data": null },
+        ],
+        "columnDefs": [{
+            "targets": -1,
+            "data": null,
+            "defaultContent": "<button class='btn btn-primary' onclick='modalYesNo()'>Remover</i></button>"
+        },
+        {
+            "targets": [1],
+            "visible": false
+        }],
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+
+        "footerCallback": function (row, data, start, end, display) {
+            var api = this.api(), data;
+
+            // Remove the formatting to get integer data for summation
+            var intVal = function (nStr) {
+                nStr += '';
+                x = nStr.split('.');
+                x1 = x[0];
+                x2 = x.length > 1 ? '.' + x[1] : '';
+                var rgx = /(\d+)(\d{3})/;
+                while (rgx.test(x1)) {
+                    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+                }
+                debugger;
+                return x1 + x2;
+            };
+            // Total over all pages
+            total = api
+                .column(8)
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+            // Total over this page
+            pageTotal = api
+                .column(8, { page: 'current' })
+                .data()
+                .reduce(function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0);
+
+             //Update footer
+            $(api.column(5).footer()).html(
+                'R$ ' + total + ' total'
+            );
+        }
+
+    });
+
+    // Add event listener for opening and closing details
+    $('table tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row(tr);
+
+        if (row.child.isShown()) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child(format(row.data())).show();
+            tr.addClass('shown');
+        }
+    });
+
+    $('table tbody').on('click', 'button', function () {
+        rowDataTable = table.row($(this).parents('tr'));
+        idItemPedido = rowDataTable.data().Id;
+        indexRow = table.row(this).index();
+        alert(indexRow);
+    });
+}
+
