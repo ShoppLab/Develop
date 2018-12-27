@@ -99,30 +99,40 @@ function setPropertiesInitialDataTableAtualizar() {
                 while (rgx.test(x1)) {
                     x1 = x1.replace(rgx, '$1' + ',' + '$2');
                 }
-                debugger;
-
                 return x1 + x2;
 
             };
+
             // Total over all pages
             total = api
                 .column(8)
                 .data()
                 .reduce(function (a, b) {
-                    return formatarMoedaUS(intVal(a)) + formatarMoedaUS(intVal(b));
-                }, 0);
+                    debugger;
 
-            // Total over this page
-            pageTotal = api
-                .column(8, { page: 'current' })
-                .data()
-                .reduce(function (a, b) {
-                    return formatarMoedaUS(intVal(a)) + formatarMoedaUS(intVal(b));
+                    var valorA = 0;
+                    var valorB = 0;
+
+                    if (a.toString().indexOf(",") != -1) {
+                        valorA = formatarMoedaUS(intVal(a));
+                    } else {
+                        valorA = a;
+                    }
+
+                    if (b.toString().indexOf(",") != -1) {
+                        valorB = formatarMoedaUS(intVal(b));
+                    } else {
+                        valorB = b;
+
+                    }
+
+                    return valorA + valorB;
+
                 }, 0);
 
             // Update footer
             $(api.column(5).footer()).html(
-                'R$ ' + total + ' total'
+                'R$ ' + formatarMoeda(total) + ' total'
             );
         }
 
@@ -212,20 +222,32 @@ function setPropertiesInitialDataTableCadastrar() {
                 .column(8)
                 .data()
                 .reduce(function (a, b) {
-                    return intVal(a) + intVal(b);
+                    debugger;
+
+                    var valorA = 0;
+                    var valorB = 0;
+
+                    if (a.toString().indexOf(",") != -1) {
+                        valorA = formatarMoedaUS(intVal(a));
+                    } else {
+                        valorA = a;
+                    }
+
+                    if (b.toString().indexOf(",") != -1) {
+                        valorB = formatarMoedaUS(intVal(b));
+                    } else {
+                        valorB = b;
+
+                    }
+
+                    return valorA + valorB;
+
                 }, 0);
 
-            // Total over this page
-            pageTotal = api
-                .column(8, { page: 'current' })
-                .data()
-                .reduce(function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0);
 
              //Update footer
             $(api.column(5).footer()).html(
-                'R$ ' + total + ' total'
+                'R$ ' + formatarMoeda(total) + ' total'
             );
         }
 
