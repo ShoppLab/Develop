@@ -65,13 +65,6 @@ function adicionarItem() {
             detalhePedido = [];
         }
 
-        //percentualIcms = 0;
-        //percentualIcmsEntrada = 0;
-        //percentualIcmsSaida = 0;
-        //percentualIPI = 0;
-        //percentualIPICompra = 0;
-        //percentualIPIVenda = 0;
-
         carregarValoresItem();
         limparVariaveis();
         valorCusto = (valorPrecoCompra - valorPrecoCompra * (percentualIcmsEntrada / 100)) + (valorPrecoCompra * (percentualIPICompra / 100)) + valorDespesasCompra;
@@ -123,6 +116,8 @@ function adicionarItem() {
         valorUnitario = valorPrecoVendaUnitario;
         valorTotal = valorPrecoVendaUnitario * quantidadeProduto;
         valorPrecoVendaUnitario = valorPrecoVendaUnitario;
+
+        id = id--;
 
         detalhePedido.push({
             "Id": id,
@@ -313,6 +308,14 @@ function limparCampos() {
     $('#input-produto').focus();
 }
 
+function limparCamposConsulta() {
+    $('input[type="text"]').val('');
+
+    var table = $('table').DataTable();
+    table.clear().draw();
+    $('#DataInicial').focus();
+}
+
 function limparVariaveis() {
 
     if (valorPrecoCompra == "") {
@@ -424,18 +427,14 @@ function salvar() {
             success: function (data) {
                 if (data == true) {
                     $('#alert-success').css('display', 'block');
-
+                    window.scrollTo(0, 0);
                     setTimeout(function () {
                         $('#alert-success').css('display', 'none');
-                        if ($('#Id').val() == 0) {
-                            window.location.href = urlCadastrar;
-                        }
-                        else {
-                            window.location.href = urlConsultar;
-                        }
+                        window.location.href = urlConsultar;
                     }, 5000);
+                    
                 } else {
-                    AbrirModal("Atenção", "Ocorreu algum problema e não foi possível gravar as informações!");
+                    AbrirModal("Atenção", "Ocorreu um problema e não foi possível gravar as informações!");
                 }
             }
         });
@@ -443,15 +442,15 @@ function salvar() {
 
         if ($('div input.input-validation-error').length != 0) {
             $('#alert-danger').css('display', 'block');
-
+            window.scrollTo(0, 0);
 
             setTimeout(function () {
                 $('#alert-danger').css('display', 'none');
+
             }, 5000);
         };
     }
 }
-
 
 function validarDadosPedido() {
 
@@ -503,9 +502,8 @@ function sim() {
     if (rows == 1) {
         AbrirModal("Atenção", "Não será possível excluir todos os itens do pedido!");
     } else {
-
-        if (idItemPedido == 0) {
-            rowDataTable.remove().draw();
+        if (idItemPedido == 0 || idItemPedido < 0 ) {
+            removerItensArrayProdutos();
         } else {
             $.ajax({
                 type: "GET",
@@ -516,21 +514,31 @@ function sim() {
                 async: true,
                 success: function (data) {
                     if (data = true) {
-                        debugger;
-                        detalhePedido.splice(indexRow, 1);
-                        detalhePedidoApresentacao.splice(indexRow, 1);
-                        rowDataTable.remove().draw();
-                        idItemPedido = 0;
+                        removerItensArrayProdutos();
                     } else {
                         AbrirModalYesNo("Atenção", "O item não foi excluído, favor verificar!");
                     }
                 }
             });
         }
-
     }
 }
 
+function removerItensArrayProdutos() {
+    debugger;
+    for (var i = 0; i < detalhePedido.length; i++) {
+        if (detalhePedido[i].Id == idItemPedido) {
+            detalhePedido.splice(i, 1);
+        }
+    }
+    for (var i = 0; i < detalhePedidoApresentacao.length; i++) {
+        if (detalhePedidoApresentacao[i].Id == idItemPedido) {
+            detalhePedidoApresentacao.splice(i, 1);
+        }
+    }
+    rowDataTable.remove().draw();
+    idItemPedido = 0;
+}
 
 function addDell() {
     $('#input-quantidade').val(200);

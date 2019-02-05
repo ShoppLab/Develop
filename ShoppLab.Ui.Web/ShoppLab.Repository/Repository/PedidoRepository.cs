@@ -15,7 +15,7 @@ namespace ShoppLab.Repository.Repository
 
             if (dataInicial != null && dataFinal != null)
 
-                query = Find(x => x.DataRegistro >= dataFinal && x.DataRegistro <= dataFinal);
+                query = Find(x => x.DataRegistro >= dataInicial && x.DataRegistro <= dataFinal);
 
             if (dataInicial != null && dataFinal == null)
                 query = Find(x => x.DataRegistro >= dataInicial);

@@ -128,7 +128,7 @@ namespace ShoppLab.Ui.Web.Controllers
             }
             if (!string.IsNullOrEmpty(dataFinal))
             {
-                dtFinal = DateTime.Parse(dataFinal);
+                dtFinal = DateTime.Parse(dataFinal + " 23:59:00");
             }
 
             var itens = _pedidoService.ObterDadosPedidos(dtInicial, dtFinal, nomeCliente).Select(x => new
@@ -136,7 +136,7 @@ namespace ShoppLab.Ui.Web.Controllers
                 Pedido = x.Id,
                 DataRegistro = x.DataRegistro.ToString("dd/MM/yyyy"),
                 x.Cliente.Nome,
-                PrecoVendaUnitario = x.DetalhePedido.Sum(y => y.ValorPrecoVendaUnitario).ToString("###.00")
+                PrecoVendaUnitario = x.DetalhePedido.Sum(y => y.ValorPrecoVendaUnitario * y.QuantidadeProduto).ToString("###.00")
             }).ToList();
 
             return Json(itens, JsonRequestBehavior.AllowGet);

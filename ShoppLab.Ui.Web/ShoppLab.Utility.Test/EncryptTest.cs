@@ -8,7 +8,9 @@ namespace ShoppLab.Utility.Test
         [TestMethod]
         public void Encrypted()
         {
-            var encryptedValue = "123";
+    
+            var encryptedValue = "Data Source=ROBERTO\\SQLEXPRESS;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=True";
+
             var retEncryptedValue = Encrypt.Encrypted(encryptedValue);
 
             Assert.AreNotEqual(encryptedValue, retEncryptedValue);

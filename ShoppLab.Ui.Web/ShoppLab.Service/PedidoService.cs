@@ -37,17 +37,12 @@ namespace ShoppLab.Service
                 obj.CondicoesPagto = pedido.CondicoesPagto;
                 obj.DiasValidadePreco = pedido.DiasValidadePreco;
 
-                ////Remove os itens que foram excluídos
-                //foreach (var item in obj.DetalhePedido.Where(item => !pedido.DetalhePedido.Any(x => x.Id == item.Id)).ToList())
-                //{
-                //    obj.DetalhePedido.Remove(item);
-                //}
-
                 //Adiciona os novos itens
                 foreach (var item in pedido.DetalhePedido)
                 {
-                    if (item.Id == 0)
+                    if (item.Id == 0 || item.Id < 0)
                     {
+                        item.Id = 0;
                         obj.DetalhePedido.Add(item);
                     }
                 }

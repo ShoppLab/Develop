@@ -274,7 +274,7 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th colspan="8" style="text-align:right">Total:</th>
+                        <th colspan="8" style="text-align:right">total:</th>
                         <th></th>
                     </tr>
                 </tfoot>
@@ -289,14 +289,11 @@
 <div class="card card-default">
     <div class="card-header">
         <div class="card-body">
-
             <div class="form-row">
-
-                <div class="col-lg-2 mb-2">
-                    <button type="button" class="btn btn-primary mb-2" onclick="salvar()">Salvar</button>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-primary" onclick="salvar()">Salvar</button>
+                    <button class="btn btn-primary" type="button" onclick="location.href='@Url.Action("Consultar", "Pedido")'">Voltar</button>
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -307,8 +304,6 @@
     @Html.Partial("_Modal")
     @Html.Partial("_ModalYesNo")
 }
-
-
 
 @section Styles {
 
@@ -363,7 +358,8 @@
     <script type="text/javascript">
 
         var itensPedido = @detalhePedido;
-        var urlCadastrar = '@Url.Action("Atualizar", "Pedido")';
+        var urlAtualizar = '@Url.Action("Atualizar", "Pedido")';
+        var urlCadastrar = '@Url.Action("Cadastrar", "Pedido")';
         var urlConsultar = '@Url.Action("Consultar", "Pedido")';
 
         $(function () {

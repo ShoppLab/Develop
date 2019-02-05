@@ -1,5 +1,6 @@
 ﻿using ShoppLab.Domain.Entities;
 using ShoppLab.Repository.EntityMapping;
+using ShoppLab.Utility;
 using System.Configuration;
 using System.Data.Entity;
 
@@ -11,8 +12,7 @@ namespace ShoppLab.Repository.Context
         {
             get
             {
-                //return Encrypt.Decrypt(ConfigurationManager.ConnectionStrings["DBShoppLab"].ConnectionString);
-                return ConfigurationManager.ConnectionStrings["DBShoppLab"].ConnectionString;
+                return Encrypt.Decrypt(ConfigurationManager.ConnectionStrings["DBShoppLab"].ConnectionString);
             }
         }
 
@@ -24,7 +24,7 @@ namespace ShoppLab.Repository.Context
         }
 
         public DbSet<Cliente> Clientes { get; set; }
-        public DbSet<Email> Emails{ get; set; }
+        public DbSet<Email> Emails { get; set; }
         public DbSet<Contato> Contatos { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
         public DbSet<DetalhePedido> DetalhePedidos { get; set; }
