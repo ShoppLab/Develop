@@ -1,41 +1,23 @@
-﻿using ShoppLab.Domain.Entities;
+﻿using Dapper;
+using ShoppLab.Domain.Entities;
 using ShoppLab.Domain.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShoppLab.Repository.Dapper.Repository
 {
     public class UsuarioRepository : RepositoryBase, IUsuarioRepository
     {
-        
 
         public bool ValidarSenha(string nome, string senha)
         {
 
-            
-
-            using (var cn = Connection())
-
+            using (var db = Connection())
             {
-
-                var query = "Select Count(1) From Usuario Where Nome = @nome And Senha =@senha";
-
-                cn
-
+                db.Open();
+                var query = "Select NmUsuario Nome, DsSenha Senha From Usuario Where NmUsuario = @nome And DsSenha =@senha";
+                return db.Query<Usuario>(query, new { nome, senha }).FirstOrDefault() != null;
             }
-
-
-
-            return result;
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
     }
 }

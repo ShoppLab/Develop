@@ -1,12 +1,7 @@
-﻿using ShoppLab.Domain.Entities;
-using System;
-using System.Collections.Generic;
-
-namespace ShoppLab.Domain.Interfaces
+﻿namespace ShoppLab.Domain.Interfaces
 {
-    public interface IUsuarioRepository : IDisposable
+    public interface IUsuarioRepository
     {
         bool ValidarSenha(string nome, string senha );
-
     }
 }

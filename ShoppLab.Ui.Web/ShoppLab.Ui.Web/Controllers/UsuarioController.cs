@@ -24,7 +24,7 @@ namespace ShoppLab.Ui.Web.Controllers
         [HttpPost]
         public ActionResult Index(UsuarioViewModel model)
         {
-            var ret = _UsuarioService.ValidadeSenha(model.Nome, model.Senha);
+            var ret = _UsuarioService.ValidarSenha(model.Nome, model.Senha);
            
             if (ret)
             {
@@ -35,7 +35,6 @@ namespace ShoppLab.Ui.Web.Controllers
                 ModelState.AddModelError("SemUsuario", @"Usuário/Senha inválido!");
                 return View(model);
             }
-
         }
     }
 }

@@ -4,8 +4,12 @@ using System.Collections.Generic;
 
 namespace ShoppLab.Domain.Interfaces
 {
-    public interface IPedidoRepository : IRepositoryBase<Pedido>
+    public interface IPedidoRepository
     {
-        IEnumerable<Pedido> ObterDadosPedidos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente);
+        List<Pedido> ObterDadosPedidos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente);
+
+        void Salvar(Pedido obj);
+
+
     }
 }

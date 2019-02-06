@@ -76,9 +76,9 @@
       <Project>{29be0ebf-5928-4402-8d9b-95f177a6efa1}</Project>
       <Name>ShoppLab.Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ShoppLab.Repository\ShoppLab.Repository.csproj">
-      <Project>{a52af9a6-e124-4c05-9b68-ec270fd262f4}</Project>
-      <Name>ShoppLab.Repository</Name>
+    <ProjectReference Include="..\ShoppLab.Repository.Dapper\ShoppLab.Repository.Dapper.csproj">
+      <Project>{7e3eb78b-9450-4f97-8929-ba346436f649}</Project>
+      <Name>ShoppLab.Repository.Dapper</Name>
     </ProjectReference>
     <ProjectReference Include="..\ShoppLab.Service\ShoppLab.Service.csproj">
       <Project>{f6f65261-77ff-46a2-87ea-aef533502d67}</Project>

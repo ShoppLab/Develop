@@ -9,7 +9,7 @@ namespace ShoppLab.Utility.Test
         public void Encrypted()
         {
     
-            var encryptedValue = "Data Source=ROBERTO\\SQLEXPRESS;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=True";
+            var encryptedValue = "123";
 
             var retEncryptedValue = Encrypt.Encrypted(encryptedValue);
 

@@ -1,9 +1,7 @@
-﻿using ShoppLab.Domain.Entities;
-
-namespace ShoppLab.Domain.Interfaces
+﻿namespace ShoppLab.Domain.Interfaces
 {
-    public interface IUsuarioService : IServiceBase<Usuario>
+    public interface IUsuarioService
     {
-        bool ValidadeSenha(string usuario, string senha);
+        bool ValidarSenha(string usuario, string senha);
     }
 }
