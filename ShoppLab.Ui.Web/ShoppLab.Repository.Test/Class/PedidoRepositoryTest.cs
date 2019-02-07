@@ -3,7 +3,7 @@ using ServiceLocation;
 using ShoppLab.Domain.Entities;
 using ShoppLab.IoC;
 using ShoppLab.IoC.App_Start;
-using ShoppLab.Repository.Repository;
+using ShoppLab.Repository.Dapper.Repository;
 using System;
 using System.Collections.Generic;
 
@@ -34,7 +34,10 @@ namespace ShoppLab.Repository.Test
                     Cliente = new Cliente
                     {
                         Nome = "Albert Einstein",
-                        DataRegistro = DateTime.Now 
+                        DataRegistro = DateTime.Now,
+                        Telefone = "111111",
+                        Email = "rcqoliveira@icloud.com"
+                        
                     },
 
                     DetalhePedido = new List<DetalhePedido>
@@ -87,8 +90,7 @@ namespace ShoppLab.Repository.Test
                     }
                 };
 
-                pedidoRepository.Add(pedido);
-                pedidoRepository.SaveChanges();
+                pedidoRepository.Salvar(pedido);
 
                 Assert.IsTrue(true);
             }

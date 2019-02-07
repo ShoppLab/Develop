@@ -3,7 +3,7 @@ using ServiceLocation;
 using ShoppLab.Domain.Entities;
 using ShoppLab.IoC;
 using ShoppLab.IoC.App_Start;
-using ShoppLab.Repository.Repository;
+using ShoppLab.Repository.Dapper.Repository;
 using System;
 
 namespace ShoppLab.Repository.Test
@@ -36,8 +36,8 @@ namespace ShoppLab.Repository.Test
                 //cliente.Contatos.Add(new Contato { Ddd = 11, Numero = "96444-0909" });
                 //cliente.Contatos.Add(new Contato { Ddd = 11, Numero = "96444-0910" });
 
-                clienteRepository.Add(cliente);
-                clienteRepository.SaveChanges();
+                //clienteRepository.Add(cliente);
+                //clienteRepository.SaveChanges();
 
                 Assert.IsTrue(true);
             }

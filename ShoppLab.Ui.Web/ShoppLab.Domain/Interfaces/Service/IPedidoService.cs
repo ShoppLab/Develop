@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ShoppLab.Domain.Interfaces
 {
-    public interface IPedidoService : IServiceBase<Pedido>
+    public interface IPedidoService
     {
         void Salvar(Pedido pedido);
 

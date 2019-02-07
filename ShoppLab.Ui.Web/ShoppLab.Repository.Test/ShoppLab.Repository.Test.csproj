@@ -82,9 +82,9 @@
       <Project>{7a75f6e0-daa1-4ca1-8c07-31be67228cbb}</Project>
       <Name>ShoppLab.IoC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ShoppLab.Repository\ShoppLab.Repository.csproj">
-      <Project>{a52af9a6-e124-4c05-9b68-ec270fd262f4}</Project>
-      <Name>ShoppLab.Repository</Name>
+    <ProjectReference Include="..\ShoppLab.Repository.Dapper\ShoppLab.Repository.Dapper.csproj">
+      <Project>{7e3eb78b-9450-4f97-8929-ba346436f649}</Project>
+      <Name>ShoppLab.Repository.Dapper</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

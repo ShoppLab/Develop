@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ShoppLab.Domain.Entities;
-using ShoppLab.Repository.Repository;
+using ShoppLab.Repository.Dapper.Repository;
 using System;
 
 namespace ShoppLab.Repository.Test.Properties
@@ -14,11 +14,11 @@ namespace ShoppLab.Repository.Test.Properties
             try
             {
                 var repository = new ClienteRepository();
-                repository.Add(new Cliente
-                {
-                    Nome = "Test Pessoa 1"
-                });
-                repository.SaveChanges();
+                //repository.Add(new Cliente
+                //{
+                //    Nome = "Test Pessoa 1"
+                //});
+                //repository.SaveChanges();
                 Assert.IsTrue(true);
             }
             catch

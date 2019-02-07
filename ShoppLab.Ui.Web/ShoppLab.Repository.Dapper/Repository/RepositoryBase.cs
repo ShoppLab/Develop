@@ -10,8 +10,8 @@ namespace ShoppLab.Repository.Dapper.Repository
 
         public SqlConnection Connection()
         {
-            return new SqlConnection(Encrypt.Decrypt(ConfigurationManager.ConnectionStrings["DBShoppLab"].ConnectionString));
-            //return new SqlConnection(ConfigurationManager.ConnectionStrings["DBShoppLab"].ConnectionString);
+            //return new SqlConnection(Encrypt.Decrypt(ConfigurationManager.ConnectionStrings["DBShoppLab"].ConnectionString));
+            return new SqlConnection(ConfigurationManager.ConnectionStrings["DBShoppLab"].ConnectionString);
 
         }
     }

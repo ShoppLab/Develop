@@ -1,8 +1,6 @@
-﻿using ShoppLab.Domain.Entities;
-
-namespace ShoppLab.Domain.Interfaces
+﻿namespace ShoppLab.Domain.Interfaces
 {
-    public interface IClienteRepository : IRepositoryBase<Cliente>
+    public interface IClienteRepository
     {
     }
 }

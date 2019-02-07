@@ -2,7 +2,7 @@
 
 namespace ShoppLab.Domain.Interfaces
 {
-    public interface IClienteService : IServiceBase<Cliente>
+    public interface IClienteService
     {
        
     }

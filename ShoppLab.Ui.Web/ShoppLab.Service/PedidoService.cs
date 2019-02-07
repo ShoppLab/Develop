@@ -6,12 +6,12 @@ using System.Linq;
 
 namespace ShoppLab.Service
 {
-    public class PedidoService : ServiceBase<Pedido>, IPedidoService
+    public class PedidoService: IPedidoService
     {
         private readonly IPedidoRepository _pedidoRepository;
 
         public PedidoService(IPedidoRepository pedidoRepository)
-            : base(pedidoRepository)
+            
         {
             _pedidoRepository = pedidoRepository;
         }
@@ -27,28 +27,28 @@ namespace ShoppLab.Service
             if (pedido.Id == 0)
             {
                 pedido.DataRegistro = DateTime.Now;
-                _pedidoRepository.Add(pedido);
-                _pedidoRepository.SaveChanges();
+                //_pedidoRepository.Add(pedido);
+                //_pedidoRepository.SaveChanges();
             }
             else
             {
-                var obj = GetById(pedido.Id);
-                obj.CondicoesEntrega = pedido.CondicoesEntrega;
-                obj.CondicoesPagto = pedido.CondicoesPagto;
-                obj.DiasValidadePreco = pedido.DiasValidadePreco;
+                //var obj = GetById(pedido.Id);
+                //obj.CondicoesEntrega = pedido.CondicoesEntrega;
+                //obj.CondicoesPagto = pedido.CondicoesPagto;
+                //obj.DiasValidadePreco = pedido.DiasValidadePreco;
 
-                //Adiciona os novos itens
-                foreach (var item in pedido.DetalhePedido)
-                {
-                    if (item.Id == 0 || item.Id < 0)
-                    {
-                        item.Id = 0;
-                        obj.DetalhePedido.Add(item);
-                    }
-                }
+                ////Adiciona os novos itens
+                //foreach (var item in pedido.DetalhePedido)
+                //{
+                //    if (item.Id == 0 || item.Id < 0)
+                //    {
+                //        item.Id = 0;
+                //        obj.DetalhePedido.Add(item);
+                //    }
+                //}
 
-                _pedidoRepository.Update(obj);
-                _pedidoRepository.SaveChanges();
+                //_pedidoRepository.Update(obj);
+                //_pedidoRepository.SaveChanges();
             }
         }
     }
