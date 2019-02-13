@@ -3,7 +3,10 @@ using ShoppLab.Domain.Entities;
 using ShoppLab.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Text;
+using System.Transactions;
 
 namespace ShoppLab.Repository.Dapper.Repository
 {
@@ -11,18 +14,57 @@ namespace ShoppLab.Repository.Dapper.Repository
     {
         public List<Pedido> ObterDadosPedidos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente)
         {
-            throw new NotImplementedException();
+            StringBuilder query = new StringBuilder();
+
+            query.AppendLine("Select");
+            query.AppendLine("a.IdPedido IdPedido, a.IdPedido Id, a.DtRegistro DataRegistro, b.IdDetalhePedido IdDetalhePedido, b.VlPrecoVendaUnitario ValorPrecoVendaUnitario, b.QtProduto QuantidadeProduto, c.IdCliente, c.NmCliente Nome");
+            query.AppendLine("From Pedido a");
+            query.AppendLine("Inner Join DetalhePedido b on a.IdPedido = b.IdPedido");
+            query.AppendLine("Inner Join Cliente c on a.IdCliente = c.IdCliente");
+            query.AppendLine("Where a.IdPedido > 0");
+
+            if (dataInicial != null)
+            {
+                query.AppendLine("And a.DtRegistro >= '" +  dataInicial?.ToString("yyyy-MM-dd hh:mm:ss") + "'");
+            }
+
+            if (dataFinal != null)
+            {
+                query.AppendLine("And a.DtRegistro <= '" + dataFinal?.ToString("yyyy-MM-dd hh:mm:ss") + "'");
+            }
+
+            if (!String.IsNullOrEmpty(nomeCliente))
+            {
+                query.Append("And c.NmCliente >= Like '%" + nomeCliente + "%'");
+            }
+
+
+
+            var list = new List<Pedido>();
+
+            using (var db = Connection())
+            {
+                list = db.Query<Pedido, DetalhePedido, Cliente, Pedido>(query.ToString(), (pedido, detalhePedido, cliente) =>
+               {
+                   pedido.Cliente = cliente;
+                   pedido.DetalhePedido.Add(detalhePedido);
+                   return pedido;
+               }, splitOn: "IdPedido, IdDetalhePedido, IdCliente", commandType: CommandType.Text).ToList();
+
+            }
+
+            return list;
+
         }
 
         public void Salvar(Pedido obj)
         {
-            using (var db = Connection())
+
+            using (TransactionScope scope = new TransactionScope())
             {
-                db.Open();
-                //using (var transaction = db.BeginTransaction())
-                //{
-                try
+                using (var db = Connection())
                 {
+                    db.Open();
                     //Dados do cliente
                     var query = "Insert Into Cliente (NmCliente, DtRegistro, NrContato, DsEmail) " +
                         "Values (@NmCliente, @DtRegistro, @NrContato, @DsEmail);" +
@@ -32,7 +74,7 @@ namespace ShoppLab.Repository.Dapper.Repository
                     {
                         NmCliente = obj.Cliente.Nome,
                         DtRegistro = obj.Cliente.DataRegistro,
-                        NrContato =  obj.Cliente.Telefone,
+                        NrContato = obj.Cliente.Telefone,
                         DsEmail = obj.Cliente.Email
                     }).Single();
 
@@ -43,54 +85,51 @@ namespace ShoppLab.Repository.Dapper.Repository
 
                     var codigoPedido = db.Query<int>(query, new
                     {
-                        codigoCliente,
-                        obj.DataRegistro,
-                        obj.CondicoesPagto,
-                        obj.DiasValidadePreco,
-                        obj.CondicoesEntrega,
-                        obj.Contato
+                        IdCliente = codigoCliente,
+                        DtRegistro = obj.DataRegistro,
+                        DsCondicoesPagto = obj.CondicoesPagto,
+                        NrDiasValidadePreco = obj.DiasValidadePreco,
+                        DsCondicoesEntrega = obj.CondicoesEntrega,
+                        DsContato = obj.Contato
                     }).Single();
 
                     //Dados DetalhePedido
                     query = "Insert Into DetalhePedido (IdPedido, QtProduto, VlUnitario, VlUnitarioMinimo, " +
                         "VlTotal, NrDiasPrazoEntrega, VlPrecoCompra, TxIcms, " +
-                        "TxIcmsEntrada, TxIPICompra, VlDespesasCompra, NrDiasCondicoesPgtoCompra, NrDiasCondicoesPagtoVenda" +
+                        "TxIcmsEntrada, TxIPICompra, VlDespesasCompra, NrDiasCondicoesPgtoCompra, NrDiasCondicoesPagtoVenda, " +
                         "TxIcmsSaida, TxIPIVenda, VlComissaoBroker, VlPrecoVendaUnitario, DsProduto, DsMarca, DsUnidade) " +
-                        "Values (@IdPedido, @QtProduto, @VlUnitario, @VlTotal, @NrDiasPrazoEntrega, @VlPrecoCompra, @TxIcms, " +
-                        "@TxIcmsEntrada, @TxIPICompra, @VlDespesasCompra, @NrDiasCondicoesPgtoCompra, @NrDiasCondicoesPagtoVenda, @TxIcmsSaida" +
-                        "TxIcmsSaida, @VlComissaoBroker, @VlPrecoVendaUnitario, @DsProduto, @DsMarca, @DsUnidade)";
+                        "Values (@IdPedido, @QtProduto, @VlUnitario, @VlUnitarioMinimo, @VlTotal, @NrDiasPrazoEntrega, @VlPrecoCompra, @TxIcms, " +
+                        "@TxIcmsEntrada, @TxIPICompra, @VlDespesasCompra, @NrDiasCondicoesPgtoCompra, @NrDiasCondicoesPagtoVenda, @TxIcmsSaida, " +
+                        "@TxIPIVenda, @VlComissaoBroker, @VlPrecoVendaUnitario, @DsProduto, @DsMarca, @DsUnidade)";
 
                     foreach (var item in obj.DetalhePedido)
                     {
                         db.Query(query, new
                         {
-                            codigoPedido,
-                            item.QuantidadeProduto,
-                            item.ValorUnitario,
-                            item.ValorUnitarioMinimo,
-                            item.ValorTotal,
-                            item.NumeroDiasPrazoEntrega,
-                            item.ValorPrecoCompra,
-                            item.PercentualIcms,
-                            item.PercentualIcmsEntrada,
-                            item.PercentualIPICompra,
-                            item.ValorDespesasCompra,
-                            item.NumeroDiasCondicoesPagamentoCompra,
-                            item.NumeroDiasCondicoesPagamentoVenda,
-                            item.PercentualIcmsSaida,
-                            item.PercentualIPIVenda,
-                            item.ValorComissaoBroker,
-                            item.DescricaoProduto,
-                            item.Marca,
-                            item.Unidade
+                            IdPedido = codigoPedido,
+                            QtProduto = item.QuantidadeProduto,
+                            VlUnitario = item.ValorUnitario,
+                            VlUnitarioMinimo = item.ValorUnitarioMinimo,
+                            VlTotal = item.ValorTotal,
+                            NrDiasPrazoEntrega = item.NumeroDiasPrazoEntrega,
+                            VlPrecoCompra = item.ValorPrecoCompra,
+                            TxIcms = item.PercentualIcms,
+                            TxIcmsEntrada = item.PercentualIcmsEntrada,
+                            TxIPICompra = item.PercentualIPICompra,
+                            VlDespesasCompra = item.ValorDespesasCompra,
+                            NrDiasCondicoesPgtoCompra = item.NumeroDiasCondicoesPagamentoCompra,
+                            NrDiasCondicoesPagtoVenda = item.NumeroDiasCondicoesPagamentoVenda,
+                            TxIcmsSaida = item.PercentualIcmsSaida,
+                            TxIPIVenda = item.PercentualIPIVenda,
+                            VlComissaoBroker = item.ValorComissaoBroker,
+                            VlPrecoVendaUnitario = item.ValorPrecoVendaUnitario,
+                            DsProduto = item.DescricaoProduto,
+                            DsMarca = item.Marca,
+                            DsUnidade = item.Unidade
                         });
                     }
 
-                    //    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    //transaction.Rollback();
+                    scope.Complete();
                 }
             }
         }

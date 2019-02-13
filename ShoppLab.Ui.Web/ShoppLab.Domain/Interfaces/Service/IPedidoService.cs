@@ -8,6 +8,8 @@ namespace ShoppLab.Domain.Interfaces
     {
         void Salvar(Pedido pedido);
 
-        IEnumerable<Pedido> ObterDadosPedidos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente); 
+        IEnumerable<Pedido> ObterDadosPedidos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente);
+
+        Pedido GetById(int id);
     }
 }

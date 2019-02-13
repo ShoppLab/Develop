@@ -99,5 +99,13 @@ namespace ShoppLab.Repository.Test
                 Assert.IsTrue(false);
             }
         }
+
+        [TestMethod]
+
+        public void Obter_Dados_Pedido()
+        {
+            var pedidoRepository = new PedidoRepository();
+            pedidoRepository.ObterDadosPedidos(DateTime.Now.AddYears(-9), null, null);
+        }
     }
 }

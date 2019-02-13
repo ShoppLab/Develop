@@ -16,6 +16,11 @@ namespace ShoppLab.Service
             _pedidoRepository = pedidoRepository;
         }
 
+        public Pedido GetById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Pedido> ObterDadosPedidos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente)
         {
             return _pedidoRepository.ObterDadosPedidos(dataInicial, dataFinal, nomeCliente);
@@ -27,8 +32,7 @@ namespace ShoppLab.Service
             if (pedido.Id == 0)
             {
                 pedido.DataRegistro = DateTime.Now;
-                //_pedidoRepository.Add(pedido);
-                //_pedidoRepository.SaveChanges();
+                _pedidoRepository.Salvar(pedido);
             }
             else
             {
