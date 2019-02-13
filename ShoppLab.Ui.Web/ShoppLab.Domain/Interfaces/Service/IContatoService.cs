@@ -2,7 +2,7 @@
 
 namespace ShoppLab.Domain.Interfaces
 {
-    public interface IContatoService : IServiceBase<Contato>
+    public interface IContatoService
     {
     }
 }

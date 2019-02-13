@@ -12,6 +12,49 @@ namespace ShoppLab.Repository.Dapper.Repository
 {
     public class PedidoRepository : RepositoryBase, IPedidoRepository
     {
+        public Pedido GetById(int id)
+        {
+            StringBuilder query = new StringBuilder();
+            query.AppendLine("Select");
+            query.AppendLine("a.IdPedido IdPedido, a.IdPedido Id, a.DtRegistro DataRegistro, a.DsCondicoesPagto CondicoesPagto, a.DsCondicoesEntrega CondicoesEntrega, a.NrDiasValidadePreco DiasValidadePreco,");
+            query.AppendLine("b.IdDetalhePedido, b.DsMarca Marca, b.DsUnidade Unidade, b.QtProduto QuantidadeProduto, b.TxIcms PercentualIcms, b.TxIcmsEntrada PercentualIcmsEntrada,");
+            query.AppendLine("b.TxIcmsSaida PercentualIcmsSaida, b.TxIPICompra PercentualIPICompra, b.TxIPIVenda PercentualIPIVenda, b.VlComissaoBroker ValorComissaoBroker,");
+            query.AppendLine("b.VlDespesasCompra ValorDespesasCompra, b.VlPrecoCompra ValorPrecoCompra, b.VlPrecoVendaUnitario ValorPrecoVendaUnitario, b.VlTotal ValorTotal,");
+            query.AppendLine("b.VlUnitario ValorUnitario, b.VlUnitarioMinimo ValorUnitarioMinimo, b.NrDiasCondicoesPgtoCompra NumeroDiasCondicoesPagamentoCompra,");
+            query.AppendLine("b.NrDiasCondicoesPagtoVenda NumeroDiasCondicoesPagamentoVenda, b.NrDiasPrazoEntrega NumeroDiasPrazoEntrega,");
+            query.AppendLine("c.IdCliente, c.NmCliente Nome, c.NrContato Telefone, c.DsEmail Email");
+            query.AppendLine("From Pedido a");
+            query.AppendLine("Inner Join DetalhePedido b on a.IdPedido = b.IdPedido");
+            query.AppendLine("Inner Join Cliente c on a.IdCliente = c.IdCliente");
+            query.AppendLine("Where a.IdPedido = @pedido");
+
+            var obj = new Pedido();
+
+            using (var db = Connection())
+            {
+                var pedidoDictionary = new Dictionary<int, Pedido>();
+                obj = db.Query<Pedido, DetalhePedido, Cliente, Pedido>(query.ToString(), (pedido, detalhePedido, cliente) =>
+                {
+                    Pedido pedidoEmpty;
+
+                    if (!pedidoDictionary.TryGetValue(pedido.Id, out pedidoEmpty))
+                    {
+                        pedidoEmpty = pedido;
+                        pedidoEmpty.Cliente = cliente;
+                        pedidoEmpty.DetalhePedido = new List<DetalhePedido>();
+                        pedidoDictionary.Add(pedidoEmpty.Id, pedidoEmpty);
+                    }
+
+                    pedidoEmpty.DetalhePedido.Add(detalhePedido);
+                    return pedidoEmpty;
+
+                }, splitOn: "IdPedido, IdDetalhePedido, IdCliente", param: new { @pedido = id }, commandType: CommandType.Text).FirstOrDefault();
+            }
+
+            return obj;
+
+        }
+
         public List<Pedido> ObterDadosPedidos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente)
         {
             StringBuilder query = new StringBuilder();
@@ -25,7 +68,7 @@ namespace ShoppLab.Repository.Dapper.Repository
 
             if (dataInicial != null)
             {
-                query.AppendLine("And a.DtRegistro >= '" +  dataInicial?.ToString("yyyy-MM-dd hh:mm:ss") + "'");
+                query.AppendLine("And a.DtRegistro >= '" + dataInicial?.ToString("yyyy-MM-dd hh:mm:ss") + "'");
             }
 
             if (dataFinal != null)
@@ -38,18 +81,28 @@ namespace ShoppLab.Repository.Dapper.Repository
                 query.Append("And c.NmCliente >= Like '%" + nomeCliente + "%'");
             }
 
-
-
             var list = new List<Pedido>();
 
             using (var db = Connection())
             {
+                var pedidoDictionary = new Dictionary<int, Pedido>();
                 list = db.Query<Pedido, DetalhePedido, Cliente, Pedido>(query.ToString(), (pedido, detalhePedido, cliente) =>
                {
-                   pedido.Cliente = cliente;
-                   pedido.DetalhePedido.Add(detalhePedido);
-                   return pedido;
-               }, splitOn: "IdPedido, IdDetalhePedido, IdCliente", commandType: CommandType.Text).ToList();
+
+                   Pedido pedidoEmpty;
+
+                   if (!pedidoDictionary.TryGetValue(pedido.Id, out pedidoEmpty))
+                   {
+                       pedidoEmpty = pedido;
+                       pedidoEmpty.Cliente = cliente;
+                       pedidoEmpty.DetalhePedido = new List<DetalhePedido>();
+                       pedidoDictionary.Add(pedidoEmpty.Id, pedidoEmpty);
+                   }
+
+                   pedidoEmpty.DetalhePedido.Add(detalhePedido);
+                   return pedidoEmpty;
+
+               }, splitOn: "IdPedido, IdDetalhePedido, IdCliente", commandType: CommandType.Text).Distinct().ToList();
 
             }
 

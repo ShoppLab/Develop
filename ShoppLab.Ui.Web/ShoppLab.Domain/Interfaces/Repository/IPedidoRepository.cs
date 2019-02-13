@@ -10,6 +10,8 @@ namespace ShoppLab.Domain.Interfaces
 
         void Salvar(Pedido obj);
 
+        Pedido GetById(int id);
+
 
     }
 }

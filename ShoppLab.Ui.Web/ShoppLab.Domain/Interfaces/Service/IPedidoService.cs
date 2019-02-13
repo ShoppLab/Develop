@@ -11,5 +11,7 @@ namespace ShoppLab.Domain.Interfaces
         IEnumerable<Pedido> ObterDadosPedidos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente);
 
         Pedido GetById(int id);
+
+        
     }
 }

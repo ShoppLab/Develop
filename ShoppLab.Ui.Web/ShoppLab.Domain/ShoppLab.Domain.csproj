@@ -60,7 +60,6 @@
     <Compile Include="Interfaces\Service\IEmailService.cs" />
     <Compile Include="Interfaces\Service\IContatoService.cs" />
     <Compile Include="Interfaces\Service\IClienteService.cs" />
-    <Compile Include="Interfaces\Service\IServiceBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

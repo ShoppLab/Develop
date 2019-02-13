@@ -2,7 +2,8 @@
 
 namespace ShoppLab.Domain.Interfaces
 {
-    public interface IDetalhePedidoService : IServiceBase<DetalhePedido>
+    public interface IDetalhePedidoService
     {
+        void Remove(int id);
     }
 }

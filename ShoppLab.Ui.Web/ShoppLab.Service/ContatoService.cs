@@ -3,12 +3,11 @@ using ShoppLab.Domain.Interfaces;
 
 namespace ShoppLab.Service
 {
-    public class ContatoService : ServiceBase<Contato>, IContatoService
+    public class ContatoService : IContatoService
     {
         private readonly IContatoRepository _contatoRepository;
 
         public ContatoService(IContatoRepository contatoRepository)
-            :base(contatoRepository)
         {
             _contatoRepository = contatoRepository;
         }

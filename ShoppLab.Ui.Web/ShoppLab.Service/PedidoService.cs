@@ -18,7 +18,7 @@ namespace ShoppLab.Service
 
         public Pedido GetById(int id)
         {
-            throw new NotImplementedException();
+            return _pedidoRepository.GetById(id);
         }
 
         public IEnumerable<Pedido> ObterDadosPedidos(DateTime? dataInicial, DateTime? dataFinal, string nomeCliente)

@@ -3,12 +3,11 @@ using ShoppLab.Domain.Interfaces;
 
 namespace ShoppLab.Service
 {
-    public class EmailService : ServiceBase<Email>, IEmailService
+    public class EmailService :  IEmailService
     {
         private readonly IEmailRepository _emailRepository;
 
         public EmailService(IEmailRepository emailRepository)
-            :base(emailRepository)
         {
             _emailRepository = emailRepository;
         }

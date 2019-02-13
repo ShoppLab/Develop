@@ -2,7 +2,7 @@
 
 namespace ShoppLab.Domain.Interfaces
 {
-    public interface IEmailService : IServiceBase<Email>
+    public interface IEmailService
     {
     }
 }

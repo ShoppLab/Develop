@@ -2,7 +2,8 @@
 
 namespace ShoppLab.Domain.Interfaces
 {
-    public interface IDetalhePedidoRepository : IRepositoryBase<DetalhePedido>
+    public interface IDetalhePedidoRepository
     {
+        void Remove(int id);
     }
 }
