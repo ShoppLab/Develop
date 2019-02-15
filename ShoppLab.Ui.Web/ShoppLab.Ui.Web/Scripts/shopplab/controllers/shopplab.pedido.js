@@ -372,6 +372,28 @@ function obterDadosPedidos() {
     var dataInicial = $('#DataInicial').val();
     var dataFinal = $('#DataFinal').val();
     var nomeCliente = $('#NomeCliente').val();
+    var contador = 0;
+
+    if (!isDate(dataInicial)) {
+        contador++;
+    }
+
+    if (!isDate(dataFinal)) {
+        contador++;
+    }
+
+    if(contador == 1)
+    {
+        AbrirModal("Atenção", "A data não é valida!");
+        return;
+    }
+
+    if(contador == 2)
+    {
+        AbrirModal("Atenção", "As datas não são validas!");
+        return;
+
+    }
 
     if (dataInicial == "" && dataFinal == "" && nomeCliente == "") {
         AbrirModal("Atenção", "Por favor, preencher algum dos filtros!");
@@ -525,7 +547,6 @@ function sim() {
 }
 
 function removerItensArrayProdutos() {
-    debugger;
     for (var i = 0; i < detalhePedido.length; i++) {
         if (detalhePedido[i].Id == idItemPedido) {
             detalhePedido.splice(i, 1);
@@ -577,3 +598,5 @@ function addMicrosoft() {
     $('#input-ipiVendaFrete').val(0);
     $('#input-comissaoBroker').val(50);
 }
+
+

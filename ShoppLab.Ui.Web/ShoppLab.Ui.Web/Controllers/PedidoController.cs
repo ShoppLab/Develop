@@ -59,8 +59,10 @@ namespace ShoppLab.Ui.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Atualizar(int id, PedidoViewModel model, List<DetalhePedidoViewModel> detalhePedidoViewModel)
+        public ActionResult Atualizar(int id)
         {
+
+            var pedido = _pedidoService.GetById(id);
 
             //var pedidoViewModel = Mapper.Map<Pedido, PedidoViewModel>(item);
             //var pedidoDetalheViewModel = Mapper.Map<IList<DetalhePedido>, IList<DetalhePedidoViewModel>>(item.DetalhePedido).ToList();

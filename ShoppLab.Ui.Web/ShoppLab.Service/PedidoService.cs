@@ -36,23 +36,23 @@ namespace ShoppLab.Service
             }
             else
             {
-                //var obj = GetById(pedido.Id);
-                //obj.CondicoesEntrega = pedido.CondicoesEntrega;
-                //obj.CondicoesPagto = pedido.CondicoesPagto;
-                //obj.DiasValidadePreco = pedido.DiasValidadePreco;
+                var obj = GetById(pedido.Id);
+                obj.CondicoesEntrega = pedido.CondicoesEntrega;
+                obj.CondicoesPagto = pedido.CondicoesPagto;
+                obj.DiasValidadePreco = pedido.DiasValidadePreco;
 
-                ////Adiciona os novos itens
-                //foreach (var item in pedido.DetalhePedido)
-                //{
-                //    if (item.Id == 0 || item.Id < 0)
-                //    {
-                //        item.Id = 0;
-                //        obj.DetalhePedido.Add(item);
-                //    }
-                //}
+                //Adiciona os novos itens
+                foreach (var item in pedido.DetalhePedido)
+                {
+                    if (item.Id == 0 || item.Id < 0)
+                    {
+                        item.Id = 0;
+                        obj.DetalhePedido.Add(item);
+                    }
+                }
 
-                //_pedidoRepository.Update(obj);
-                //_pedidoRepository.SaveChanges();
+                _pedidoRepository.Atualizar(obj);
+          
             }
         }
     }
