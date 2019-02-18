@@ -788,7 +788,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Documentation\Model\" />
     <Folder Include="Vendor\bootstrap-notify\dist\css\" />
     <Folder Include="Views\Alterar\" />
   </ItemGroup>
