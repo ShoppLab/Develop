@@ -19,24 +19,28 @@ namespace ShoppLab.Repository.Dapper.Repository
                 using (var db = Connection())
                 {
                     db.Open();
-                    var query = "Update Cliente" +
-                                "Set NmCliente = @NmCliente," +
-                                    "DtRegistro = @DtRegistro," +
-                                    "NrContato = @NrContato," +
-                                    "DsEmail = @DsEmail" +
-                                "Where IdCliente = @IdCliente";
+
+                    var query = "Update Pedido" +
+                                " Set DtRegistro = @DtRegistro," +
+                                "    DsCondicoesPagto = @DsCondicoesPagto," +
+                                "    NrDiasValidadePreco = @NrDiasValidadePreco," +
+                                "    DsCondicoesEntrega = @DsCondicoesEntrega," +
+                                "    DsContato = @DsContato" +
+                                " Where IdPedido = @IdPedido";
 
                     db.Query<int>(query, new
                     {
-                        NmCliente = obj.Cliente.Nome,
-                        DtRegistro = obj.Cliente.DataRegistro,
-                        NrContato = obj.Cliente.Telefone,
-                        DsEmail = obj.Cliente.Email
+                        IdPedido = obj.Id,
+                        DtRegistro = obj.DataRegistro,
+                        DsCondicoesPagto = obj.CondicoesPagto,
+                        NrDiasValidadePreco = obj.DiasValidadePreco,
+                        DsCondicoesEntrega = obj.CondicoesEntrega,
+                        DsContato = obj.Contato
                     });
 
                     foreach (var item in obj.DetalhePedido)
                     {
-                        if (item.Id != 0)
+                        if (item.Id == 0)
                         {
                             query = "Insert Into DetalhePedido (IdPedido, QtProduto, VlUnitario, VlUnitarioMinimo, " +
                             "VlTotal, NrDiasPrazoEntrega, VlPrecoCompra, TxIcms, " +
@@ -71,7 +75,6 @@ namespace ShoppLab.Repository.Dapper.Repository
                             });
                         }
                     }
-
                     scope.Complete();
                 }
             }
@@ -82,7 +85,7 @@ namespace ShoppLab.Repository.Dapper.Repository
             StringBuilder query = new StringBuilder();
             query.AppendLine("Select");
             query.AppendLine("a.IdPedido IdPedido, a.IdPedido Id, a.DtRegistro DataRegistro, a.DsCondicoesPagto CondicoesPagto, a.DsCondicoesEntrega CondicoesEntrega, a.NrDiasValidadePreco DiasValidadePreco,");
-            query.AppendLine("b.IdDetalhePedido, b.DsMarca Marca, b.DsUnidade Unidade, b.QtProduto QuantidadeProduto, b.TxIcms PercentualIcms, b.TxIcmsEntrada PercentualIcmsEntrada,");
+            query.AppendLine("b.IdDetalhePedido, b.IdDetalhePedido Id, b.DsMarca Marca, b.DsUnidade Unidade, b.QtProduto QuantidadeProduto, b.TxIcms PercentualIcms, b.TxIcmsEntrada PercentualIcmsEntrada,");
             query.AppendLine("b.TxIcmsSaida PercentualIcmsSaida, b.TxIPICompra PercentualIPICompra, b.TxIPIVenda PercentualIPIVenda, b.VlComissaoBroker ValorComissaoBroker,");
             query.AppendLine("b.VlDespesasCompra ValorDespesasCompra, b.VlPrecoCompra ValorPrecoCompra, b.VlPrecoVendaUnitario ValorPrecoVendaUnitario, b.VlTotal ValorTotal,");
             query.AppendLine("b.VlUnitario ValorUnitario, b.VlUnitarioMinimo ValorUnitarioMinimo, b.NrDiasCondicoesPgtoCompra NumeroDiasCondicoesPagamentoCompra,");
@@ -125,7 +128,7 @@ namespace ShoppLab.Repository.Dapper.Repository
             StringBuilder query = new StringBuilder();
 
             query.AppendLine("Select");
-            query.AppendLine("a.IdPedido IdPedido, a.IdPedido Id, a.DtRegistro DataRegistro, b.IdDetalhePedido IdDetalhePedido, b.VlPrecoVendaUnitario ValorPrecoVendaUnitario, b.QtProduto QuantidadeProduto, c.IdCliente, c.NmCliente Nome");
+            query.AppendLine("a.IdPedido IdPedido, a.IdPedido Id, a.DtRegistro DataRegistro, b.IdDetalhePedido Id, b.VlPrecoVendaUnitario ValorPrecoVendaUnitario, b.QtProduto QuantidadeProduto, c.IdCliente, c.NmCliente Nome");
             query.AppendLine("From Pedido a");
             query.AppendLine("Inner Join DetalhePedido b on a.IdPedido = b.IdPedido");
             query.AppendLine("Inner Join Cliente c on a.IdCliente = c.IdCliente");
@@ -167,7 +170,7 @@ namespace ShoppLab.Repository.Dapper.Repository
                    pedidoEmpty.DetalhePedido.Add(detalhePedido);
                    return pedidoEmpty;
 
-               }, splitOn: "IdPedido, IdDetalhePedido, IdCliente", commandType: CommandType.Text).Distinct().ToList();
+               }, splitOn: "IdPedido, Id, IdCliente", commandType: CommandType.Text).Distinct().ToList();
 
             }
 

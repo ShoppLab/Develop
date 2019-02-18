@@ -52,7 +52,7 @@ namespace ShoppLab.Ui.Web.Controllers
                     return Json(true, JsonRequestBehavior.AllowGet);
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
@@ -79,6 +79,8 @@ namespace ShoppLab.Ui.Web.Controllers
                 Telefone = pedido.Cliente.Telefone,
                 DiasValidadePreco = pedido.DiasValidadePreco,
                 Nome = pedido.Cliente.Nome,
+
+
             };
 
             foreach (var item in pedido.DetalhePedido)

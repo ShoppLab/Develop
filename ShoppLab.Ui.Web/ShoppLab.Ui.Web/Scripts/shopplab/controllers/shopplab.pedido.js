@@ -374,11 +374,11 @@ function obterDadosPedidos() {
     var nomeCliente = $('#NomeCliente').val();
     var contador = 0;
 
-    if (!isDate(dataInicial)) {
+    if (dataInicial != "" && !isDate(dataInicial)) {
         contador++;
     }
 
-    if (!isDate(dataFinal)) {
+    if (dataFinal != "" && !isDate(dataFinal)) {
         contador++;
     }
 
